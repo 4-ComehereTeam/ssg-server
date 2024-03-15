@@ -28,6 +28,6 @@ public class Item {
 	@Column(columnDefinition = "TINYINT")
 	private Short status;
 
-	private Integer group;
+	private Integer addGroup;
 
 }
