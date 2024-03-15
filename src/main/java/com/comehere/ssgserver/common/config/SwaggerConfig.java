@@ -9,6 +9,11 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 
+/**
+ * 각 담당 파트마다 페이지 분리 : Item(상품), Member(회원), Purchase(주문)
+ * - 각 컨트롤러에 매핑된 URI(@RequestMapping)를 각자 해당하는 API 메서드의 `pathsToMatch()`에 넣어주시면 됩니다..
+ */
+
 @Configuration
 @OpenAPIDefinition(
 		info = @Info(
