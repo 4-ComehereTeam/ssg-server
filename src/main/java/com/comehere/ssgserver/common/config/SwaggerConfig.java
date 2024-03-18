@@ -27,7 +27,7 @@ public class SwaggerConfig {
 	public GroupedOpenApi ItemAPI() {
 		return GroupedOpenApi.builder()
 				.group("상품")
-				.pathsToMatch("/items/**")
+				.pathsToMatch("/api/v1/items/**")
 				.build();
 	}
 
@@ -35,7 +35,7 @@ public class SwaggerConfig {
 	public GroupedOpenApi MemberAPI() {
 		return GroupedOpenApi.builder()
 				.group("회원")
-				.pathsToMatch("/members/**")
+				.pathsToMatch("/api/v1/members/**")
 				.build();
 	}
 
@@ -43,7 +43,7 @@ public class SwaggerConfig {
 	public GroupedOpenApi PurchaseAPI() {
 		return GroupedOpenApi.builder()
 				.group("주문")
-				.pathsToMatch("/purchases/**")
+				.pathsToMatch("/api/v1/purchases/**")
 				.build();
 	}
 }
