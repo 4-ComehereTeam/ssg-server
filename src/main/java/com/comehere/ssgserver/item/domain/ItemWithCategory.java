@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class wqItemWithCategory {
+public class ItemWithCategory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

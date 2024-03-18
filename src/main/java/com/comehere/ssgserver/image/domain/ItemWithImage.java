@@ -9,8 +9,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.ToString;
 
 @Entity
+@Getter
 public class ItemWithImage {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
