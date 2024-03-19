@@ -13,5 +13,5 @@ import lombok.Getter;
 @Builder
 public class ItemImageRespDTO {
 	private Long itemId;
-	private List<Image> images = new ArrayList<>();
+	private List<Image> images;
 }
