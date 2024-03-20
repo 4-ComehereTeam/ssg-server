@@ -28,12 +28,7 @@ public class CategoryController {
 	@GetMapping
 	@Operation(summary = "카테고리 (대) 조회 API", description = "대 카테고리 목록 조회")
 	public BigCategoryRespDTO getBigCategory() {
-		List<BigCategory> bigCategory = categoryService.findBigCategory();
-
-		return BigCategoryRespDTO.builder()
-				.count(bigCategory.size())
-				.bigCategories(bigCategory)
-				.build();
+		return categoryService.findBigCategory();
 	}
 
 	@GetMapping("/{id}")
