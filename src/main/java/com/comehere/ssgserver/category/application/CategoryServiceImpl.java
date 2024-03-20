@@ -22,8 +22,13 @@ public class CategoryServiceImpl implements CategoryService{
 	private final MiddleCategoryRepository middleCategoryRepository;
 
 	@Override
-	public List<BigCategory> findBigCategory() {
-		return bigCategoryRepository.findAll();
+	public BigCategoryRespDTO findBigCategory() {
+		List<BigCategory> bigCategory = bigCategoryRepository.findAll();
+
+		return BigCategoryRespDTO.builder()
+				.count(bigCategory.size())
+				.bigCategories(bigCategory)
+				.build();
 	}
 
 	@Override
