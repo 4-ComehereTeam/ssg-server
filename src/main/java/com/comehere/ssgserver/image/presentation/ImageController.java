@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.image.application.ImageService;
-import com.comehere.ssgserver.image.application.ItemWithImageService;
 import com.comehere.ssgserver.image.dto.ItemImageRespDTO;
-import com.comehere.ssgserver.image.dto.ItemWithImageRespDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
