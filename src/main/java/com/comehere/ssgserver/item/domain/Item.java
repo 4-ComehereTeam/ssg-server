@@ -9,18 +9,20 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Item {
+public class Item { // 필드 설정 추가 + @Builder
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(length = 50, nullable = false)
 	private String name;
 
 	private String code;
 
-	@Column(columnDefinition = "LONGTEXT")
+	@Column(columnDefinition = "LONGTEXT", nullable = false)
 	private String description;
 
+	@Column(nullable = false)
 	private Long price;
 
 	private Integer discountRate;
