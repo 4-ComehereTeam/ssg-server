@@ -21,14 +21,12 @@ public class ItemServiceImpl implements ItemService {
 	private final ItemCalcRepository itemCalcRepository;
 
 	@Override
-	public ItemDetailRespDTO findById(Long id) {
-		// Item item = itemRepository.findById(id).orElseThrow(
-		// 		() -> new IllegalStateException("존재하지 않는 상품입니다."));
+	public ItemDetailRespDTO getItemDetail(Long id) {
+		Item item = itemRepository.findById(id)
+				.orElseThrow(() -> new IllegalStateException("존재하지 않는 상품입니다."));
 
-		ItemCalc calc = itemCalcRepository.findByItemId(id).orElseThrow(
-				() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
-
-		Item item = calc.getItem();
+		ItemCalc itemCalc = itemCalcRepository.findById(item.getId())
+				.orElseThrow(() -> new IllegalStateException("존재하지 않는 상품입니다."));
 
 		return ItemDetailRespDTO.builder()
 				.itemName(item.getName())
@@ -37,8 +35,8 @@ public class ItemServiceImpl implements ItemService {
 				.discountRate(item.getDiscountRate())
 				.description(item.getDescription())
 				.status(item.getStatus())
-				.averageStar(calc.getAverageStar())
-				.reviewCount(calc.getReviewCount())
+				.averageStar(itemCalc.getAverageStar())
+				.reviewCount(itemCalc.getReviewCount())
 				.build();
 	}
 }

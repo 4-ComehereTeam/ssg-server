@@ -16,9 +16,7 @@ public class ItemCalc {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "item_id")
-	private Item item;
+	private Long itemId;
 
 	private Double AverageStar;
 
