@@ -1,18 +1,13 @@
 package com.comehere.ssgserver.member.domain;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import com.comehere.ssgserver.purchase.domain.Address;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -23,34 +18,54 @@ public class Member {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToMany(mappedBy = "member")
-	private List<Address> addressList;
+	private String loginId;
 
 	private String name;
 
-	private String birthday;
-
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short gender;
-
-	private String phoneNumber;
-
-	private String loginId;
-
 	private String password;
 
-	private String email;
+	private String birthday;
 
-	@Column(columnDefinition = "DATETIME")
-	private LocalDateTime signupTime;
+	@Setter
+	private String role;
 
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short isUniverseClub;
+	//@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
+	private Short gender;
+	//
+	// private String phoneNumber;
+	//
 
-	@Column(columnDefinition = "DATETIME")
-	private LocalDateTime resignTime;
+	//
+	// private String email;
+	//
+	// @Column(columnDefinition = "DATETIME")
+	// private LocalDateTime signupTime;
 
-	private int resignCount;
+	// @Column(columnDefinition = "TINYINT", length = 1, nullable = true)
+	// private Short isUniverseClub;
+	//
+	// @Column(columnDefinition = "DATETIME")
+	// private LocalDateTime resignTime;
+	//
+	// private Integer resignCount;
+	//
+	// private Short status;
 
-	private short status;
+	// 	@Builder
+	// 	public Member(String name, String birthday, Short gender, String phoneNumber, String loginId, String password,
+	// 			String email, LocalDateTime signupTime) {
+	// 		this.name = name;
+	// 		this.birthday = birthday;
+	// 		this.gender = gender;
+	// 		this.phoneNumber = phoneNumber;
+	// 		this.loginId = loginId;
+	// 		this.password = password;
+	// 		this.email = email;
+	// 		this.signupTime = signupTime;
+	// 	}
+	@Builder
+	public Member(String loginId, String password, String role) {
+		this.loginId = loginId;
+		this.password = password;
+	}
 }

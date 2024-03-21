@@ -39,5 +39,5 @@ public class Address {
 	private String isDefaultRequest;
 
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private short isDefaultAddress;
+	private Short isDefaultAddress;
 }

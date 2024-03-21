@@ -15,21 +15,21 @@ public class Agree {
 	private String email;
 
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private short isTermssAgree;
+	private Short isTermssAgree;
 
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private short isMarketingAgree;
+	private Short isMarketingAgree;
 
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private short isSmsAgree;
+	private Short isSmsAgree;
 
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private short isMailAgree;
+	private Short isMailAgree;
 
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private short isCallAgree;
+	private Short isCallAgree;
 
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private short isSimpleAgree;
+	private Short isSimpleAgree;
 
 }
