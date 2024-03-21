@@ -22,6 +22,6 @@ public class ItemController {
 	@GetMapping("/{id}")
 	@Operation(summary = "상품 상세정보 API", description = "상품 상세정보 조회")
 	public ItemDetailRespDTO itemDetail(@PathVariable("id") Long id) {
-		return itemService.findById(id);
+		return itemService.getItemDetail(id);
 	}
 }

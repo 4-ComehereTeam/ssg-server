@@ -9,6 +9,4 @@ import org.springframework.data.repository.query.Param;
 import com.comehere.ssgserver.item.domain.ItemCalc;
 
 public interface ItemCalcRepository extends JpaRepository<ItemCalc, Long> {
-	@Query("select ic from ItemCalc ic join fetch ic.item i where i.id = :itemId")
-	Optional<ItemCalc> findByItemId(@Param("itemId") Long itemId);
 }
