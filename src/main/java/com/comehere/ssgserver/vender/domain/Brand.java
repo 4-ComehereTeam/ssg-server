@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Vender {
+public class Brand {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
