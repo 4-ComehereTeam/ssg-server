@@ -5,19 +5,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.comehere.ssgserver.image.application.ImageService;
 import com.comehere.ssgserver.image.application.ItemWithImageService;
 import com.comehere.ssgserver.image.dto.ItemImageRespDTO;
+import com.comehere.ssgserver.image.dto.ItemWithImageRespDTO;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
+@Tag(name = "images", description = "이미지 관리 컨트롤러")
 public class ImageController {
-	private final ItemWithImageService itemWithImageService;
+	private final ImageService imageService;
 
 	@GetMapping("/items/images/{id}")
+	@Operation(summary = "상품 이미지 조회 API", description = "상품 이미지 조회")
 	public ItemImageRespDTO itemWithImages(@PathVariable("id") Long id) {
-		return itemWithImageService.itemImages(id);
+		return imageService.getItemImages(id);
 	}
 }

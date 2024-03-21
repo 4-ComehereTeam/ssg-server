@@ -1,9 +1,7 @@
 package com.comehere.ssgserver.image.application;
 
-import java.util.List;
-
-import com.comehere.ssgserver.image.dto.ItemImageRespDTO;
+import com.comehere.ssgserver.image.dto.ItemWithImageRespDTO;
 
 public interface ItemWithImageService {
-	ItemImageRespDTO itemImages(Long itemId);
+	ItemWithImageRespDTO itemImages(Long itemId);
 }
