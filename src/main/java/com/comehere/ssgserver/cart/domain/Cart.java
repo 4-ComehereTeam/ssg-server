@@ -11,25 +11,25 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Cart {
-
+	
 	@Id
 	@GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
 	private Long id;
-
+	
 	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
-
+	
 	private Long stockId;
-
-	private int itemCount;
-
+	
+	private Integer itemCount;
+	
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private short itemCheck;
-
+	private Short itemCheck;
+	
 	private Long memberAddressId;
-
+	
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private short pinStatus;
+	private Short pinStatus;
 }
 
