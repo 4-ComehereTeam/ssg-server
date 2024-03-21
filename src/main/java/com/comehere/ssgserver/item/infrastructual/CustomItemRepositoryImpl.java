@@ -1,11 +1,8 @@
 package com.comehere.ssgserver.item.infrastructual;
 
-import static com.comehere.ssgserver.item.domain.QItem.*;
 import static com.comehere.ssgserver.item.domain.QItemWithCategory.*;
 
 import java.util.List;
-
-import org.springframework.util.StringUtils;
 
 import com.comehere.ssgserver.item.vo.ItemListReqVO;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -22,16 +19,11 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
 		return query.select(itemWithCategory.item.id)
 				.from(itemWithCategory)
 				.where(
-						itemNameLike(vo.getSearch()),
 						bigCategoryEq(vo.getBigCategoryId()),
 						middleCategoryEq(vo.getMiddleCategoryId()),
 						smallCategoryEq(vo.getSmallCategoryId())
 				)
 				.fetch();
-	}
-
-	private BooleanExpression itemNameLike(String itemName) {
-		return StringUtils.hasText(itemName) ? item.name.like('%' + itemName + '%') : null;
 	}
 
 	private BooleanExpression bigCategoryEq(Integer bigCategoryId) {

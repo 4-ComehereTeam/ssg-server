@@ -1,7 +1,5 @@
 package com.comehere.ssgserver.item.application;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.comehere.ssgserver.item.domain.Item;
@@ -10,6 +8,7 @@ import com.comehere.ssgserver.item.dto.ItemDetailRespDTO;
 import com.comehere.ssgserver.item.infrastructual.ItemCalcRepository;
 import com.comehere.ssgserver.item.infrastructual.ItemRepository;
 import com.comehere.ssgserver.item.vo.ItemListReqVO;
+import com.comehere.ssgserver.item.vo.ItemListRespVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,7 +39,10 @@ public class ItemServiceImpl implements ItemService { // 기본 CRUD API 생성�
 	}
 
 	@Override
-	public List<Long> getItemList(ItemListReqVO vo) {
-		return itemRepository.getItemList(vo);
+	public ItemListRespVO getItemList(ItemListReqVO vo) {
+		return ItemListRespVO.builder()
+				.itemIds(itemRepository.getItemList(vo).stream()
+						.toList())
+				.build();
 	}
 }
