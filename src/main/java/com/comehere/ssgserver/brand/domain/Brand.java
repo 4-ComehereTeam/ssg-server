@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.vender.domain;
+package com.comehere.ssgserver.brand.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.vender.domain;
+package com.comehere.ssgserver.brand.domain;
 
 import com.comehere.ssgserver.item.domain.Item;
 
@@ -9,8 +9,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class BrandWithItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

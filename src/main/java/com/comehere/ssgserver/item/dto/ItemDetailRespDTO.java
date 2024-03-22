@@ -10,15 +10,7 @@ public class ItemDetailRespDTO {
 
 	private String itemCode;
 
-	private String description;
-
 	private Long price;
 
 	private Integer discountRate;
-
-	private Short status;
-
-	private Long reviewCount;
-
-	private Double averageStar;
 }
