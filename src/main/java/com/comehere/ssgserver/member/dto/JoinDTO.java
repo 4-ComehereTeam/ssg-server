@@ -26,4 +26,5 @@ public class JoinDTO {
 	private AddressInfoDTO addressInfodto;
 
 	private AgreeDTO agreedto;
+
 }

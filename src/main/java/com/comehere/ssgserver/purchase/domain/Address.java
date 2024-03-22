@@ -59,4 +59,5 @@ public class Address {
 		this.requestMessage = requestMessage;
 		this.defaultAddress = defaultAddress;
 	}
+
 }

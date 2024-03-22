@@ -55,7 +55,6 @@ public class SecurityConfig {
 				.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)),
 						UsernamePasswordAuthenticationFilter.class)
 
-				// 세션 생성 정책 설정
 				.sessionManagement(
 						sessionManagement -> sessionManagement
 								.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
