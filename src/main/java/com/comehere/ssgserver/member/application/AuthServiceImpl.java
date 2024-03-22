@@ -1,5 +1,7 @@
 package com.comehere.ssgserver.member.application;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 @Service
 public class JoinServiceImpl implements JoinService {
 
+	private static final Logger logger = LoggerFactory.getLogger(JoinServiceImpl.class);
 	private final MemberRepository memberRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -21,31 +24,21 @@ public class JoinServiceImpl implements JoinService {
 	@Override
 	public void joinProcess(JoinDTO joinDTO) {
 
-		Boolean isExist = memberRepository.existsByLoginId(joinDTO.getLoginId());
+		Boolean isExist = memberRepository.existsBySigninId(joinDTO.getSigninId());
 		if (isExist) {
 			return;
 		}
 
 		Member member = Member
 				.builder()
-				.loginId(joinDTO.getLoginId())
+				.signinId(joinDTO.getSigninId())
 				.password(bCryptPasswordEncoder.encode(joinDTO.getPassword()))
+				.name(joinDTO.getName())
+				.phone(joinDTO.getPhone())
+				.email(joinDTO.getEmail())
 				.build();
 
-		member.setRole("ROLE_USER");
-
-		// Member member = Member
-		// 		.builder()
-		// 		.name(joinDTO.getName())
-		// 		.birthday(joinDTO.getBirthday())
-		// 		.gender(joinDTO.getGender())
-		// 		.phoneNumber(joinDTO.getPhoneNumber())
-		// 		.email(joinDTO.getEmail())
-		// 		.signupTime(LocalDateTime.now())
-		// 		.loginId(joinDTO.getLoginId())
-		// 		.password(bCryptPasswordEncoder.encode(joinDTO.getPassword()))
-		// 		.build();
-
 		memberRepository.save(member);
+		logger.info("Registered member with UUID: {}", member.getUuid());
 	}
 }
