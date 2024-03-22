@@ -5,10 +5,10 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
 @Getter
-public class MiddleCategoryRespDTO {
-	private Integer bigCategoryId;
+@Builder
+public class DetailCategoryRespDTO {
+	private Integer smallCategoryId;
 
-	private List<CategoryDTO> middleCategories;
+	private List<CategoryDTO> detailCategories;
 }
