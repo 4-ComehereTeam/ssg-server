@@ -43,13 +43,14 @@ public class SecurityConfig {
 				.formLogin((auth) -> auth.disable())
 				.httpBasic((auth) -> auth.disable())
 				.authorizeHttpRequests((auth) -> auth
+
 						.requestMatchers("/", "/join",
 								"/api/v1/members/**", "/api-docs/**",
 								"/swagger-ui/**", "/swagger-resources/**")
 						.permitAll()
 						.anyRequest()
-						.authenticated()
-				)
+						.authenticated())
+
 				//로그인 필터 추가
 				.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)),
 						UsernamePasswordAuthenticationFilter.class)

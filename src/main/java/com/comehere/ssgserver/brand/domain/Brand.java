@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.vender.domain;
+package com.comehere.ssgserver.brand.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Vender {
+public class Brand {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

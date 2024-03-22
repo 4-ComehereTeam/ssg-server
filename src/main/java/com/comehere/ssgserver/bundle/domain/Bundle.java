@@ -1,6 +1,6 @@
 package com.comehere.ssgserver.bundle.domain;
 
-import com.comehere.ssgserver.vender.domain.Vender;
+import com.comehere.ssgserver.brand.domain.Brand;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,8 +19,8 @@ public class Bundle {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "vender_id")
-	private Vender vender;
+	@JoinColumn(name = "brand_id")
+	private Brand brand;
 
 	private String name;
 }

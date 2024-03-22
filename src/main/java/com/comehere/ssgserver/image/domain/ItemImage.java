@@ -16,10 +16,10 @@ public class ItemImage {
 
 	private Long itemId;
 
-	private String url;
+	private String url; // imageUrl
 
 	private String alt;
 
 	@Column(columnDefinition = "TINYINT")
-	private Short isThumbnail;
+	private Short thumbnail; // is 사용 안하는게 좋음..
 }
