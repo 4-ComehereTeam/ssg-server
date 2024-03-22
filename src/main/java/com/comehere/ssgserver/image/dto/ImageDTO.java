@@ -12,12 +12,12 @@ public class ImageDTO {
 
 	private String alt;
 
-	private Short isThumbnail;
+	private Boolean thumbnail;
 
 	public ImageDTO(ItemImage ii) {
 		this.imageId = ii.getId();
 		this.url = ii.getUrl();
 		this.alt = ii.getAlt();
-		this.isThumbnail = ii.getIsThumbnail();
+		this.thumbnail = ii.getThumbnail() != 0;
 	}
 }

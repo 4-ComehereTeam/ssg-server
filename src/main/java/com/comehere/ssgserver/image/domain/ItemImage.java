@@ -21,6 +21,5 @@ public class ItemImage {
 	private String alt;
 
 	@Column(columnDefinition = "TINYINT")
-	// private Boolean isThumbnail; // short? -> 0,1 제외 다른 숫자 들어올 여지 있음.. boolean?
-	private Short isThumbnail; // is 사용 안하는게 좋음..
+	private Short thumbnail; // is 사용 안하는게 좋음..
 }

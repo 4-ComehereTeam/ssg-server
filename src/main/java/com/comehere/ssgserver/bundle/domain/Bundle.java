@@ -1,6 +1,6 @@
 package com.comehere.ssgserver.bundle.domain;
 
-import com.comehere.ssgserver.vender.domain.Brand;
+import com.comehere.ssgserver.brand.domain.Brand;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
