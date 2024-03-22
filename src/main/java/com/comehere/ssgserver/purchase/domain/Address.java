@@ -10,8 +10,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 public class Address {
 
 	@Id
@@ -24,20 +27,36 @@ public class Address {
 
 	private String name;
 
+	@Column(name = "phone", nullable = false)
 	private String phone;
 
-	@Column(name = "tel", nullable = true)
+	@Column(name = "tel")
 	private String tel;
 
 	private String zipcode;
 
-	private String detail;
+	private String address;
+
+	private String detailAddress;
 
 	@Column(columnDefinition = "Longtext", nullable = true)
 	private String requestMessage;
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private String isDefaultRequest;
 
+	// 기본 배송지로 사용
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short isDefaultAddress;
+	private Short defaultAddress;
+
+	@Builder
+	public Address(Member member, String name, String phone, String tel, String zipcode, String address,
+			String detailAddress, String requestMessage, Short defaultAddress) {
+		this.member = member;
+		this.name = name;
+		this.phone = phone;
+		this.tel = tel;
+		this.zipcode = zipcode;
+		this.address = address;
+		this.detailAddress = detailAddress;
+		this.requestMessage = requestMessage;
+		this.defaultAddress = defaultAddress;
+	}
 }

@@ -11,15 +11,25 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpRequestVo {
+public class JoinRequestVo {
 
 	private String signinId;
+
 	private String password;
+
 	private String name;
+
 	private String phone;
+
 	private String email;
 
-	private AddressInfoVo addressInfo;
-	private AgreeVo agree;
+	// 0 : 남/ 1 : 여
+	private Short gender;
+
+	private String birthday;
+
+	private AddressInfoVo addressInfoVo;
+	
+	private AgreeVo agreeVo;
 
 }

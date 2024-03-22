@@ -13,22 +13,17 @@ import lombok.Setter;
 @Builder
 public class JoinDTO {
 
-	private String loginId;
+	private String signinId;
+
 	private String password;
 
-	// private String loginId;
-	//
-	// private String password;
-	//
-	// private String name;
-	//
-	// private String phoneNumber;
-	//
-	// private String email;
-	//
-	// private LocalDateTime signupTime;
-	//
-	// private String birthday;
-	//
-	// private Short gender;
+	private String name;
+
+	private String phone;
+
+	private String email;
+
+	private AddressInfoDTO addressInfodto;
+
+	private AgreeDTO agreedto;
 }

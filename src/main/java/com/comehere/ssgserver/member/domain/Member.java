@@ -1,24 +1,34 @@
 package com.comehere.ssgserver.member.domain;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import com.comehere.ssgserver.common.entity.BaseEntity;
+import com.comehere.ssgserver.purchase.domain.Address;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Member {
+public class Member extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String loginId;
+	private UUID uuid;
+
+	private String signinId;
 
 	private String name;
 
@@ -26,46 +36,37 @@ public class Member {
 
 	private String birthday;
 
-	@Setter
-	private String role;
-
-	//@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
+	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
 	private Short gender;
-	//
-	// private String phoneNumber;
-	//
 
-	//
-	// private String email;
-	//
-	// @Column(columnDefinition = "DATETIME")
-	// private LocalDateTime signupTime;
+	private String phone;
 
-	// @Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	// private Short isUniverseClub;
-	//
-	// @Column(columnDefinition = "DATETIME")
-	// private LocalDateTime resignTime;
-	//
-	// private Integer resignCount;
-	//
-	// private Short status;
+	private String email;
 
-	// 	@Builder
-	// 	public Member(String name, String birthday, Short gender, String phoneNumber, String loginId, String password,
-	// 			String email, LocalDateTime signupTime) {
-	// 		this.name = name;
-	// 		this.birthday = birthday;
-	// 		this.gender = gender;
-	// 		this.phoneNumber = phoneNumber;
-	// 		this.loginId = loginId;
-	// 		this.password = password;
-	// 		this.email = email;
-	// 		this.signupTime = signupTime;
-	// 	}
+	@Column(columnDefinition = "DATETIME")
+	private LocalDateTime resignTime;
+
+	private Integer resignCount = 0;
+
+	// 1 : 계정 활성화
+	// -1 : 탈퇴상태
+	// 0 : 휴면상태
+	private Short status = 1;
+
+	@Enumerated(EnumType.STRING)
+	private Role role = Role.USER;
+
 	@Builder
-	public Member(String loginId, String password, String role) {
-		this.loginId = loginId;
+	public Member(UUID uuid, String signinId, String name, String password, String birthday, Short gender, String phone,
+			String email, Address address) {
+		this.uuid = uuid;
+		this.signinId = signinId;
+		this.name = name;
 		this.password = password;
+		this.birthday = birthday;
+		this.gender = gender;
+		this.phone = phone;
+		this.email = email;
 	}
+
 }

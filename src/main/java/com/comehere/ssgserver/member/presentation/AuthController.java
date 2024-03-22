@@ -6,24 +6,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.member.application.AuthService;
-import com.comehere.ssgserver.member.dto.JoinDTO;
+import com.comehere.ssgserver.member.vo.JoinRequestVo;
 
 @RestController
 @RequestMapping("/api/v1/members")
-public class JoinController {
+public class AuthController {
 
 	private final AuthService authService;
 
-	public JoinController(AuthService authService) {
+	public AuthController(AuthService authService) {
 		this.authService = authService;
 	}
 
 	@PostMapping("/join")
-	public String joinProcess(@RequestBody JoinDTO joinDTO) {
+	public String joinProcess(@RequestBody JoinRequestVo joinRequestVo) {
 
-		System.out.println("joinDTO: " + joinDTO.getSigninId());
+		System.out.println("joinReqeustVo: " + joinRequestVo.getSigninId());
 
-		authService.joinProcess(joinDTO);
+		authService.signUp(joinRequestVo);
 		return "ok";
 	}
 }

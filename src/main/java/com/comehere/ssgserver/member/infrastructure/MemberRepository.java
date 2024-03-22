@@ -6,5 +6,5 @@ import com.comehere.ssgserver.member.domain.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-	Boolean existsByLoginId(String loginId);
+	Boolean existsBySigninId(String signinId);
 }

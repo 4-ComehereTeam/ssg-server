@@ -1,7 +1,7 @@
 package com.comehere.ssgserver.member.application;
 
-import com.comehere.ssgserver.member.dto.JoinDTO;
+import com.comehere.ssgserver.member.vo.JoinRequestVo;
 
-public interface JoinService {
-	void joinProcess(JoinDTO joinDTO);
+public interface AuthService {
+	void signUp(JoinRequestVo joinRequestVo);
 }
