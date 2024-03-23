@@ -9,6 +9,4 @@ public class ImageReqDTO {
 	private String imageUrl;
 
 	private String alt;
-
-	private Boolean thumbnail;
 }
