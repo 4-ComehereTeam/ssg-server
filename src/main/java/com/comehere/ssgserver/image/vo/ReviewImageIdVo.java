@@ -3,8 +3,6 @@ package com.comehere.ssgserver.image.vo;
 import lombok.Getter;
 
 @Getter
-public class ReviewImageVO {
+public class ReviewImageIdVo {
 	private Long reviewImageId;
-	private String imageUrl;
-	private String alt;
 }
