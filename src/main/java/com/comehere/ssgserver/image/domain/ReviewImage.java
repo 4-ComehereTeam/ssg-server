@@ -28,18 +28,14 @@ public class ReviewImage {
 	@JoinColumn(name = "review_id")
 	private Review review;
 
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = false)
-	private Boolean thumbnail;
-
 	@Column(nullable = false)
 	private String imageUrl;
 
 	private String alt;
 
 	@Builder
-	public ReviewImage(Review review, Boolean thumbnail, String imageUrl, String alt) {
+	public ReviewImage(Review review, String imageUrl, String alt) {
 		this.review = review;
-		this.thumbnail = thumbnail;
 		this.imageUrl = imageUrl;
 		this.alt = alt;
 	}
@@ -47,6 +43,5 @@ public class ReviewImage {
 	public void updateReviewImage(ReviewImageVO reviewImageVO) {
 		this.imageUrl = reviewImageVO.getImageUrl();
 		this.alt = reviewImageVO.getAlt();
-		this.thumbnail = reviewImageVO.getThumbnail();
 	}
 }

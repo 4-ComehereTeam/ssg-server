@@ -41,10 +41,6 @@ public class ImageServiceImpl implements ImageService {
 	public void deleteReviewImage(Long reviewImageId) {
 		ReviewImage reviewImage = getReviewImage(reviewImageId);
 
-		if (reviewImage.getThumbnail()) {
-			throw new IllegalArgumentException("썸네일 이미지는 삭제할 수 없습니다.");
-		}
-
 		reviewImageRepository.delete(reviewImage);
 	}
 

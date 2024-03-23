@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.image.application.ImageService;
 import com.comehere.ssgserver.image.domain.ReviewImage;
@@ -29,6 +30,7 @@ public class ReviewServiceImp implements ReviewService {
 	private final ImageService imageService;
 
 	@Override
+	@Transactional
 	public void createReview(ReviewReqDTO reviewReqDto) {
 		reviewRepository.findByPurchaseListId(reviewReqDto.getPurchaseListId())
 				.ifPresent(review -> {
@@ -49,7 +51,6 @@ public class ReviewServiceImp implements ReviewService {
 				.build();
 
 		reviewRepository.save(review);
-
 		createReviewImages(reviewReqDto.getImages(), review);
 	}
 
@@ -75,12 +76,15 @@ public class ReviewServiceImp implements ReviewService {
 	}
 
 	private void createReviewImages(List<ImageReqDTO> images, Review review) {
+		if (images.size() > 3) {
+			throw new IllegalArgumentException("리뷰 이미지는 최대 3개까지 등록 가능합니다.");
+		}
+
 		images.forEach(image -> {
 			ReviewImage reviewImage = ReviewImage.builder()
 					.review(review)
 					.imageUrl(image.getImageUrl())
 					.alt(image.getAlt())
-					.thumbnail(image.getThumbnail())
 					.build();
 
 			reviewImageRepository.save(reviewImage);

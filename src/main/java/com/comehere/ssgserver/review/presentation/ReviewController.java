@@ -62,7 +62,7 @@ public class ReviewController {
 
 	@DeleteMapping("/image")
 	@Operation(summary = "리뷰 이미지 삭제")
-	public void deleteReviewImage(@RequestBody ReviewImageIdVo reviewImageVO) {
-		imageService.deleteReviewImage(reviewImageVO.getReviewImageId());
+	public void deleteReviewImage(@RequestBody ReviewImageIdVo reviewImageIdVo) {
+		imageService.deleteReviewImage(reviewImageIdVo.getReviewImageId());
 	}
 }
