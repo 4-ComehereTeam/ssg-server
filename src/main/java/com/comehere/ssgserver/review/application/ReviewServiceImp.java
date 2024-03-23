@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.comehere.ssgserver.image.application.ImageService;
 import com.comehere.ssgserver.image.domain.ReviewImage;
 import com.comehere.ssgserver.image.dto.ImageReqDTO;
 import com.comehere.ssgserver.image.infrastructure.ReviewImageRepository;
-import com.comehere.ssgserver.image.vo.ReviewImageVO;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 import com.comehere.ssgserver.review.domain.Review;
 import com.comehere.ssgserver.review.dto.ReviewReqDTO;
@@ -25,6 +25,8 @@ public class ReviewServiceImp implements ReviewService {
 	private final MemberRepository memberRepository;
 
 	private final ReviewImageRepository reviewImageRepository;
+
+	private final ImageService imageService;
 
 	@Override
 	public void createReview(ReviewReqDTO reviewReqDto) {
@@ -57,7 +59,7 @@ public class ReviewServiceImp implements ReviewService {
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰입니다."));
 
 		// 리뷰의 모든 이미지 삭제
-		deleteReviewImages(reviewId);
+		imageService.deleteReviewImages(reviewId);
 
 		reviewRepository.delete(review);
 	}
@@ -72,18 +74,6 @@ public class ReviewServiceImp implements ReviewService {
 		reviewRepository.save(review);
 	}
 
-	@Override
-	public void updateReviewImage(ReviewImageVO reviewImageVO) {
-		ReviewImage reviewImage = reviewImageRepository.findById(reviewImageVO.getReviewImageId())
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이미지입니다."));
-
-		reviewImage.updateReviewImage(reviewImageVO);
-
-		reviewImageRepository.save(reviewImage);
-	}
-
-	// image Service 이동 필요
-
 	private void createReviewImages(List<ImageReqDTO> images, Review review) {
 		images.forEach(image -> {
 			ReviewImage reviewImage = ReviewImage.builder()
@@ -95,9 +85,5 @@ public class ReviewServiceImp implements ReviewService {
 
 			reviewImageRepository.save(reviewImage);
 		});
-	}
-
-	private void deleteReviewImages(Long reviewId) {
-		reviewImageRepository.deleteAll(reviewImageRepository.findByReviewId(reviewId));
 	}
 }
