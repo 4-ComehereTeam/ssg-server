@@ -27,7 +27,9 @@ public class MemberController {
 	}
 
 	@GetMapping("/signInId/check")
+
 	public BaseResponse<?> checkUserSignInIdDuplication(@RequestParam String signinId) {
 		return new BaseResponse<>(memberService.checkUserSignInIdDuplication(signinId));
+
 	}
 }

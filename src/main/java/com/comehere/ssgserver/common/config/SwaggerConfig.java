@@ -43,7 +43,7 @@ public class SwaggerConfig {
 	public GroupedOpenApi PurchaseAPI() {
 		return GroupedOpenApi.builder()
 				.group("주문")
-				.pathsToMatch("/api/v1/purchases/**", "/api/v1/clip/**")
+				.pathsToMatch("/api/v1/purchases/**", "/api/v1/clip/**", "/api/v1/review/**", "/api/v1/purchase/non/**")
 				.build();
 	}
 }

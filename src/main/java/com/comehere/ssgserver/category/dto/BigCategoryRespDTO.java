@@ -11,5 +11,6 @@ import lombok.Getter;
 @Builder
 public class BigCategoryRespDTO {
 	private int count;
+
 	private List<BigCategory> bigCategories;
 }
