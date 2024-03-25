@@ -7,9 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Item { // 필드 설정 추가 + @Builder
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
