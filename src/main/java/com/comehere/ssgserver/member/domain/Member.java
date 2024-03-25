@@ -28,7 +28,7 @@ public class Member extends BaseEntity {
 
 	private UUID uuid;
 
-	private String signinId;
+	private String signInId;
 
 	private String name;
 
@@ -60,7 +60,7 @@ public class Member extends BaseEntity {
 	public Member(UUID uuid, String signinId, String name, String password, String birthday, Short gender, String phone,
 			String email, Address address) {
 		this.uuid = uuid;
-		this.signinId = signinId;
+		this.signInId = signinId;
 		this.name = name;
 		this.password = password;
 		this.birthday = birthday;
@@ -69,4 +69,7 @@ public class Member extends BaseEntity {
 		this.email = email;
 	}
 
+	public UUID getUserUuid() {
+		return uuid;
+	}
 }

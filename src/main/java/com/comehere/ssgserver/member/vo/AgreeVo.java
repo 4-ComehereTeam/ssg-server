@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AgreeVo {
-	private Short marketingAgree;
+	private Boolean marketingAgree;
 
-	private Short emailAgree;
+	private Boolean emailAgree;
 
-	private Short smsAgree;
+	private Boolean smsAgree;
 
-	private Short mailAgree;
+	private Boolean mailAgree;
 
-	private Short callAgree;
+	private Boolean callAgree;
 }
