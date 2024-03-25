@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.member.application.MemberService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,7 +27,9 @@ public class MemberController {
 	}
 
 	@GetMapping("/signInId/check")
-	public Boolean checkUserSignInIdDuplication(@RequestParam String signInId) {
-		return memberService.checkUserSignInIdDuplication(signInId);
+
+	public BaseResponse<?> checkUserSignInIdDuplication(@RequestParam String signinId) {
+		return new BaseResponse<>(memberService.checkUserSignInIdDuplication(signinId));
+
 	}
 }
