@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.extern.apachecommons.CommonsLog;
 
 @Entity
 @Getter
@@ -14,12 +15,15 @@ public class ItemImage {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private Long itemId;
 
-	private String url; // imageUrl
+	@Column(nullable = false)
+	private String imageUrl;
 
+	@Column(nullable = false)
 	private String alt;
 
 	@Column(columnDefinition = "TINYINT")
-	private Short thumbnail; // is 사용 안하는게 좋음..
+	private Boolean thumbnail;
 }
