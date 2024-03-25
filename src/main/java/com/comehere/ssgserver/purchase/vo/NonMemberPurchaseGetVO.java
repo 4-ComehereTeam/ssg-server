@@ -10,5 +10,5 @@ public class NonMemberPurchaseGetVO {
 
 	private String phoneNumber;
 
-	private String code;
+	private String purchaseCode;
 }

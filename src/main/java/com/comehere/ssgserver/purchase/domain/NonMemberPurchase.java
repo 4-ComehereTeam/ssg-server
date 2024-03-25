@@ -25,7 +25,7 @@ public class NonMemberPurchase {
 	private Long id;
 
 	@Column(nullable = false)
-	private String code;
+	private String purchaseCode;
 
 	@Column(nullable = false)
 	private Long itemOptionId;
@@ -72,12 +72,12 @@ public class NonMemberPurchase {
 	private Boolean deleted;
 
 	@Builder
-	public NonMemberPurchase(String code, Long itemOptionId, String itemName, Long itemPrice, Integer count,
+	public NonMemberPurchase(String purchaseCode, Long itemOptionId, String itemName, Long itemPrice, Integer count,
 			String nonMemberName, String phoneNumber, String address, String addressDetail, String zipcode,
 			String email,
 			LocalDateTime purchaseDate, Boolean deleted, String cancellationReasons, String requestMessage) {
 
-		this.code = code;
+		this.purchaseCode = purchaseCode;
 		this.itemOptionId = itemOptionId;
 		this.itemName = itemName;
 		this.itemPrice = itemPrice;

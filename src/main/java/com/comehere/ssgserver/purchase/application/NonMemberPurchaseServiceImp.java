@@ -41,7 +41,7 @@ public class NonMemberPurchaseServiceImp implements NonMemberPurchaseService {
 				.zipcode(nonMemberPurchaseCreateVO.getZipcode())
 				.requestMessage(nonMemberPurchaseCreateVO.getRequestMessage())
 				.email(nonMemberPurchaseCreateVO.getEmail())
-				.code(makePurchaseCode())
+				.purchaseCode(makePurchaseCode())
 				.deleted(false)
 				.cancellationReasons("")
 				.purchaseDate(LocalDateTime.now())
@@ -54,7 +54,7 @@ public class NonMemberPurchaseServiceImp implements NonMemberPurchaseService {
 	public NonMemberPurchaseGetDTO getPurchase(NonMemberPurchaseGetVO nonMemberPurchaseGetVO) {
 		NonMemberPurchase nonMemberPurchase = nonMemberPurchaseRepository.findByNonMemberNameAndPhoneNumberAndCode(
 						nonMemberPurchaseGetVO.getNonMemberName(),
-						nonMemberPurchaseGetVO.getPhoneNumber(), nonMemberPurchaseGetVO.getCode())
+						nonMemberPurchaseGetVO.getPhoneNumber(), nonMemberPurchaseGetVO.getPurchaseCode())
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
 
 		ItemOption itemOption = itemOptionRepository.findById(nonMemberPurchase.getItemOptionId())
