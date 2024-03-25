@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.item.vo;
+package com.comehere.ssgserver.item.dto;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ItemListRespVO {
+public class ItemListRespDTO {
 	List<Long> itemIds;
+	Boolean hasNext;
 }
