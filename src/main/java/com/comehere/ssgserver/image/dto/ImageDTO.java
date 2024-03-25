@@ -16,8 +16,8 @@ public class ImageDTO {
 
 	public ImageDTO(ItemImage ii) {
 		this.imageId = ii.getId();
-		this.url = ii.getUrl();
+		this.url = ii.getImageUrl();
 		this.alt = ii.getAlt();
-		this.thumbnail = ii.getThumbnail() != 0;
+		this.thumbnail = ii.getThumbnail();
 	}
 }
