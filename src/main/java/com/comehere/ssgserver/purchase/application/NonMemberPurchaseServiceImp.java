@@ -52,7 +52,7 @@ public class NonMemberPurchaseServiceImp implements NonMemberPurchaseService {
 
 	@Override
 	public NonMemberPurchaseGetDTO getPurchase(NonMemberPurchaseGetVO nonMemberPurchaseGetVO) {
-		NonMemberPurchase nonMemberPurchase = nonMemberPurchaseRepository.findByNonMemberNameAndPhoneNumberAndCode(
+		NonMemberPurchase nonMemberPurchase = nonMemberPurchaseRepository.findByNonMemberNameAndPhoneNumberAndPurchaseCode(
 						nonMemberPurchaseGetVO.getNonMemberName(),
 						nonMemberPurchaseGetVO.getPhoneNumber(), nonMemberPurchaseGetVO.getPurchaseCode())
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
