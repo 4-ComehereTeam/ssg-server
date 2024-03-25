@@ -1,11 +1,14 @@
 package com.comehere.ssgserver.item.application;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.comehere.ssgserver.category.infrastructure.DetailCategoryRepository;
 import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.item.domain.ItemCalc;
 import com.comehere.ssgserver.item.dto.ItemCalcRespDTO;
@@ -14,11 +17,13 @@ import com.comehere.ssgserver.item.infrastructual.ItemCalcRepository;
 import com.comehere.ssgserver.item.infrastructual.ItemRepository;
 import com.comehere.ssgserver.item.vo.ItemListReqVO;
 import com.comehere.ssgserver.item.dto.ItemListRespDTO;
+import com.comehere.ssgserver.item.vo.ItemReqVO;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService { // 기본 CRUD API 생성하기
 	private final ItemRepository itemRepository;
 	private final ItemCalcRepository itemCalcRepository;
@@ -66,5 +71,20 @@ public class ItemServiceImpl implements ItemService { // 기본 CRUD API 생성�
 				.itemIds(slice.getContent())
 				.hasNext(slice.hasNext())
 				.build();
+	}
+
+	@Override
+	@Transactional
+	public void createItem(ItemReqVO vo) {
+		Item item = Item.builder()
+				.name(vo.getName())
+				.code(UUID.randomUUID().toString())
+				.price(vo.getPrice())
+				.discountRate(0)
+				.description(vo.getDescription())
+				.status((short)1)
+				.build();
+
+		itemRepository.save(item);
 	}
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
@@ -30,6 +31,13 @@ public class Item { // 필드 설정 추가 + @Builder
 	@Column(columnDefinition = "TINYINT")
 	private Short status;
 
-	private Integer addGroup;
-
+	@Builder
+	public Item(String name, String code, String description, Long price, Integer discountRate, Short status) {
+		this.name = name;
+		this.code = code;
+		this.description = description;
+		this.price = price;
+		this.discountRate = discountRate;
+		this.status = status;
+	}
 }

@@ -7,6 +7,7 @@ import com.comehere.ssgserver.item.dto.ItemCalcRespDTO;
 import com.comehere.ssgserver.item.dto.ItemDetailRespDTO;
 import com.comehere.ssgserver.item.vo.ItemListReqVO;
 import com.comehere.ssgserver.item.dto.ItemListRespDTO;
+import com.comehere.ssgserver.item.vo.ItemReqVO;
 
 public interface ItemService {
 	ItemDetailRespDTO getItemDetail(Long id);
@@ -16,4 +17,6 @@ public interface ItemService {
 	ItemCalcRespDTO getItemCalc(Long id);
 
 	ItemListRespDTO getItemList(ItemListReqVO vo, Pageable page);
+
+	void createItem(ItemReqVO vo);
 }
