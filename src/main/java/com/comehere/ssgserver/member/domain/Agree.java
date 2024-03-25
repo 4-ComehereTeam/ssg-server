@@ -19,38 +19,33 @@ public class Agree {
 
 	// 마케팅 동의
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short marketingAgree;
+	private Boolean marketingAgree;
 
 	// 이메일 수신 동의
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short emailAgree;
-
-	// 약관동의
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short termssAgree;
+	private Boolean emailAgree;
 
 	// SMS 동의
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short smsAgree;
+	private Boolean smsAgree;
 
 	// 우편물 동의
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short mailAgree;
+	private Boolean mailAgree;
 
 	//텔레마케팅 동의
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short callAgree;
+	private Boolean callAgree;
 
 	//간편로그인 동의
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short simpleAgree;
+	private Boolean simpleAgree;
 
 	@Builder
-	public Agree(String email, Short marketingAgree, Short termssAgree, Short smsAgree, Short mailAgree,
-			Short callAgree, Short simpleAgree, Short emailAgree) {
+	public Agree(String email, Boolean marketingAgree, Boolean smsAgree, Boolean mailAgree, Boolean callAgree,
+			Boolean simpleAgree, Boolean emailAgree) {
 		this.email = email;
 		this.marketingAgree = marketingAgree;
-		this.termssAgree = termssAgree;
 		this.smsAgree = smsAgree;
 		this.mailAgree = mailAgree;
 		this.callAgree = callAgree;
