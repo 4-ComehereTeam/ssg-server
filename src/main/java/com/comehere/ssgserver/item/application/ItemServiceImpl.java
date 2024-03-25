@@ -1,5 +1,9 @@
 package com.comehere.ssgserver.item.application;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import com.comehere.ssgserver.item.domain.Item;
@@ -9,7 +13,7 @@ import com.comehere.ssgserver.item.dto.ItemDetailRespDTO;
 import com.comehere.ssgserver.item.infrastructual.ItemCalcRepository;
 import com.comehere.ssgserver.item.infrastructual.ItemRepository;
 import com.comehere.ssgserver.item.vo.ItemListReqVO;
-import com.comehere.ssgserver.item.vo.ItemListRespVO;
+import com.comehere.ssgserver.item.dto.ItemListRespDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -55,10 +59,12 @@ public class ItemServiceImpl implements ItemService { // 기본 CRUD API 생성�
 	}
 
 	@Override
-	public ItemListRespVO getItemList(ItemListReqVO vo) {
-		return ItemListRespVO.builder()
-				.itemIds(itemRepository.getItemList(vo).stream()
-						.toList())
+	public ItemListRespDTO getItemList(ItemListReqVO vo, Pageable page) {
+		Slice<Long> slice = itemRepository.getItemList(vo, page);
+
+		return ItemListRespDTO.builder()
+				.itemIds(slice.getContent())
+				.hasNext(slice.hasNext())
 				.build();
 	}
 }

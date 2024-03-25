@@ -1,5 +1,8 @@
 package com.comehere.ssgserver.item.presentation;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +12,7 @@ import com.comehere.ssgserver.item.application.ItemService;
 import com.comehere.ssgserver.item.dto.ItemCalcRespDTO;
 import com.comehere.ssgserver.item.dto.ItemDetailRespDTO;
 import com.comehere.ssgserver.item.vo.ItemListReqVO;
-import com.comehere.ssgserver.item.vo.ItemListRespVO;
+import com.comehere.ssgserver.item.dto.ItemListRespDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,7 +45,8 @@ public class ItemController {
 
 	@GetMapping
 	@Operation(summary = "상품 목록(ID) 조회 API", description = "조건에 맞는 상품 목록 조회")
-	public ItemListRespVO getItemList(ItemListReqVO vo) {
-		return itemService.getItemList(vo);
+	public ItemListRespDTO getItemList(ItemListReqVO vo,
+			@PageableDefault(size = 40) Pageable page) {
+		return itemService.getItemList(vo, page);
 	}
 }
