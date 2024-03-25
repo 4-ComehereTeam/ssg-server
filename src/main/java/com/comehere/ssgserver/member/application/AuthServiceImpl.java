@@ -80,6 +80,7 @@ public class AuthServiceImpl implements AuthService {
 				.emailAgree(joinRequestVo.getAgreeVo().getEmailAgree())
 				.smsAgree(joinRequestVo.getAgreeVo().getSmsAgree())
 				.callAgree(joinRequestVo.getAgreeVo().getCallAgree())
+				.mailAgree(joinRequestVo.getAgreeVo().getMailAgree())
 				.build();
 
 		agreeRepository.save(agree); // 동의 저장

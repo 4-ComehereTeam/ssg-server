@@ -21,7 +21,7 @@ public class JoinServiceImpl implements JoinService {
 	@Override
 	public void joinProcess(JoinDTO joinDTO) {
 
-		Boolean isExist = memberRepository.existsBySigninId(joinDTO.getSigninId());
+		Boolean isExist = memberRepository.existsBySignInId(joinDTO.getSigninId());
 		if (isExist) {
 			return;
 		}
@@ -31,7 +31,7 @@ public class JoinServiceImpl implements JoinService {
 				.signinId(joinDTO.getSigninId())
 				.password(bCryptPasswordEncoder.encode(joinDTO.getPassword()))
 				.build();
-		
+
 		memberRepository.save(member);
 	}
 }
