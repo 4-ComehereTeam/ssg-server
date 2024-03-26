@@ -1,5 +1,8 @@
 package com.comehere.ssgserver.bundle.application;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import com.comehere.ssgserver.bundle.domain.Bundle;
@@ -31,5 +34,10 @@ public class BundleServiceImpl implements BundleService {
 								.bundle(bundle)
 								.item(i)
 						.build()));
+	}
+
+	@Override
+	public Page<Bundle> getBundleList(Pageable page) {
+		return bundleRepository.getBundleList(page);
 	}
 }
