@@ -41,4 +41,8 @@ public class Bundle {
 		this.minPrice = minPrice;
 		this.status = status;
 	}
+
+	public static void closeBundle(Bundle bundle) {
+		bundle.status = false;
+	}
 }

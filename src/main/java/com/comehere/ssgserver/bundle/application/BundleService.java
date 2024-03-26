@@ -13,4 +13,6 @@ public interface BundleService {
 	void createBundle(BundleReqVO vo);
 
 	Page<Bundle> getBundleList(Pageable page);
+
+	Bundle updateBundleStatus(Long id);
 }
