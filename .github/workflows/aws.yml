@@ -68,4 +68,5 @@ jobs:
         script: |
           docker pull ${{ env.DOCKER_IMAGE_NAME }}
           docker stop server
+          docker rm server
           docker run -d --name server -p 8080:8080 ${{ secrets.DOCKER_IMAGE_NAME }}
