@@ -60,4 +60,7 @@ public class Address {
 		this.defaultAddress = defaultAddress;
 	}
 
+	public void updateRequestMessage(String requestMessage) {
+		this.requestMessage = requestMessage;
+	}
 }
