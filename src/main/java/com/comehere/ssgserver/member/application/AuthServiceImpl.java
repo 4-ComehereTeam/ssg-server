@@ -5,9 +5,13 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.comehere.ssgserver.common.security.CustomUserDetails;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.member.domain.Agree;
 import com.comehere.ssgserver.member.domain.Member;
@@ -15,6 +19,8 @@ import com.comehere.ssgserver.member.domain.Role;
 import com.comehere.ssgserver.member.infrastructure.AgreeRepository;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 import com.comehere.ssgserver.member.vo.JoinRequestVo;
+import com.comehere.ssgserver.member.vo.SignInRequestVo;
+import com.comehere.ssgserver.member.vo.SignInResponseVo;
 import com.comehere.ssgserver.purchase.domain.Address;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
 
@@ -48,6 +54,34 @@ public class AuthServiceImpl implements AuthService {
 		validateDuplicateMember(joinRequestVo);
 		Member member = this.createMember(joinRequestVo);
 		log.info("member: {}", member);
+	}
+
+	@Override
+	public SignInResponseVo signIn(SignInRequestVo signInRequestVo) {
+
+		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+				signInRequestVo.getSignInId(), signInRequestVo.getPassword());
+
+		// 인증 과정 수행
+		Authentication authentication = authenticationManager.authenticate(authToken);
+		// 인증 정보를 SecurityContext에 저장
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		// 사용자 인증 정보 추출
+		CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
+		UUID userUuid = customUserDetails.getUserUuid();
+		String username = customUserDetails.getUsername();
+		String role = customUserDetails.getAuthorities().iterator().next().getAuthority();
+
+		// JWT 토큰 생성
+		String token = jwtUtil.createJwt(userUuid, role, 60 * 60 * 10L);
+
+		// 인증 성공 응답 생성
+		return SignInResponseVo.builder()
+				.uuid(userUuid)
+				.name(username)
+				.accessToken(token)
+				.build();
 	}
 
 	private Member createMember(JoinRequestVo joinRequestVo) {

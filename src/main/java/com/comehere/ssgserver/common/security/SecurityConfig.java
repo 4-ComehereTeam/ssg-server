@@ -49,7 +49,7 @@ public class SecurityConfig {
 				.httpBasic((auth) -> auth.disable())
 				.authorizeHttpRequests((auth) -> auth
 
-						.requestMatchers("/", "/api/v1/members/join",
+						.requestMatchers("/", "/api/v1/members/join", "/api/v1/members/**",
 								"/swagger-ui/**", "/swagger-resources/**", "/api-docs/**",
 								"/api/v1/items/**", "/api/v1/categories/**", "/api/v1/bundle/**",
 								"api/v1/brand/**", "api/v1/images/**")

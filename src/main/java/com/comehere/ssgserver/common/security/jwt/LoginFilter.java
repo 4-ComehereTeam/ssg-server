@@ -31,7 +31,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
 		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
-		setFilterProcessesUrl("/api/v1/members/signIn");
 	}
 
 	@Override
@@ -82,7 +81,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		BaseResponse<SignInResponseVo> baseResponse = new BaseResponse<>(signInResponseVo);
 
 		response.addHeader("accessToken", "Bearer " + token);
-		
+
 		ObjectMapper objectMapper = new ObjectMapper();
 		response.setContentType("application/json;charset=UTF-8");
 		objectMapper.writeValue(response.getOutputStream(), baseResponse);

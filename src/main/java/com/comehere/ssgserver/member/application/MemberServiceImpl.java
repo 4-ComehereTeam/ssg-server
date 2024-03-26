@@ -18,4 +18,11 @@ public class MemberServiceImpl implements MemberService {
 	public boolean checkUserSignInIdDuplication(String signInId) {
 		return memberRepository.existsBySignInId(signInId);
 	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public boolean checkUserEmailDuplication(String email) {
+
+		return memberRepository.existsByEmail(email);
+	}
 }
