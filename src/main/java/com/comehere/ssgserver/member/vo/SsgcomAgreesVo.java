@@ -1,17 +1,19 @@
 package com.comehere.ssgserver.member.vo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignInRequestVo {
+public class SsgcomAgreesVo {
 
-	private String signInId;
+	private Boolean ssgcomMktAgr1;
 
-	private String password;
+	private Boolean ssgcomEmail;
+
+	private Boolean ssgcomSms;
 }

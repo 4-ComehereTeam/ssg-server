@@ -1,22 +1,21 @@
 package com.comehere.ssgserver.member.vo;
 
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class AgreeVo {
-	private Boolean marketingAgree;
+@NoArgsConstructor
+public class SignInResponseVo {
 
-	private Boolean emailAgree;
-
-	private Boolean smsAgree;
-
-	private Boolean mailAgree;
-
-	private Boolean callAgree;
+	private String accessToken;
+	private String name;
+	private UUID uuid;
 }

@@ -17,39 +17,49 @@ public class Agree {
 
 	private String email;
 
-	// 마케팅 동의
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Boolean marketingAgree;
+	//ssgPoint 동의 여부
+	@Column(columnDefinition = "TINYINT", length = 1)
+	private Boolean ssgPointMktAgr1;
 
-	// 이메일 수신 동의
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Boolean emailAgree;
+	@Column(columnDefinition = "TINYINT", length = 1)
+	private Boolean getSsgPointMktAgr2;
 
-	// SMS 동의
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Boolean smsAgree;
+	@Column(columnDefinition = "TINYINT", length = 1)
+	private Boolean ssgPointEmail;
 
-	// 우편물 동의
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Boolean mailAgree;
+	@Column(columnDefinition = "TINYINT", length = 1)
+	private Boolean ssgPointSms;
 
-	//텔레마케팅 동의
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Boolean callAgree;
+	@Column(columnDefinition = "TINYINT", length = 1)
+	private Boolean ssgPointMail;
 
-	//간편로그인 동의
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Boolean simpleAgree;
+	@Column(columnDefinition = "TINYINT", length = 1)
+	private Boolean ssgPointCall;
+
+	//ssgcom 동의 여부
+	@Column(columnDefinition = "TINYINT", length = 1)
+	private Boolean ssgcomMktAgr1;
+
+	@Column(columnDefinition = "TINYINT", length = 1)
+	private Boolean ssgcomEmail;
+
+	@Column(columnDefinition = "TINYINT", length = 1)
+	private Boolean ssgcomSms;
 
 	@Builder
-	public Agree(String email, Boolean marketingAgree, Boolean smsAgree, Boolean mailAgree, Boolean callAgree,
-			Boolean simpleAgree, Boolean emailAgree) {
+	public Agree(String email, Boolean ssgPointMktAgr1, Boolean ssgPointMktAgr2, Boolean ssgPointEmail,
+			Boolean ssgPointSms, Boolean ssgPointMail, Boolean ssgPointCall, Boolean ssgcomMktAgr1, Boolean ssgcomEmail,
+			Boolean ssgcomSms) {
 		this.email = email;
-		this.marketingAgree = marketingAgree;
-		this.smsAgree = smsAgree;
-		this.mailAgree = mailAgree;
-		this.callAgree = callAgree;
-		this.simpleAgree = simpleAgree;
-		this.emailAgree = emailAgree;
+		this.ssgPointMktAgr1 = ssgPointMktAgr1;
+		this.getSsgPointMktAgr2 = ssgPointMktAgr2;
+		this.ssgPointEmail = ssgPointEmail;
+		this.ssgPointSms = ssgPointSms;
+		this.ssgPointMail = ssgPointMail;
+		this.ssgPointCall = ssgPointCall;
+		this.ssgcomMktAgr1 = ssgcomMktAgr1;
+		this.ssgcomEmail = ssgcomEmail;
+		this.ssgcomSms = ssgcomSms;
 	}
+
 }

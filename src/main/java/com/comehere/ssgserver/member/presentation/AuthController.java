@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.member.application.AuthService;
 import com.comehere.ssgserver.member.vo.JoinRequestVo;
 
@@ -19,11 +20,11 @@ public class AuthController {
 	}
 
 	@PostMapping("/join")
-	public String joinProcess(@RequestBody JoinRequestVo joinRequestVo) {
+	public BaseResponse<?> joinProcess(@RequestBody JoinRequestVo joinRequestVo) {
 
 		System.out.println("joinReqeustVo: " + joinRequestVo.getSigninId());
-
 		authService.signUp(joinRequestVo);
-		return "ok";
+		return new BaseResponse<>();
 	}
+
 }
