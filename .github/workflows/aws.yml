@@ -9,6 +9,7 @@ env:
   EC2_HOST: ${{ secrets.HOST }}
   EC2_SSH_USER: ubuntu
   PRIVATE_KEY: ${{ secrets.KEY }}
+  CONTAINER_NAME: ssgserver
 
 jobs:
   build-and-push-docker:
@@ -59,13 +60,9 @@ jobs:
         host: ${{ env.EC2_HOST }}
         username: ${{ env.EC2_SSH_USER }}
         key: ${{ env.PRIVATE_KEY }}
+        envs: GITHUB_SHA
         script: |
-          CONTAINER_ID=$(sudo docker ps -q --filter "publish=80-8080")
-  
-          if [ ! -z "$CONTAINER_ID" ]; then
-              sudo docker stop $CONTAINER_ID
-              sudo docker rm $CONTAINER_ID
-          fi
-  
-          sudo docker pull ${{ env.DOCKER_HUB }}
-          sudo docker run --name ${{ env.CONTAINER_NAME }} -d -p 80:8080 -e TZ=Asia/Seoul ${{ env.DOCKER_HUB }}
+          docker pull ${{ env.DOCKER_IMAGE_NAME }}:${GITHUB_SHA::7}
+          docker tag ${{ env.DOCKER_IMAGE_NAME }}:${GITHUB_SHA::7} ssgserver-cicd
+          docker stop server
+          docker run -d —rm —name server -p 8080:8080 ssgserver-cicd
