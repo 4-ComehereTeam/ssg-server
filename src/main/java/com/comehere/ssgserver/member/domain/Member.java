@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.comehere.ssgserver.common.entity.BaseEntity;
-import com.comehere.ssgserver.purchase.domain.Address;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -58,7 +57,7 @@ public class Member extends BaseEntity {
 
 	@Builder
 	public Member(UUID uuid, String signinId, String name, String password, String birthday, Short gender, String phone,
-			String email, Address address) {
+			String email, Role role) {
 		this.uuid = uuid;
 		this.signInId = signinId;
 		this.name = name;
@@ -67,6 +66,7 @@ public class Member extends BaseEntity {
 		this.gender = gender;
 		this.phone = phone;
 		this.email = email;
+		this.role = role;
 	}
 
 	public UUID getUserUuid() {

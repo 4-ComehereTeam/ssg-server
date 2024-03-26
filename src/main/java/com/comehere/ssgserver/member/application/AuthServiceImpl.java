@@ -4,40 +4,48 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.member.domain.Agree;
 import com.comehere.ssgserver.member.domain.Member;
+import com.comehere.ssgserver.member.domain.Role;
 import com.comehere.ssgserver.member.infrastructure.AgreeRepository;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 import com.comehere.ssgserver.member.vo.JoinRequestVo;
 import com.comehere.ssgserver.purchase.domain.Address;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
 	private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
+
 	private final MemberRepository memberRepository;
+
 	private final AddressRepository addressRepository;
+
 	private final AgreeRepository agreeRepository;
+
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	public AuthServiceImpl(MemberRepository memberRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
-			AgreeRepository agreeRepository, AddressRepository addressRepository) {
-		this.memberRepository = memberRepository;
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-		this.addressRepository = addressRepository;
-		this.agreeRepository = agreeRepository;
-	}
+	private final AuthenticationManager authenticationManager;
+
+	private final JWTUtil jwtUtil;
+
+	private final long expiredMs = 1000 * 60 * 60; // 1시간
 
 	@Override
 	public void signUp(JoinRequestVo joinRequestVo) {
 
+		validateDuplicateMember(joinRequestVo);
 		Member member = this.createMember(joinRequestVo);
 		log.info("member: {}", member);
 	}
@@ -56,6 +64,7 @@ public class AuthServiceImpl implements AuthService {
 				.birthday(joinRequestVo.getBirthday())
 				.gender(joinRequestVo.getGender())
 				.uuid(uuid)
+				.role(Role.valueOf("USER"))
 				.build();
 
 		Member savedMember = memberRepository.save(member);
@@ -76,11 +85,15 @@ public class AuthServiceImpl implements AuthService {
 		Agree agree = Agree
 				.builder()
 				.email(joinRequestVo.getEmail())
-				.marketingAgree(joinRequestVo.getAgreeVo().getMarketingAgree())
-				.emailAgree(joinRequestVo.getAgreeVo().getEmailAgree())
-				.smsAgree(joinRequestVo.getAgreeVo().getSmsAgree())
-				.callAgree(joinRequestVo.getAgreeVo().getCallAgree())
-				.mailAgree(joinRequestVo.getAgreeVo().getMailAgree())
+				.ssgPointMktAgr1(joinRequestVo.getSsgPointAgreesVo().getSsgPointMktAgr1())
+				.ssgPointMktAgr2(joinRequestVo.getSsgPointAgreesVo().getSsgPointMktAgr2())
+				.ssgPointEmail(joinRequestVo.getSsgPointAgreesVo().getSsgPointEmail())
+				.ssgPointSms(joinRequestVo.getSsgPointAgreesVo().getSsgPointSms())
+				.ssgPointMail(joinRequestVo.getSsgPointAgreesVo().getSsgPointMail())
+				.ssgPointCall(joinRequestVo.getSsgPointAgreesVo().getSsgPointCall())
+				.ssgcomMktAgr1(joinRequestVo.getSsgcomAgreesVo().getSsgcomMktAgr1())
+				.ssgcomEmail(joinRequestVo.getSsgcomAgreesVo().getSsgcomEmail())
+				.ssgcomSms(joinRequestVo.getSsgcomAgreesVo().getSsgcomSms())
 				.build();
 
 		agreeRepository.save(agree); // 동의 저장
@@ -89,5 +102,12 @@ public class AuthServiceImpl implements AuthService {
 		log.info("memberUUid : {}", uuid);
 
 		return savedMember;
+	}
+
+	private void validateDuplicateMember(JoinRequestVo joinRequestVo) {
+		memberRepository.findBySignInId(joinRequestVo.getSigninId())
+				.ifPresent(m -> {
+					throw new IllegalStateException("이미 존재하는 회원입니다.");
+				});
 	}
 }
