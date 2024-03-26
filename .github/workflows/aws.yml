@@ -66,4 +66,4 @@ jobs:
         script: |
           docker pull ${{ env.DOCKER_IMAGE_NAME }}
           docker stop server
-          docker run -d —rm —name server -p 8080:8080 shindahye/ssgserver
+          docker run -d --name server -p 8080:8080 shindahye/ssgserver
