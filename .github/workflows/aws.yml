@@ -64,7 +64,6 @@ jobs:
         key: ${{ env.PRIVATE_KEY }}
         envs: GITHUB_SHA
         script: |
-          docker pull ${{ env.DOCKER_IMAGE_NAME }}:${GITHUB_SHA::7}
-          docker tag ${{ env.DOCKER_IMAGE_NAME }}:${GITHUB_SHA::7} ssgserver-cicd
+          docker pull ${{ env.DOCKER_IMAGE_NAME }}
           docker stop server
-          docker run -d —rm —name server -p 8080:8080 ssgserver-cicd
+          docker run -d —rm —name server -p 8080:8080 shindahye/ssgserver
