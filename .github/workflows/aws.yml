@@ -5,8 +5,11 @@ on:
     types: [closed]
     branches: [develop]
 
+permissions:
+  contents: read
+
 env:
-  DOCKER_IMAGE_NAME: shindahye/ssgserver
+  DOCKER_IMAGE_NAME: ${{ secrets.DOCKER_IMAGE_NAME }}
   EC2_HOST: ${{ secrets.HOST }}
   EC2_SSH_USER: ubuntu
   PRIVATE_KEY: ${{ secrets.KEY }}
@@ -65,4 +68,4 @@ jobs:
         script: |
           docker pull ${{ env.DOCKER_IMAGE_NAME }}
           docker stop server
-          docker run -d --name server -p 8080:8080 shindahye/ssgserver
+          docker run -d --name server -p 8080:8080 ${{ secrets.DOCKER_IMAGE_NAME }}
