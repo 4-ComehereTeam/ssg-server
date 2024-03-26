@@ -50,7 +50,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests((auth) -> auth
 
 						.requestMatchers("/", "/api/v1/members/join",
-								"/swagger-ui/**", "/swagger-resources/**")
+								"/swagger-ui/**", "/swagger-resources/**", "/api-docs/**")
 						.permitAll()
 						.anyRequest()
 						.authenticated())
