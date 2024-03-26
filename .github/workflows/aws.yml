@@ -2,6 +2,7 @@ name: Deploy to AWS EC2 usign Docker
 
 on: 
   pull_request: 
+    type: [close]
     branches: [develop]
 
 env:
