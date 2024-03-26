@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.comehere.ssgserver.common.security.jwt.JWTFilter;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.common.security.jwt.LoginFilter;
 
@@ -48,13 +49,12 @@ public class SecurityConfig {
 				.httpBasic((auth) -> auth.disable())
 				.authorizeHttpRequests((auth) -> auth
 
-						.requestMatchers("/", "/join",
-								"/api/v1/**", "/api-docs/**",
+						.requestMatchers("/", "/api/v1/members/join",
 								"/swagger-ui/**", "/swagger-resources/**")
 						.permitAll()
 						.anyRequest()
 						.authenticated())
-
+				.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
 				//로그인 필터 추가 LoginFilter()는 인자를 받음(AuthenticationManager() 메소드에
 				//authenticationConfiguration 객체 주입) 따라서 등록 필요
 				.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),

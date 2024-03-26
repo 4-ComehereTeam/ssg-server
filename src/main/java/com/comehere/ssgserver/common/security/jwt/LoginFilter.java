@@ -12,8 +12,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.CustomUserDetails;
 import com.comehere.ssgserver.member.vo.SignInRequestVo;
+import com.comehere.ssgserver.member.vo.SignInResponseVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.FilterChain;
@@ -29,6 +31,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
 		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
+		setFilterProcessesUrl("/api/v1/members/signIn");
 	}
 
 	@Override
@@ -56,12 +59,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-			FilterChain chain, Authentication authentication) {
+			FilterChain chain, Authentication authentication) throws IOException {
 		// 인증 성공 시 처리할 내용
 		CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
 
 		UUID userUuid = customUserDetails.getUserUuid();
-		
+		String username = customUserDetails.getUsername();
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
 		GrantedAuthority auth = iterator.next();
@@ -69,13 +72,27 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		String role = auth.getAuthority();
 		String token = jwtUtil.createJwt(userUuid, role, 60 * 60 * 10L);
 
+		SignInResponseVo signInResponseVo = SignInResponseVo
+				.builder()
+				.uuid(userUuid)
+				.name(username)
+				.accessToken(token)
+				.build();
+
+		BaseResponse<SignInResponseVo> baseResponse = new BaseResponse<>(signInResponseVo);
+
 		response.addHeader("accessToken", "Bearer " + token);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		response.setContentType("application/json;charset=UTF-8");
+		objectMapper.writeValue(response.getOutputStream(), baseResponse);
 	}
 
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException {
 		// 인증 실패 시 처리할 내용
+
 		response.setStatus(401);
 	}
 

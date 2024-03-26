@@ -29,7 +29,9 @@ public class JoinRequestVo {
 	private String birthday;
 
 	private AddressInfoVo addressInfoVo;
+
+	private SsgcomAgreesVo ssgcomAgreesVo;
 	
-	private AgreeVo agreeVo;
+	private SsgPointAgreesVo ssgPointAgreesVo;
 
 }

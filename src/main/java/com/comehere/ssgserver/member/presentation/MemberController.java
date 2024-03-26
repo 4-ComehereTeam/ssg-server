@@ -30,6 +30,5 @@ public class MemberController {
 
 	public BaseResponse<?> checkUserSignInIdDuplication(@RequestParam String signinId) {
 		return new BaseResponse<>(memberService.checkUserSignInIdDuplication(signinId));
-
 	}
 }
