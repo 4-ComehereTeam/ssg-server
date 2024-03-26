@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.bundle.domain.Bundle;
 import com.comehere.ssgserver.bundle.domain.BundleWithItem;
+import com.comehere.ssgserver.bundle.dto.BundleListRespDTO;
+import com.comehere.ssgserver.bundle.dto.BundleRespDTO;
 import com.comehere.ssgserver.bundle.infrastructure.BundleRepository;
 import com.comehere.ssgserver.bundle.infrastructure.BundleWithItemRepository;
 import com.comehere.ssgserver.bundle.vo.BundleReqVO;
@@ -51,5 +53,17 @@ public class BundleServiceImpl implements BundleService {
 
 		Bundle.closeBundle(bundle);
 		return bundle;
+	}
+
+	@Override
+	public BundleRespDTO getBundleDetail(Long id) {
+		Bundle bundle = bundleRepository.findById(id)
+				.orElseThrow(() -> new IllegalStateException("존재하지 않는 묶음입니다."));
+
+		return BundleRespDTO.builder()
+				.bundleId(id)
+				.name(bundle.getName())
+				.minPrice(bundle.getMinPrice())
+				.build();
 	}
 }

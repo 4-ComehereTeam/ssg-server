@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comehere.ssgserver.bundle.application.BundleService;
 import com.comehere.ssgserver.bundle.domain.Bundle;
 import com.comehere.ssgserver.bundle.dto.BundleListRespDTO;
+import com.comehere.ssgserver.bundle.dto.BundleRespDTO;
 import com.comehere.ssgserver.bundle.vo.BundleReqVO;
 import com.comehere.ssgserver.common.response.BaseResponse;
 
@@ -44,5 +45,11 @@ public class BundleController {
 	@Operation(summary = "묶음(특가) 상품 상태 변경 API", description = "묶음(특가) 상품 목록 조회")
 	public BaseResponse<Bundle> updateBundleStatus(@PathVariable("id") Long id) {
 		return new BaseResponse<>(bundleService.updateBundleStatus(id));
+	}
+
+	@GetMapping("/{id}")
+	@Operation(summary = "특정 묶음 기본 정보 조회 API", description = "묶음(특가) 정보 조회")
+	public BaseResponse<BundleRespDTO> getBundleDetail(@PathVariable("id") Long id) {
+		return new BaseResponse<>(bundleService.getBundleDetail(id));
 	}
 }
