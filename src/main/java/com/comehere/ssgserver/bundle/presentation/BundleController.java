@@ -5,7 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,5 +38,11 @@ public class BundleController {
 	@Operation(summary = "묶음(특가) 상품 ID 조회 API", description = "묶음(특가) 상품 목록 조회")
 	public Page<Bundle> getBundleList(@PageableDefault(size = 20) Pageable page) {
 		return bundleService.getBundleList(page);
+	}
+
+	@PutMapping("/{id}")
+	@Operation(summary = "묶음(특가) 상품 상태 변경 API", description = "묶음(특가) 상품 목록 조회")
+	public BaseResponse<Bundle> updateBundleStatus(@PathVariable("id") Long id) {
+		return new BaseResponse<>(bundleService.updateBundleStatus(id));
 	}
 }
