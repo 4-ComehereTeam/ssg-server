@@ -2,8 +2,8 @@ name: Deploy to AWS EC2 usign Docker
 
 on: 
   pull_request: 
-    types: [closed]
-    branches: [develop]
+    types: [ "closed" ]
+    branches: [ "develop" ]
 
 permissions:
   contents: read
