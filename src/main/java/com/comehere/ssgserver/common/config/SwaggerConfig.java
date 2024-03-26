@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
 
 /**
  * 각 담당 파트마다 페이지 분리 : Item(상품), Member(회원), Purchase(주문)
@@ -43,7 +41,7 @@ public class SwaggerConfig {
 	public GroupedOpenApi PurchaseAPI() {
 		return GroupedOpenApi.builder()
 				.group("주문")
-				.pathsToMatch("/api/v1/purchases/**", "/api/v1/clip/**", "/api/v1/review/**", "/api/v1/purchase/non/**")
+				.pathsToMatch("/api/v1/purchases/**", "/api/v1/clip/**", "/api/v1/review/**", "/api/v1/purchase/**")
 				.build();
 	}
 }
