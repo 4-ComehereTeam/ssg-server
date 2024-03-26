@@ -12,4 +12,5 @@ public class ItemListReqVO {
 
 	private Integer smallCategoryId;
 
+	private Integer detailCategoryId;
 }
