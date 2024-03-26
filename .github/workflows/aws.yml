@@ -25,6 +25,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: create applicaion file
+      run: mkdir -p ./src/main/resources/application.yml
+      
     - name: Set up application.yml
       run: echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
 
