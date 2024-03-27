@@ -111,7 +111,7 @@ public class AuthServiceImpl implements AuthService {
 				.zipcode(joinRequestVo.getAddressInfoVo().getZipcode())
 				.address(joinRequestVo.getAddressInfoVo().getAddress())
 				.detailAddress(joinRequestVo.getAddressInfoVo().getDetailAddress())
-				.defaultAddress((short)1)
+				.defaultAddress((boolean)true)
 				.build();
 
 		addressRepository.save(address); // 주소 저장
