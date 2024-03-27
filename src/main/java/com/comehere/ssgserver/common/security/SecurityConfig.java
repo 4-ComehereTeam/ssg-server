@@ -52,7 +52,7 @@ public class SecurityConfig {
 						.requestMatchers("/", "/api/v1/members/join", "/api/v1/members/**",
 								"/swagger-ui/**", "/swagger-resources/**", "/api-docs/**",
 								"/api/v1/items/**", "/api/v1/categories/**", "/api/v1/bundle/**",
-								"api/v1/brand/**", "api/v1/images/**")
+								"/api/v1/brand/**", "/api/v1/images/**","/api/v1/review/**")
 
 						.permitAll()
 						.anyRequest()
