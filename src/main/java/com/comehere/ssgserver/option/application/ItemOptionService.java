@@ -6,6 +6,7 @@ import com.comehere.ssgserver.option.domain.Color;
 import com.comehere.ssgserver.option.dto.ColorRespDTO;
 import com.comehere.ssgserver.option.dto.ItemOptionRespDTO;
 import com.comehere.ssgserver.option.dto.OptionRespDTO;
+import com.comehere.ssgserver.option.dto.SizeRespDTO;
 
 public interface ItemOptionService {
 	ItemOptionRespDTO findByItemId(Long itemId);
@@ -13,4 +14,6 @@ public interface ItemOptionService {
 	OptionRespDTO hasOptions(Long itemId);
 
 	ColorRespDTO getColors(Long itemId);
+
+	SizeRespDTO getSizes(Long itemId, Long colorId);
 }

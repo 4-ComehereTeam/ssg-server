@@ -11,6 +11,8 @@ import com.comehere.ssgserver.option.dto.ColorRespDTO;
 import com.comehere.ssgserver.option.dto.ItemOptionRespDTO;
 import com.comehere.ssgserver.option.dto.OptionDTO;
 import com.comehere.ssgserver.option.dto.OptionRespDTO;
+import com.comehere.ssgserver.option.dto.SizeDTO;
+import com.comehere.ssgserver.option.dto.SizeRespDTO;
 import com.comehere.ssgserver.option.infrastructure.ItemOptionRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -44,7 +46,7 @@ public class ItemOptionServiceImpl implements ItemOptionService {
 
 	@Override
 	public ColorRespDTO getColors(Long itemId) {
-		List<ItemOption> itemOption = itemOptionRepository.findByColorItemId(itemId);
+		List<ItemOption> itemOption = itemOptionRepository.findColorByItemId(itemId);
 
 		return ColorRespDTO.builder()
 				.itemId(itemId)
@@ -53,6 +55,20 @@ public class ItemOptionServiceImpl implements ItemOptionService {
 						.toList())
 				.build();
 	}
+
+	@Override
+	public SizeRespDTO getSizes(Long itemId, Long colorId) {
+		List<ItemOption> itemOption = itemOptionRepository.findSize(itemId, colorId);
+
+		return SizeRespDTO.builder()
+				.itemId(itemId)
+				.colorId(colorId)
+				.sizes(itemOption.stream()
+						.map(this::createSize)
+						.toList())
+				.build();
+	}
+
 
 	private ColorDTO createColor(ItemOption io) {
 		return ColorDTO.builder()
@@ -63,4 +79,12 @@ public class ItemOptionServiceImpl implements ItemOptionService {
 				.build();
 	}
 
+	private SizeDTO createSize(ItemOption io) {
+		return SizeDTO.builder()
+				.optionId(io.getId())
+				.sizeId(io.getSize().getId())
+				.value(io.getSize().getValue())
+				.stock(io.getStock())
+				.build();
+	}
 }
