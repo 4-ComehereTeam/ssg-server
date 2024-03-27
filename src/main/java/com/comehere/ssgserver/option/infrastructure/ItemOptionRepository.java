@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.comehere.ssgserver.option.domain.Color;
 import com.comehere.ssgserver.option.domain.ItemOption;
 
 public interface ItemOptionRepository extends JpaRepository<ItemOption, Long>{
@@ -16,5 +15,8 @@ public interface ItemOptionRepository extends JpaRepository<ItemOption, Long>{
 			+ "where io.item.id = :itemId")
 	List<ItemOption> findOptions(@Param("itemId") Long itemId);
 
-	ItemOption findFirstByItemId(Long id);
+	ItemOption findFirstByItemId(Long itemId);
+
+	@Query("select io from ItemOption io left join fetch io.color where io.item.id = :itemId")
+	List<ItemOption> findByColorItemId(@Param("itemId") Long itemId);
 }

@@ -35,6 +35,4 @@ public class ItemOption {
 	private Etc etc;
 
 	private Integer stock;
-
-
 }
