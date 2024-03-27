@@ -12,7 +12,7 @@ import com.comehere.ssgserver.image.vo.ReviewImageIdVo;
 import com.comehere.ssgserver.image.vo.ReviewImageVO;
 import com.comehere.ssgserver.image.vo.ReviewImagesVo;
 import com.comehere.ssgserver.review.application.ReviewService;
-import com.comehere.ssgserver.review.dto.ReviewReqDTO;
+import com.comehere.ssgserver.review.vo.ReviewCreateVO;
 import com.comehere.ssgserver.review.vo.ReviewReqVO;
 import com.comehere.ssgserver.review.vo.ReviewUpdateVo;
 
@@ -31,8 +31,8 @@ public class ReviewController {
 
 	@PostMapping
 	@Operation(summary = "리뷰 등록")
-	public void createReview(@RequestBody ReviewReqDTO reviewReqDto) {
-		reviewService.createReview(reviewReqDto);
+	public void createReview(@RequestBody ReviewCreateVO reviewCreateVO) {
+		reviewService.createReview(reviewCreateVO);
 	}
 
 	@DeleteMapping

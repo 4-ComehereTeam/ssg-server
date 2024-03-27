@@ -1,9 +1,7 @@
 package com.comehere.ssgserver.review.domain;
 
-import java.time.LocalDateTime;
-
+import com.comehere.ssgserver.common.entity.BaseEntity;
 import com.comehere.ssgserver.member.domain.Member;
-import com.comehere.ssgserver.review.vo.ReviewUpdateVo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,58 +18,34 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Review {
+public class Review extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
+	@JoinColumn(name = "member_id", nullable = false, updatable = false)
 	private Member member;
 
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = false)
 	private Short star;
 
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short taste;
-
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short boxing;
-
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
-	private Short life;
-
-	@Column(columnDefinition = "LONGTEXT")
+	@Column(columnDefinition = "LONGTEXT", nullable = false)
 	private String content;
 
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private Long purchaseListId;
 
-	private LocalDateTime date;
-
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private String itemCode;
 
 	@Builder
-	public Review(Member member, Long purchaseListId, Short star, Short taste, Short boxing, Short life, String content,
-			LocalDateTime date,
-			String itemCode) {
+	public Review(Long id, Member member, Short star, String content, Long purchaseListId, String itemCode) {
+		this.id = id;
 		this.member = member;
 		this.purchaseListId = purchaseListId;
 		this.itemCode = itemCode;
 		this.star = star;
-		this.taste = taste;
-		this.boxing = boxing;
-		this.life = life;
 		this.content = content;
-		this.date = date;
-	}
-
-	public void updateReview(ReviewUpdateVo reviewUpdateVo) {
-		this.star = reviewUpdateVo.getStar();
-		this.taste = reviewUpdateVo.getTaste();
-		this.boxing = reviewUpdateVo.getBoxing();
-		this.life = reviewUpdateVo.getLife();
-		this.content = reviewUpdateVo.getContent();
 	}
 }

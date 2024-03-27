@@ -1,6 +1,5 @@
 package com.comehere.ssgserver.review.application;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -12,7 +11,7 @@ import com.comehere.ssgserver.image.dto.ImageReqDTO;
 import com.comehere.ssgserver.image.infrastructure.ReviewImageRepository;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 import com.comehere.ssgserver.review.domain.Review;
-import com.comehere.ssgserver.review.dto.ReviewReqDTO;
+import com.comehere.ssgserver.review.vo.ReviewCreateVO;
 import com.comehere.ssgserver.review.infrastructure.ReviewRepository;
 import com.comehere.ssgserver.review.vo.ReviewUpdateVo;
 
@@ -31,27 +30,23 @@ public class ReviewServiceImp implements ReviewService {
 
 	@Override
 	@Transactional
-	public void createReview(ReviewReqDTO reviewReqDto) {
-		reviewRepository.findByPurchaseListId(reviewReqDto.getPurchaseListId())
+	public void createReview(ReviewCreateVO reviewCreateVO) {
+		reviewRepository.findByPurchaseListId(reviewCreateVO.getPurchaseListId())
 				.ifPresent(review -> {
 					throw new IllegalArgumentException("이미 리뷰를 작성하셨습니다.");
 				});
 
 		Review review = Review.builder()
-				.member(memberRepository.findById(reviewReqDto.getMemberId())
+				.member(memberRepository.findById(reviewCreateVO.getMemberId())
 						.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 멤버입니다.")))
-				.itemCode(reviewReqDto.getItemCode())
-				.purchaseListId(reviewReqDto.getPurchaseListId())
-				.star(reviewReqDto.getStar())
-				.taste(reviewReqDto.getTaste())
-				.boxing(reviewReqDto.getBoxing())
-				.life(reviewReqDto.getLife())
-				.content(reviewReqDto.getContent())
-				.date(LocalDateTime.now())
+				.itemCode(reviewCreateVO.getItemCode())
+				.purchaseListId(reviewCreateVO.getPurchaseListId())
+				.star(reviewCreateVO.getStar())
+				.content(reviewCreateVO.getContent())
 				.build();
 
 		reviewRepository.save(review);
-		createReviewImages(reviewReqDto.getImages(), review);
+		createReviewImages(reviewCreateVO.getImages(), review);
 	}
 
 	@Override
@@ -66,13 +61,18 @@ public class ReviewServiceImp implements ReviewService {
 	}
 
 	@Override
+	@Transactional
 	public void updateReview(ReviewUpdateVo reviewUpdateVo) {
 		Review review = reviewRepository.findById(reviewUpdateVo.getReviewId())
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰입니다."));
 
-		review.updateReview(reviewUpdateVo);
+		Review updateReview = Review.builder()
+				.id(review.getId())
+				.star(reviewUpdateVo.getStar())
+				.content(reviewUpdateVo.getContent())
+				.build();
 
-		reviewRepository.save(review);
+		reviewRepository.save(updateReview);
 	}
 
 	private void createReviewImages(List<ImageReqDTO> images, Review review) {

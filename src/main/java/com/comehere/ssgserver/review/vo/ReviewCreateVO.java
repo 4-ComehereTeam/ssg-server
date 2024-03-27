@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.review.dto;
+package com.comehere.ssgserver.review.vo;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ReviewReqDTO {
+public class ReviewCreateVO {
 	private Long memberId;
 
 	private Long purchaseListId;
@@ -19,12 +19,6 @@ public class ReviewReqDTO {
 	private String itemCode;
 
 	private Short star;
-
-	private Short taste;
-
-	private Short boxing;
-
-	private Short life;
 
 	private String content;
 

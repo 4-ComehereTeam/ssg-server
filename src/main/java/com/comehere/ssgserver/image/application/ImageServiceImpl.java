@@ -46,9 +46,13 @@ public class ImageServiceImpl implements ImageService {
 	public void updateReviewImage(ReviewImageVO reviewImageVO) {
 		ReviewImage reviewImage = getReviewImage(reviewImageVO.getReviewImageId());
 
-		reviewImage.updateReviewImage(reviewImageVO);
+		ReviewImage updatedReviewImage = ReviewImage.builder()
+				.id(reviewImage.getId())
+				.imageUrl(reviewImageVO.getImageUrl())
+				.alt(reviewImageVO.getAlt())
+				.build();
 
-		reviewImageRepository.save(reviewImage);
+		reviewImageRepository.save(updatedReviewImage);
 	}
 
 	@Override
