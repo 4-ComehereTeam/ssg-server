@@ -18,32 +18,32 @@ public class Agree {
 	private String email;
 
 	//ssgPoint 동의 여부
-	@Column(columnDefinition = "TINYINT", length = 1)
+	@Column(nullable = false)
 	private Boolean ssgPointMktAgr1;
 
-	@Column(columnDefinition = "TINYINT", length = 1)
+	@Column(nullable = false)
 	private Boolean getSsgPointMktAgr2;
 
-	@Column(columnDefinition = "TINYINT", length = 1)
+	@Column(nullable = false)
 	private Boolean ssgPointEmail;
 
-	@Column(columnDefinition = "TINYINT", length = 1)
+	@Column(nullable = false)
 	private Boolean ssgPointSms;
 
-	@Column(columnDefinition = "TINYINT", length = 1)
+	@Column(nullable = false)
 	private Boolean ssgPointMail;
 
-	@Column(columnDefinition = "TINYINT", length = 1)
+	@Column(nullable = false)
 	private Boolean ssgPointCall;
 
+	@Column(nullable = false)
 	//ssgcom 동의 여부
-	@Column(columnDefinition = "TINYINT", length = 1)
 	private Boolean ssgcomMktAgr1;
 
-	@Column(columnDefinition = "TINYINT", length = 1)
+	@Column(nullable = false)
 	private Boolean ssgcomEmail;
 
-	@Column(columnDefinition = "TINYINT", length = 1)
+	@Column(nullable = false)
 	private Boolean ssgcomSms;
 
 	@Builder
