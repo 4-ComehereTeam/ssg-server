@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class ImageController {
 	private final ImageService imageService;
 
-	@GetMapping("images/{id}")
+	@GetMapping("/images/{id}")
 	@Operation(summary = "상품 이미지 조회 API", description = "상품 이미지 조회")
 	public ItemImageRespDTO itemWithImages(@PathVariable("id") Long id) {
 		return imageService.getItemImages(id);

@@ -6,29 +6,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class OptionDTO {
-	private Long stockId;
-	private String color;
-	private String size;
-	private String etc;
-	private Integer stock;
+	private Boolean color;
+	private Boolean size;
+	private Boolean etc;
 
 	public OptionDTO(ItemOption io) {
-		this.stockId = io.getId();
-
 		if(io.getColor() != null) {
-			this.color = io.getColor().getValue();
+			this.color = true;
 		}
 
 		if(io.getSize() != null) {
-			this.size = io.getSize().getValue();
+			this.size = true;
 		}
 
 		if(io.getEtc() != null) {
-			this.etc = io.getEtc().getValue();
+			this.etc = true;
 		}
-
-		this.stock = io.getStock();
 	}
 }
