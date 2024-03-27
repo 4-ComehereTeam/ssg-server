@@ -1,7 +1,6 @@
 package com.comehere.ssgserver.purchase.application;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,30 +109,39 @@ public class MemberPurchaseServiceImp implements MemberPurchaseService {
 	}
 
 	private MemberPurchase getMemberPurchase(MemberPurchaseVO vo) {
-		addressRepository.findById(vo.getMemberAddressId())
-				.orElseThrow(() -> new IllegalArgumentException("주소를 찾을 수 없습니다."));
-
 		MemberPurchase memberPurchase = MemberPurchase.builder()
 				.purchaseCode(makePurchaseCode())
-				.purchaseDate(LocalDateTime.now())
 				.memberAddressId(vo.getMemberAddressId())
 				.requestMessage(vo.getRequestMessage())
 				.memberId(vo.getMemberId())
 				.build();
 
-		updateAddressRequestMessage(vo);
+		// updateAddressRequestMessage(vo);
 
 		return memberPurchase;
 	}
 
-	// addressService 로 이동 필요
-	private void updateAddressRequestMessage(MemberPurchaseVO vo) {
+	// addressService 로 이동 필요?, 요청 사항 저장 기능
+	/*private void updateAddressRequestMessage(MemberPurchaseVO vo) {
+		Address address = addressRepository.findById(vo.getMemberAddressId())
+				.orElseThrow(() -> new IllegalArgumentException("주소를 찾을 수 없습니다."));
+
 		if (vo.getRequestMessageSave()) {
-			addressRepository.findById(vo.getMemberAddressId())
-					.ifPresent(
-							address -> address.updateRequestMessage(vo.getRequestMessage()));
+			Address updateAddress = Address.builder()
+					.id(vo.getMemberId())
+					.name(address.getName())
+					.phone(address.getPhone())
+					.tel(address.getTel())
+					.zipcode(address.getZipcode())
+					.address(address.getAddress())
+					.detailAddress(address.getDetailAddress())
+					.requestMessage(vo.getRequestMessage())
+					.defaultAddress(address.getDefaultAddress())
+					.build();
+
+			addressRepository.save(updateAddress);
 		}
-	}
+	}*/
 
 	private PurchaseList getPurchaseList(PurchaseItemOptionVO purchaseItemOptionVO,
 			MemberPurchase memberPurchase) {

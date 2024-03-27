@@ -2,6 +2,8 @@ package com.comehere.ssgserver.purchase.domain;
 
 import java.time.LocalDateTime;
 
+import com.comehere.ssgserver.common.entity.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,28 +16,28 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class MemberPurchase {
+public class MemberPurchase extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true)
+	@Column(unique = true, nullable = false, updatable = false)
 	private String purchaseCode;
 
+	@Column(nullable = false, updatable = false)
 	private Long memberId;
 
-	private LocalDateTime purchaseDate;
-
+	@Column(nullable = false)
 	private String requestMessage;
 
+	@Column(nullable = false, updatable = false)
 	private Long memberAddressId;
 
 	@Builder
-	public MemberPurchase(String purchaseCode, Long memberId, LocalDateTime purchaseDate, String requestMessage,
+	public MemberPurchase(String purchaseCode, Long memberId, String requestMessage,
 			Long memberAddressId) {
 		this.purchaseCode = purchaseCode;
 		this.memberId = memberId;
-		this.purchaseDate = purchaseDate;
 		this.requestMessage = requestMessage;
 		this.memberAddressId = memberAddressId;
 	}
