@@ -1,9 +1,10 @@
 package com.comehere.ssgserver.purchase.domain;
 
-import java.time.LocalDateTime;
-
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+
+import com.comehere.ssgserver.common.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,47 +18,48 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
+@DynamicInsert
 @SQLDelete(sql = "UPDATE non_member_purchase SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class NonMemberPurchase {
+public class NonMemberPurchase extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private String purchaseCode;
 
 	@Column(nullable = false)
 	private Long itemOptionId;
 
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private String itemName;
 
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private Long itemPrice;
 
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private Integer count;
 
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private String nonMemberName;
 
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private String phoneNumber;
 
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private String address;
 
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private String addressDetail;
 
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private String zipcode;
 
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private String email;
 
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private String requestMessage;
 
 	@Column(nullable = false)
@@ -66,17 +68,14 @@ public class NonMemberPurchase {
 	private String detailReasons;
 
 	@Column(nullable = false)
-	private LocalDateTime purchaseDate;
-
-	@Column(nullable = false, columnDefinition = "TINYINT")
 	private Boolean deleted;
 
 	@Builder
-	public NonMemberPurchase(String purchaseCode, Long itemOptionId, String itemName, Long itemPrice, Integer count,
-			String nonMemberName, String phoneNumber, String address, String addressDetail, String zipcode,
-			String email,
-			LocalDateTime purchaseDate, Boolean deleted, String cancellationReasons, String requestMessage) {
-
+	public NonMemberPurchase(Long id, String purchaseCode, Long itemOptionId, String itemName, Long itemPrice,
+			Integer count, String nonMemberName, String phoneNumber, String address, String addressDetail,
+			String zipcode,
+			String email, String requestMessage, String cancellationReasons, String detailReasons, Boolean deleted) {
+		this.id = id;
 		this.purchaseCode = purchaseCode;
 		this.itemOptionId = itemOptionId;
 		this.itemName = itemName;
@@ -88,18 +87,10 @@ public class NonMemberPurchase {
 		this.addressDetail = addressDetail;
 		this.zipcode = zipcode;
 		this.email = email;
-		this.purchaseDate = purchaseDate;
 		this.requestMessage = requestMessage;
 		this.cancellationReasons = cancellationReasons;
+		this.detailReasons = detailReasons;
 		this.deleted = deleted;
 	}
-
-	public void deleteProcess(String cancellationReasons, String detailReasons) {
-		this.cancellationReasons = cancellationReasons;
-		this.detailReasons = detailReasons;
-	}
-
-	public void updateItemOptionId(Long itemOptionId) {
-		this.itemOptionId = itemOptionId;
-	}
 }
+

@@ -1,12 +1,12 @@
 package com.comehere.ssgserver.purchase.application;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.option.domain.ItemOption;
 import com.comehere.ssgserver.option.infrastructure.ItemOptionRepository;
@@ -44,7 +44,6 @@ public class NonMemberPurchaseServiceImp implements NonMemberPurchaseService {
 				.purchaseCode(makePurchaseCode())
 				.deleted(false)
 				.cancellationReasons("")
-				.purchaseDate(LocalDateTime.now())
 				.build();
 
 		nonMemberPurchaseRepository.save(nonMemberPurchase);
@@ -71,30 +70,42 @@ public class NonMemberPurchaseServiceImp implements NonMemberPurchaseService {
 	}
 
 	@Override
-	public void deleteNonMemberPurchase(NonMemberPurchaseDeleteVO nonMemberPurchaseDeleteVO) {
+	@Transactional
+	public void deleteNonMemberPurchase(NonMemberPurchaseDeleteVO vo) {
 		NonMemberPurchase nonMemberPurchase = nonMemberPurchaseRepository.findById(
-						nonMemberPurchaseDeleteVO.getNonMemberPurchaseId())
+						vo.getNonMemberPurchaseId())
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
 
-		nonMemberPurchase.deleteProcess(nonMemberPurchaseDeleteVO.getCancellationReasons(),
-				nonMemberPurchaseDeleteVO.getDetailReasons());
+		NonMemberPurchase updateNonMemberPurchase = NonMemberPurchase.builder()
+				.id(nonMemberPurchase.getId())
+				.itemOptionId(nonMemberPurchase.getItemOptionId())
+				.cancellationReasons(vo.getCancellationReasons())
+				.detailReasons(vo.getDetailReasons())
+				.deleted(true)
+				.build();
 
-		nonMemberPurchaseRepository.save(nonMemberPurchase);
+		nonMemberPurchaseRepository.save(updateNonMemberPurchase);
 
-		nonMemberPurchaseRepository.delete(nonMemberPurchase);
+		// nonMemberPurchaseRepository.delete(updateNonMemberPurchase);
 	}
 
 	@Override
 	public void updateNonMemberPurchaseOptionItem(
-			NonMemberPurchaseOptionItemUpdateVO nonMemberPurchaseOptionItemUpdateVO) {
+			NonMemberPurchaseOptionItemUpdateVO vo) {
 
 		NonMemberPurchase nonMemberPurchase = nonMemberPurchaseRepository.findById(
-						nonMemberPurchaseOptionItemUpdateVO.getNonMemberPurchaseId())
+						vo.getNonMemberPurchaseId())
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
 
-		nonMemberPurchase.updateItemOptionId(nonMemberPurchaseOptionItemUpdateVO.getItemOptionId());
+		NonMemberPurchase updateNonMemberPurchase = NonMemberPurchase.builder()
+				.id(nonMemberPurchase.getId())
+				.itemOptionId(vo.getItemOptionId())
+				.cancellationReasons(nonMemberPurchase.getCancellationReasons())
+				.detailReasons(nonMemberPurchase.getDetailReasons())
+				.deleted(nonMemberPurchase.getDeleted())
+				.build();
 
-		nonMemberPurchaseRepository.save(nonMemberPurchase);
+		nonMemberPurchaseRepository.save(updateNonMemberPurchase);
 	}
 
 	private String makePurchaseCode() {

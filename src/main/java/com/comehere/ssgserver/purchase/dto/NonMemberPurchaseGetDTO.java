@@ -16,7 +16,6 @@ public class NonMemberPurchaseGetDTO {
 	private Long itemId;
 
 	@Builder
-
 	public NonMemberPurchaseGetDTO(Long itemOptionId, String itemName, Long itemPrice, Integer count, Long itemId) {
 		this.itemOptionId = itemOptionId;
 		this.itemName = itemName;
