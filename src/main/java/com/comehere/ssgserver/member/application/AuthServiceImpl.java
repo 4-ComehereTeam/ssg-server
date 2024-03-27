@@ -16,11 +16,11 @@ import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.member.domain.Agree;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.domain.Role;
+import com.comehere.ssgserver.member.dto.SignInResponseDTO;
 import com.comehere.ssgserver.member.infrastructure.AgreeRepository;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 import com.comehere.ssgserver.member.vo.JoinRequestVo;
 import com.comehere.ssgserver.member.vo.SignInRequestVo;
-import com.comehere.ssgserver.member.vo.SignInResponseVo;
 import com.comehere.ssgserver.purchase.domain.Address;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
 
@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public SignInResponseVo signIn(SignInRequestVo signInRequestVo) {
+	public SignInResponseDTO signIn(SignInRequestVo signInRequestVo) {
 
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
 				signInRequestVo.getSignInId(), signInRequestVo.getPassword());
@@ -74,10 +74,10 @@ public class AuthServiceImpl implements AuthService {
 		String role = customUserDetails.getAuthorities().iterator().next().getAuthority();
 
 		// JWT 토큰 생성
-		String token = jwtUtil.createJwt(userUuid, role, 60 * 60 * 10L);
+		String token = jwtUtil.createJwt(userUuid, role, expiredMs);
 
 		// 인증 성공 응답 생성
-		return SignInResponseVo.builder()
+		return SignInResponseDTO.builder()
 				.uuid(userUuid)
 				.name(username)
 				.accessToken(token)
