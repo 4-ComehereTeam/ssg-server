@@ -2,6 +2,7 @@ package com.comehere.ssgserver.option.domain;
 
 import com.comehere.ssgserver.item.domain.Item;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -34,5 +35,6 @@ public class ItemOption {
 	@JoinColumn(name = "etc_id")
 	private Etc etc;
 
+	@Column(nullable = false)
 	private Integer stock;
 }
