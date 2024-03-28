@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.clip.application.ItemClipService;
 import com.comehere.ssgserver.clip.dto.ItemClipDto;
-import com.comehere.ssgserver.clip.dto.ItemIdRespDTO;
+import com.comehere.ssgserver.clip.dto.ItemIdsDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,7 +38,7 @@ public class ItemClipController {
 
 	@Operation(summary = "상품 좋아요 목록 조회")
 	@GetMapping("/items")
-	public List<ItemIdRespDTO> getClipList(Long memberId) {
+	public ItemIdsDTO getClipList(Long memberId) {
 		return itemClipService.getClipList(memberId);
 	}
 }

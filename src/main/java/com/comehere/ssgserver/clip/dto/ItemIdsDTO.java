@@ -7,6 +7,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ItemIdRespDTO {
-	private Long itemId;
+public class ItemIdsDTO {
+	private List<Long> itemIds;
 }

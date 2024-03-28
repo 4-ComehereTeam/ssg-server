@@ -1,13 +1,12 @@
 package com.comehere.ssgserver.clip.application;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.comehere.ssgserver.clip.domain.ItemClip;
 import com.comehere.ssgserver.clip.dto.ItemClipDto;
-import com.comehere.ssgserver.clip.dto.ItemIdRespDTO;
+import com.comehere.ssgserver.clip.dto.ItemIdsDTO;
 import com.comehere.ssgserver.clip.infrastructure.ItemClipRepository;
 import com.comehere.ssgserver.item.infrastructual.ItemRepository;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
@@ -42,15 +41,15 @@ public class ItemClipServiceImp implements ItemClipService {
 	}
 
 	@Override
-	public List<ItemIdRespDTO> getClipList(Long memberId) {
+	public ItemIdsDTO getClipList(Long memberId) {
 		List<ItemClip> itemClips = itemClipRepository.findByMemberId(memberId);
 
 		if (itemClips.isEmpty()) {
 			throw new IllegalArgumentException("해당 회원은 좋아요 상품이 없습니다.");
 		}
 
-		return itemClips.stream()
-				.map(itemClip -> new ItemIdRespDTO(itemClip.getItem().getId()))
-				.collect(Collectors.toList());
+		return new ItemIdsDTO(itemClips.stream()
+				.map(ItemClip::getId)
+				.toList());
 	}
 }
