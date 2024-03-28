@@ -14,6 +14,7 @@ import com.comehere.ssgserver.option.application.ItemOptionService;
 import com.comehere.ssgserver.option.domain.Color;
 import com.comehere.ssgserver.option.domain.ItemOption;
 import com.comehere.ssgserver.option.dto.ColorRespDTO;
+import com.comehere.ssgserver.option.dto.EtcRespDTO;
 import com.comehere.ssgserver.option.dto.ItemOptionRespDTO;
 import com.comehere.ssgserver.option.dto.OptionRespDTO;
 import com.comehere.ssgserver.option.dto.SizeRespDTO;
@@ -42,7 +43,17 @@ public class ItemOptionController {
 	}
 
 	@GetMapping("/option/size/{id}")
-	public BaseResponse<SizeRespDTO> getSizes(@PathVariable("id") Long itemId, @RequestParam(required = false) Long colorId) {
+	public BaseResponse<SizeRespDTO> getSizes(
+			@PathVariable("id") Long itemId,
+			@RequestParam(required = false) Long colorId) {
 		return new BaseResponse<>(itemOptionService.getSizes(itemId, colorId));
+	}
+
+	@GetMapping("/option/etc/{id}")
+	public BaseResponse<EtcRespDTO> getEtcs(
+			@PathVariable("id") Long itemId,
+			@RequestParam(required = false) Long colorId,
+			@RequestParam(required = false) Long sizeId) {
+		return new BaseResponse<>(itemOptionService.getEtcs(itemId, colorId, sizeId));
 	}
 }

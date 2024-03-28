@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.option.domain.Color;
 import com.comehere.ssgserver.option.domain.ItemOption;
 import com.comehere.ssgserver.option.dto.ColorDTO;
 import com.comehere.ssgserver.option.dto.ColorRespDTO;
+import com.comehere.ssgserver.option.dto.EtcDTO;
+import com.comehere.ssgserver.option.dto.EtcRespDTO;
 import com.comehere.ssgserver.option.dto.ItemOptionRespDTO;
 import com.comehere.ssgserver.option.dto.OptionDTO;
 import com.comehere.ssgserver.option.dto.OptionRespDTO;
@@ -69,6 +72,19 @@ public class ItemOptionServiceImpl implements ItemOptionService {
 				.build();
 	}
 
+	@Override
+	public EtcRespDTO getEtcs(Long itemId, Long colorId, Long sizeId) {
+		List<ItemOption> itemOption = itemOptionRepository.findEtc(itemId, colorId,sizeId);
+
+		return EtcRespDTO.builder()
+				.itemId(itemId)
+				.colorId(colorId)
+				.sizeId(sizeId)
+				.etcs(itemOption.stream()
+						.map(ItemOptionServiceImpl::createEtc)
+						.toList())
+				.build();
+	}
 
 	private ColorDTO createColor(ItemOption io) {
 		return ColorDTO.builder()
@@ -84,6 +100,15 @@ public class ItemOptionServiceImpl implements ItemOptionService {
 				.optionId(io.getId())
 				.sizeId(io.getSize().getId())
 				.value(io.getSize().getValue())
+				.stock(io.getStock())
+				.build();
+	}
+
+	private static EtcDTO createEtc(ItemOption io) {
+		return EtcDTO.builder()
+				.optionId(io.getId())
+				.etcId(io.getEtc().getId())
+				.value(io.getEtc().getValue())
 				.stock(io.getStock())
 				.build();
 	}
