@@ -2,6 +2,7 @@ package com.comehere.ssgserver.option.application;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.comehere.ssgserver.item.domain.Item;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ItemOptionServiceImpl implements ItemOptionService {
 	private final ItemOptionRepository itemOptionRepository;
+	private final ModelMapper modelMapper;
 
 	@Override
 	public ItemOptionRespDTO findByItemId(Long itemId) {
@@ -39,12 +41,16 @@ public class ItemOptionServiceImpl implements ItemOptionService {
 	public OptionRespDTO hasOptions(Long itemId) {
 		ItemOption io = itemOptionRepository.findFirstByItemId(itemId);
 
-		return OptionRespDTO.builder()
-				.itemId(itemId)
-				.hasColor(io.getColor() != null)
-				.hasSize(io.getSize() != null)
-				.hasEtc(io.getEtc() != null)
-				.build();
+		// OptionRespDTO optionRespDTO = ;
+
+		// return OptionRespDTO.builder()
+		// 		.itemId(itemId)
+		// 		.hasColor(io.getColor() != null)
+		// 		.hasSize(io.getSize() != null)
+		// 		.hasEtc(io.getEtc() != null)
+		// 		.build();
+
+		return modelMapper.map(io, OptionRespDTO.class);
 	}
 
 	@Override
