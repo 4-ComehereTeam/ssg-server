@@ -1,11 +1,15 @@
 package com.comehere.ssgserver.member.application;
 
-import com.comehere.ssgserver.member.dto.SignInResponseDTO;
-import com.comehere.ssgserver.member.vo.JoinRequestVo;
-import com.comehere.ssgserver.member.vo.SignInRequestVo;
+import com.comehere.ssgserver.member.vo.request.JoinRequestVO;
+import com.comehere.ssgserver.member.vo.request.SignInRequestVO;
+import com.comehere.ssgserver.member.vo.response.SignInResponseVO;
 
 public interface AuthService {
-	void signUp(JoinRequestVo joinRequestVo);
+	void signUp(JoinRequestVO joinRequestVo);
 
-	SignInResponseDTO signIn(SignInRequestVo signInRequestVo);
+	SignInResponseVO signIn(SignInRequestVO signInRequestVo);
+
+	public boolean checkUserEmailDuplication(String email);
+
+	public boolean checkUserSignInIdDuplication(String signInId);
 }

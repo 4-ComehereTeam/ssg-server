@@ -45,12 +45,12 @@ public class SecurityConfig {
 				.csrf((csrf) -> csrf.disable())
 				.authorizeHttpRequests((auth) -> auth
 
-						.requestMatchers("/", "/api/v1/members/join", "/api/v1/members/**",
+						.requestMatchers("/", "/api/v1/auth/**",
 								"/swagger-ui/**", "/swagger-resources/**", "/api-docs/**",
 								"/api/v1/items/**", "/api/v1/categories/**", "/api/v1/bundle/**",
 								"/api/v1/brand/**", "/api/v1/images/**", "/api/v1/review/**",
-								"/api/v1/option/**")
-
+								"/api/v1/option/**",
+								"/error")
 						.permitAll()
 						.anyRequest()
 						.authenticated())

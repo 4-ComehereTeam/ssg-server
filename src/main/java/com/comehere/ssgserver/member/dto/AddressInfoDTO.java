@@ -12,5 +12,5 @@ public class AddressInfoDTO {
 	private String address;
 
 	private String addressDetail;
-	
+
 }
