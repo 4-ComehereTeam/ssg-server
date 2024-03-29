@@ -33,6 +33,10 @@ public class JWTUtil {
 		return UUID.fromString(uuidString);
 	}
 
+	public UUID getUuidByAuthorization(String authorization) {
+		return getUserUuid(authorization.substring(7));
+	}
+
 	public String getRole(String token) {
 		return Jwts.parser()
 				.verifyWith(secretkey)
