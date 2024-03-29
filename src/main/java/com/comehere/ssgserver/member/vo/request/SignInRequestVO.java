@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.member.vo;
+package com.comehere.ssgserver.member.vo.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignInRequestVo {
+public class SignInRequestVO {
 
-	private String signInId;
+	private String signinId;
 
 	private String password;
 }

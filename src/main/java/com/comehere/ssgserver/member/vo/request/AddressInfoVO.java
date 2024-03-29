@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.member.vo;
+package com.comehere.ssgserver.member.vo.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressInfoVo {
+public class AddressInfoVO {
 
 	private String zipcode;
 

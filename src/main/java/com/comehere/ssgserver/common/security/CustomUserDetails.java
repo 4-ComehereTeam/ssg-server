@@ -1,6 +1,5 @@
 package com.comehere.ssgserver.common.security;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -11,39 +10,34 @@ import com.comehere.ssgserver.member.domain.Member;
 
 public class CustomUserDetails implements UserDetails {
 
-	private final Member member;
+	// 커스텀할 경우 필요한 정보만 가져와서 사용
+	// uuid pwd 만 가져오는 것이 더 효율
+	private UUID uuid;
+	private String password;
 
 	public CustomUserDetails(Member member) {
-		this.member = member;
+		this.uuid = member.getUuid();
+		this.password = member.getPassword();
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
-		Collection<GrantedAuthority> collection = new ArrayList<>();
-
-		collection.add(new GrantedAuthority() {
-
-			@Override
-			public String getAuthority() {
-				return member.getRole().name();
-			}
-		});
-		return collection;
+		return null;
 	}
 
 	@Override
 	public String getPassword() {
-		return member.getPassword();
+		return this.password;
 	}
 
 	@Override
 	public String getUsername() {
-		return member.getSignInId();
+		return this.uuid.toString();
 	}
 
-	public UUID getUserUuid() {
-		return member.getUserUuid();
+	public UUID getUuid() {
+		return this.uuid;
 	}
 
 	// 사용자 계정의 만료 여부
@@ -69,4 +63,5 @@ public class CustomUserDetails implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+
 }

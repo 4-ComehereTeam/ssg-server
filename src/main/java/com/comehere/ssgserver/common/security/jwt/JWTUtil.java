@@ -16,6 +16,7 @@ import io.jsonwebtoken.Jwts;
 public class JWTUtil {
 
 	private final SecretKey secretkey;
+	private final long expiredMs = 1000 * 60 * 60; // 1시간
 
 	// jwt signature 생성
 	public JWTUtil(@Value("${jwt.secret}") String secret) {
@@ -56,7 +57,7 @@ public class JWTUtil {
 				.before(new Date());
 	}
 
-	public String createJwt(UUID userUuid, String role, Long expiredMs) {
+	public String createJwt(UUID userUuid, String role) {
 
 		return Jwts.builder()
 				.claim("userUuid", userUuid.toString())

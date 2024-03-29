@@ -25,51 +25,54 @@ public class Member extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(updatable = false)
 	private UUID uuid;
 
-	private String signInId;
+	@Column(updatable = false)
+	private String signinId;
 
+	@Column(nullable = false, updatable = false)
 	private String name;
 
 	private String password;
 
-	private String birthday;
-
-	@Column(columnDefinition = "TINYINT", length = 1, nullable = true)
+	@Column(columnDefinition = "TINYINT", length = 1, nullable = true, updatable = false)
 	private Short gender;
 
 	private String phone;
 
+	@Column(nullable = false, updatable = false)
 	private String email;
 
-	@Column(columnDefinition = "DATETIME")
+	@Column(columnDefinition = "DATETIME", updatable = false)
 	private LocalDateTime resignTime;
 
+	@Column(updatable = false)
 	private Integer resignCount = 0;
 
 	// 1 : 계정 활성화
 	// -1 : 탈퇴상태
 	// 0 : 휴면상태
+	@Column(updatable = false)
 	private Short status = 1;
 
+	@Column(updatable = false)
 	@Enumerated(EnumType.STRING)
 	private Role role = Role.USER;
 
 	@Builder
-	public Member(UUID uuid, String signinId, String name, String password, String birthday, Short gender, String phone,
+	public Member(Long id, UUID uuid, String signinId, String name, String password, Short gender,
+			String phone,
 			String email, Role role) {
+		this.id = id;
 		this.uuid = uuid;
-		this.signInId = signinId;
+		this.signinId = signinId;
 		this.name = name;
 		this.password = password;
-		this.birthday = birthday;
 		this.gender = gender;
 		this.phone = phone;
 		this.email = email;
 		this.role = role;
 	}
 
-	public UUID getUserUuid() {
-		return uuid;
-	}
 }

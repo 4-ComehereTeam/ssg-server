@@ -1,28 +1,30 @@
 package com.comehere.ssgserver.common.security;
 
+import java.util.UUID;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
 	private final MemberRepository memberRepository;
 
-	public CustomUserDetailsService(MemberRepository memberRepository) {
-		this.memberRepository = memberRepository;
-	}
-
+	//이 부분을 어디로..?
+	// UUid 가져오기
 	@Override
-	public UserDetails loadUserByUsername(String signInId) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String uuid) throws UsernameNotFoundException {
 
-		Member member = memberRepository.findBySignInId(signInId)
-				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+		UUID userUuid = UUID.fromString(uuid);
 
-		return new CustomUserDetails(member);
+		return new CustomUserDetails(memberRepository.findByUuid(userUuid)
+				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다.")));
 	}
 }

@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.member.vo;
+package com.comehere.ssgserver.member.vo.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class JoinRequestVo {
+public class JoinRequestVO {
 
 	private String signinId;
 
@@ -26,12 +26,9 @@ public class JoinRequestVo {
 	// 0 : 남/ 1 : 여
 	private Short gender;
 
-	private String birthday;
+	private AddressInfoVO addressInfoVo;
 
-	private AddressInfoVo addressInfoVo;
+	private SsgcomAgreesVO ssgcomAgreesVo;
 
-	private SsgcomAgreesVo ssgcomAgreesVo;
-	
-	private SsgPointAgreesVo ssgPointAgreesVo;
-
+	private SsgPointAgreesVO ssgPointAgreesVo;
 }
