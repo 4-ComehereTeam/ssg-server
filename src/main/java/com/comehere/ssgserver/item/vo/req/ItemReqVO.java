@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.item.vo;
+package com.comehere.ssgserver.item.vo.req;
 
 import java.util.List;
 

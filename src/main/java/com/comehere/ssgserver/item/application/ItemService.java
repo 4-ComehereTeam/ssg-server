@@ -1,13 +1,12 @@
 package com.comehere.ssgserver.item.application;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 
-import com.comehere.ssgserver.item.dto.ItemCalcRespDTO;
-import com.comehere.ssgserver.item.dto.ItemDetailRespDTO;
-import com.comehere.ssgserver.item.vo.ItemListReqVO;
-import com.comehere.ssgserver.item.dto.ItemListRespDTO;
-import com.comehere.ssgserver.item.vo.ItemReqVO;
+import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
+import com.comehere.ssgserver.item.dto.resp.ItemCalcRespDTO;
+import com.comehere.ssgserver.item.dto.resp.ItemDetailRespDTO;
+import com.comehere.ssgserver.item.dto.resp.ItemListRespDTO;
+import com.comehere.ssgserver.item.vo.req.ItemReqVO;
 
 public interface ItemService {
 	ItemDetailRespDTO getItemDetail(Long id);
@@ -16,7 +15,7 @@ public interface ItemService {
 
 	ItemCalcRespDTO getItemCalc(Long id);
 
-	ItemListRespDTO getItemList(ItemListReqVO vo, Pageable page);
+	ItemListRespDTO getItemList(ItemListReqDTO dto, Pageable page);
 
 	void createItem(ItemReqVO vo);
 }
