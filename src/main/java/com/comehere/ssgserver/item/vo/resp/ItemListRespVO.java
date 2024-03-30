@@ -4,20 +4,15 @@ import java.util.List;
 
 import com.comehere.ssgserver.item.dto.resp.ItemListRespDTO;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemListRespVO {
 	List<Long> itemIds;
 
 	Boolean hasNext;
-
-	public static ItemListRespVO toBuild(ItemListRespDTO dto) {
-		return ItemListRespVO.builder()
-				.itemIds(dto.getItemIds())
-				.hasNext(dto.getHasNext())
-				.build();
-	}
 }

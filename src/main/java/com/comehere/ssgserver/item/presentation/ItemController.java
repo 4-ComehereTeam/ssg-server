@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.item.application.ItemService;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
+import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemDetailRespDTO;
 import com.comehere.ssgserver.item.vo.req.ItemReqVO;
 import com.comehere.ssgserver.item.vo.resp.ItemCalcRespVO;
+import com.comehere.ssgserver.item.vo.resp.ItemDetailRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemListRespVO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,8 +35,8 @@ public class ItemController {
 
 	@GetMapping("/detail/{itemId}")
 	@Operation(summary = "상품 기본 정보 API", description = "상품 기본 정보 (상품명, 가격) 조회")
-	public ItemDetailRespDTO itemDetail(@PathVariable("itemId") Long id) {
-		return itemService.getItemDetail(id);
+	public BaseResponse<ItemDetailRespVO> itemDetail(@PathVariable("itemId") Long id) {
+		return new BaseResponse<>(modelMapper.map(itemService.getItemDetail(id), ItemDetailRespVO.class));
 	}
 
 	@GetMapping("/description/{itemId}")
@@ -58,16 +60,16 @@ public class ItemController {
 			@RequestParam(required = false) Integer detailCategoryId,
 			@PageableDefault(size = 40) Pageable page) {
 
-		return new BaseResponse<>(ItemListRespVO.toBuild(
+		return new BaseResponse<>(modelMapper.map(
 				itemService.getItemList(
 						ItemListReqDTO.toBuild(bigCategoryId, middleCategoryId, smallCategoryId, detailCategoryId),
-						page)));
+						page), ItemListRespVO.class));
 	}
 
 	@PostMapping
 	@Operation(summary = "상품 등록 API", description = "상품 정보 등록")
 	public BaseResponse<?> createItem(@RequestBody ItemReqVO vo) {
-		itemService.createItem(vo);
+		itemService.createItem(modelMapper.map(vo, ItemReqDTO.class));
 		return new BaseResponse<>();
 	}
 }
