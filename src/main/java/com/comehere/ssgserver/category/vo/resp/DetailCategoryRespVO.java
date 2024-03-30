@@ -1,8 +1,8 @@
-package com.comehere.ssgserver.category.vo;
+package com.comehere.ssgserver.category.vo.resp;
 
 import java.util.List;
 
-import com.comehere.ssgserver.category.dto.CategoryDTO;
+import com.comehere.ssgserver.category.dto.resp.CategoryDTO;
 
 import lombok.AccessLevel;
 import lombok.Getter;

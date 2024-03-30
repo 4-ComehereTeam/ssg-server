@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.comehere.ssgserver.category.domain.BigCategory;
-import com.comehere.ssgserver.category.dto.BigCategoryRespDTO;
-import com.comehere.ssgserver.category.dto.CategoryDTO;
-import com.comehere.ssgserver.category.dto.DetailCategoryRespDTO;
-import com.comehere.ssgserver.category.dto.MiddleCategoryRespDTO;
-import com.comehere.ssgserver.category.dto.SmallCategoryRespDTO;
+import com.comehere.ssgserver.category.dto.resp.BigCategoryRespDTO;
+import com.comehere.ssgserver.category.dto.resp.CategoryDTO;
+import com.comehere.ssgserver.category.dto.resp.DetailCategoryRespDTO;
+import com.comehere.ssgserver.category.dto.resp.MiddleCategoryRespDTO;
+import com.comehere.ssgserver.category.dto.resp.SmallCategoryRespDTO;
 import com.comehere.ssgserver.category.infrastructure.BigCategoryRepository;
 import com.comehere.ssgserver.category.infrastructure.DetailCategoryRepository;
 import com.comehere.ssgserver.category.infrastructure.MiddleCategoryRepository;

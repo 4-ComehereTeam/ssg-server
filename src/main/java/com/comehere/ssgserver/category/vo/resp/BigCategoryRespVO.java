@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.category.vo;
+package com.comehere.ssgserver.category.vo.resp;
 
 import java.util.List;
 

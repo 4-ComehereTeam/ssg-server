@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.category.dto;
+package com.comehere.ssgserver.category.dto.resp;
 
 import java.util.List;
 

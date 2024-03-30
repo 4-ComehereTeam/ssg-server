@@ -7,13 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.category.application.CategoryService;
-import com.comehere.ssgserver.category.dto.DetailCategoryRespDTO;
-import com.comehere.ssgserver.category.dto.MiddleCategoryRespDTO;
-import com.comehere.ssgserver.category.dto.SmallCategoryRespDTO;
-import com.comehere.ssgserver.category.vo.BigCategoryRespVO;
-import com.comehere.ssgserver.category.vo.DetailCategoryRespVO;
-import com.comehere.ssgserver.category.vo.MiddleCategoryRespVO;
-import com.comehere.ssgserver.category.vo.SmallCategoryRespVO;
+import com.comehere.ssgserver.category.vo.resp.BigCategoryRespVO;
+import com.comehere.ssgserver.category.vo.resp.DetailCategoryRespVO;
+import com.comehere.ssgserver.category.vo.resp.MiddleCategoryRespVO;
+import com.comehere.ssgserver.category.vo.resp.SmallCategoryRespVO;
 import com.comehere.ssgserver.common.response.BaseResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
