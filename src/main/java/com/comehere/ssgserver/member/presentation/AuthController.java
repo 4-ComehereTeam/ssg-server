@@ -56,15 +56,6 @@ public class AuthController {
 			// jwt 토큰을 http 응답 헤더에 추가
 			response.addHeader("accessToken", "Bearer " + signinResponseDTO.getAccessToken());
 
-			// SigninResponseDTO -> SigninResponseVO 변환
-			// SigninResponseVO signinResponseVO = SigninResponseVO.builder()
-			// 		.accessToken(signinResponseDTO.getAccessToken())
-			// 		.email(signinResponseDTO.getEmail())
-			// 		.name(signinResponseDTO.getName())
-			// 		.signinId(signinResponseDTO.getSigninId())
-			// 		.uuid(signinResponseDTO.getUuid())
-			// 		.build();
-
 			return new BaseResponse<>(modelMapper.map(signinResponseDTO, SigninResponseVO.class));
 		} catch (BadCredentialsException e) {
 			// 아이디 또는 비밀번호가 잘못된 경우
