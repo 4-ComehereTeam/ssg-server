@@ -1,7 +1,5 @@
 package com.comehere.ssgserver.item.dto.req;
 
-import com.comehere.ssgserver.item.vo.req.ItemListReqVO;
-
 import lombok.Builder;
 import lombok.Getter;
 

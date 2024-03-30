@@ -21,32 +21,6 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
 
-	// @Override
-	// public boolean updatePassword(String accessToken, UpdatePwdVo updatePwdVo) {
-	//
-	// 	UUID userUuid = jwtUtil.getUserUuid(accessToken);
-	//
-	// 	String password = memberRepository.findByPassword(userUuid);
-	//
-	// 	boolean isMatch = passwordEncoder.matches(updatePwdVo.getCurrentPassword(), password);
-	//
-	// 	if (isMatch) {
-	//
-	// 		Member member = memberRepository.findByUuid(userUuid)
-	// 				.orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
-	//
-	// 		Member update = Member.builder()
-	// 				.signinId(member.getSignInId())
-	// 				.password(passwordEncoder.encode(updatePwdVo.getNewPassword()))
-	// 				.build();
-	//
-	// 		memberRepository.save(update);
-	// 		return true;
-	// 	} else {
-	// 		return false;
-	// 	}
-	// }
-
 	@Override
 	public BaseResponse<?> modifyPassword(UUID userUuid, ModifyPwdDTO modifyPwdDTO) {
 
@@ -61,6 +35,5 @@ public class MemberServiceImpl implements MemberService {
 
 		return new BaseResponse<>(true);
 	}
-
 }
 

@@ -40,7 +40,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/modify/password")
-	@Operation(summary = "비밀번호 찾기")
+	@Operation(summary = "비밀번호 변경")
 	public BaseResponse<?> userModifyPassword(@RequestHeader("Authorization") String accessToken,
 			@RequestBody ModifyPwdRequestVO modifyPwdRequestVo) {
 
