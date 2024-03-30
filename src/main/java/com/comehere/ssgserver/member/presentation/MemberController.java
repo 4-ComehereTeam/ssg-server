@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.member.application.MemberService;
+import com.comehere.ssgserver.member.dto.FindSigninIdDTO;
 import com.comehere.ssgserver.member.dto.ModifyPwdDTO;
 import com.comehere.ssgserver.member.vo.request.ModifyPwdRequestVO;
+import com.comehere.ssgserver.member.vo.response.FindSigninIdResponseVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,9 +46,16 @@ public class MemberController {
 	public BaseResponse<?> userModifyPassword(@RequestHeader("Authorization") String accessToken,
 			@RequestBody ModifyPwdRequestVO modifyPwdRequestVo) {
 
-		log.info("modifyPwdRequestVo : {}", modifyPwdRequestVo.getNewPassword());
 		ModifyPwdDTO modifyPwdDTO = modelMapper.map(modifyPwdRequestVo, ModifyPwdDTO.class);
 		UUID userUuid = jwtUtil.getUuidByAuthorization(accessToken);
 		return memberService.modifyPassword(userUuid, modifyPwdDTO);
+	}
+
+	@GetMapping("/find/signinId")
+	@Operation(summary = "아이디 찾기")
+	public BaseResponse<?> userFindSigninId(@RequestHeader("Authorization") String accessToken) {
+
+		FindSigninIdDTO findSigninIdDTO = memberService.findSigninId(jwtUtil.getUuidByAuthorization(accessToken));
+		return new BaseResponse<>(modelMapper.map(findSigninIdDTO, FindSigninIdResponseVO.class));
 	}
 }

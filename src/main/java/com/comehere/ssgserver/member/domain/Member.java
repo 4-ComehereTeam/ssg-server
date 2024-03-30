@@ -41,7 +41,7 @@ public class Member extends BaseEntity {
 
 	private String phone;
 
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false)
 	private String email;
 
 	@Column(columnDefinition = "DATETIME", updatable = false)

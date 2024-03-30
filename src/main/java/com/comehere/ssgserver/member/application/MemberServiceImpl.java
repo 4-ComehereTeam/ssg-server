@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.member.domain.Member;
+import com.comehere.ssgserver.member.dto.FindSigninIdDTO;
 import com.comehere.ssgserver.member.dto.ModifyPwdDTO;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 
@@ -30,10 +31,22 @@ public class MemberServiceImpl implements MemberService {
 		memberRepository.save(Member.builder()
 				.id(member.getId())
 				.phone(member.getPhone())
+				.email(member.getEmail())
 				.password(passwordEncoder.encode(modifyPwdDTO.getNewPassword()))
 				.build());
 
 		return new BaseResponse<>(true);
+	}
+
+	@Override
+	public FindSigninIdDTO findSigninId(UUID userUuid) {
+
+		Member member = memberRepository.findByUuid(userUuid)
+				.orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+		return FindSigninIdDTO.builder()
+				.signinId(member.getSigninId())
+				.build();
 	}
 }
 
