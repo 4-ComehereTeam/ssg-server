@@ -8,9 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
-import com.comehere.ssgserver.item.vo.ItemListReqVO;
+import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -20,14 +19,14 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
 	private final JPAQueryFactory query;
 
 	@Override
-	public Slice<Long> getItemList(ItemListReqVO vo, Pageable page) {
+	public Slice<Long> getItemList(ItemListReqDTO dto, Pageable page) {
 		List<Long> result = query.select(itemWithCategory.item.id)
 				.from(itemWithCategory)
 				.where(
-						bigCategoryEq(vo.getBigCategoryId()),
-						middleCategoryEq(vo.getMiddleCategoryId()),
-						smallCategoryEq(vo.getSmallCategoryId()),
-						detailCategoryEq(vo.getDetailCategoryId())
+						bigCategoryEq(dto.getBigCategoryId()),
+						middleCategoryEq(dto.getMiddleCategoryId()),
+						smallCategoryEq(dto.getSmallCategoryId()),
+						detailCategoryEq(dto.getDetailCategoryId())
 				)
 				.offset(page.getOffset())
 				.limit(page.getPageSize() + 1)
