@@ -1,7 +1,5 @@
 package com.comehere.ssgserver.member.presentation;
 
-import java.util.UUID;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +13,11 @@ import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.member.application.MemberService;
 import com.comehere.ssgserver.member.dto.FindSigninIdDTO;
+import com.comehere.ssgserver.member.dto.ModifyEmailDTO;
+import com.comehere.ssgserver.member.dto.ModifyPhoneDTO;
 import com.comehere.ssgserver.member.dto.ModifyPwdDTO;
+import com.comehere.ssgserver.member.vo.request.ModifyEmailRequestVO;
+import com.comehere.ssgserver.member.vo.request.ModifyPhoneRequestVO;
 import com.comehere.ssgserver.member.vo.request.ModifyPwdRequestVO;
 import com.comehere.ssgserver.member.vo.response.FindSigninIdResponseVO;
 
@@ -47,8 +49,7 @@ public class MemberController {
 			@RequestBody ModifyPwdRequestVO modifyPwdRequestVo) {
 
 		ModifyPwdDTO modifyPwdDTO = modelMapper.map(modifyPwdRequestVo, ModifyPwdDTO.class);
-		UUID userUuid = jwtUtil.getUuidByAuthorization(accessToken);
-		return memberService.modifyPassword(userUuid, modifyPwdDTO);
+		return memberService.modifyPassword(jwtUtil.getUuidByAuthorization(accessToken), modifyPwdDTO);
 	}
 
 	@GetMapping("/find/signinId")
@@ -57,5 +58,24 @@ public class MemberController {
 
 		FindSigninIdDTO findSigninIdDTO = memberService.findSigninId(jwtUtil.getUuidByAuthorization(accessToken));
 		return new BaseResponse<>(modelMapper.map(findSigninIdDTO, FindSigninIdResponseVO.class));
+	}
+
+	@PutMapping("/modify/email")
+	@Operation(summary = "이메일 변경")
+	public BaseResponse<?> userModifyEmail(@RequestHeader("Authorization") String accessToken,
+			@RequestBody ModifyEmailRequestVO modifyEmailRequestVo) {
+
+		ModifyEmailDTO modifyEmailDTO = modelMapper.map(modifyEmailRequestVo, ModifyEmailDTO.class);
+		return memberService.modifyEmail(jwtUtil.getUuidByAuthorization(accessToken), modifyEmailDTO);
+	}
+
+	@PutMapping("/modify/phone")
+	@Operation(summary = "전화번호 변경")
+	public BaseResponse<?> userModifyPhone(@RequestHeader("Authorization") String accessToken,
+			@RequestBody ModifyPhoneRequestVO modifyPhoneRequestVo) {
+
+		ModifyPhoneDTO modifyPhoneDTO = modelMapper.map(modifyPhoneRequestVo, ModifyPhoneDTO.class);
+
+		return memberService.modifyPhone(jwtUtil.getUuidByAuthorization(accessToken), modifyPhoneDTO);
 	}
 }

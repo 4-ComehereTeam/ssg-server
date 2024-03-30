@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.dto.FindSigninIdDTO;
+import com.comehere.ssgserver.member.dto.ModifyEmailDTO;
+import com.comehere.ssgserver.member.dto.ModifyPhoneDTO;
 import com.comehere.ssgserver.member.dto.ModifyPwdDTO;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 
@@ -25,8 +27,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public BaseResponse<?> modifyPassword(UUID userUuid, ModifyPwdDTO modifyPwdDTO) {
 
-		Member member = memberRepository.findByUuid(userUuid)
-				.orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+		Member member = getMemberByUuid(userUuid);
 
 		memberRepository.save(Member.builder()
 				.id(member.getId())
@@ -41,12 +42,46 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public FindSigninIdDTO findSigninId(UUID userUuid) {
 
-		Member member = memberRepository.findByUuid(userUuid)
-				.orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+		Member member = getMemberByUuid(userUuid);
 
 		return FindSigninIdDTO.builder()
 				.signinId(member.getSigninId())
 				.build();
+	}
+
+	@Override
+	public BaseResponse<?> modifyEmail(UUID userUuid, ModifyEmailDTO modifyEmailDTO) {
+
+		Member member = getMemberByUuid(userUuid);
+
+		memberRepository.save(Member.builder()
+				.id(member.getId())
+				.phone(member.getPhone())
+				.email(modifyEmailDTO.getNewEmail())
+				.password(member.getPassword())
+				.build());
+
+		return new BaseResponse<>(true);
+	}
+
+	@Override
+	public BaseResponse<?> modifyPhone(UUID userUuid, ModifyPhoneDTO modifyPhoneDTO) {
+
+		Member member = getMemberByUuid(userUuid);
+
+		memberRepository.save(Member.builder()
+				.id(member.getId())
+				.phone(modifyPhoneDTO.getNewPhone())
+				.email(member.getEmail())
+				.password(member.getPassword())
+				.build());
+
+		return new BaseResponse<>(true);
+	}
+
+	private Member getMemberByUuid(UUID userUuid) {
+		return memberRepository.findByUuid(userUuid)
+				.orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 	}
 }
 
