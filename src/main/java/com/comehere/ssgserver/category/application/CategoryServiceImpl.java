@@ -27,39 +27,39 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public BigCategoryRespDTO findBigCategory() {
-		List<BigCategory> bigCategory = bigCategoryRepository.findAll();
+		List<BigCategory> bigCategories = bigCategoryRepository.findAll();
 
 		return BigCategoryRespDTO.builder()
-				.count(bigCategory.size())
-				.bigCategories(bigCategory)
+				.count(bigCategories.size())
+				.bigCategories(bigCategories)
 				.build();
 	}
 
 	@Override
-	public MiddleCategoryRespDTO findMiddleCategory(Integer id) {
+	public MiddleCategoryRespDTO findMiddleCategory(Integer bigCategoryId) {
 		return MiddleCategoryRespDTO.builder()
-				.bigCategoryId(id)
-				.middleCategories(middleCategoryRepository.findByBigCategoryId(id).stream()
+				.bigCategoryId(bigCategoryId)
+				.middleCategories(middleCategoryRepository.findByBigCategoryId(bigCategoryId).stream()
 						.map(CategoryDTO::new)
 						.toList())
 				.build();
 	}
 
 	@Override
-	public SmallCategoryRespDTO findSmallCategory(Integer id) {
+	public SmallCategoryRespDTO findSmallCategory(Integer middleCategoryId) {
 		return SmallCategoryRespDTO.builder()
-				.middleCategoryId(id)
-				.smallCategories(smallCategoryRepository.findByMiddleCategoryId(id).stream()
+				.middleCategoryId(middleCategoryId)
+				.smallCategories(smallCategoryRepository.findByMiddleCategoryId(middleCategoryId).stream()
 						.map(CategoryDTO::new)
 						.toList())
 				.build();
 	}
 
 	@Override
-	public DetailCategoryRespDTO findDetailCategory(Integer id) {
+	public DetailCategoryRespDTO findDetailCategory(Integer smallCategoryId) {
 		return DetailCategoryRespDTO.builder()
-				.smallCategoryId(id)
-				.detailCategories(detailCategoryRepository.findBySmallCategoryId(id).stream()
+				.smallCategoryId(smallCategoryId)
+				.detailCategories(detailCategoryRepository.findBySmallCategoryId(smallCategoryId).stream()
 						.map(CategoryDTO::new)
 						.toList())
 				.build();

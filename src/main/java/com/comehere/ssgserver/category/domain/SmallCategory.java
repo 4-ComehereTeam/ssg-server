@@ -1,5 +1,6 @@
 package com.comehere.ssgserver.category.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -20,5 +21,6 @@ public class SmallCategory {
 	@JoinColumn(name = "middle_category_id")
 	private MiddleCategory middleCategory;
 
+	@Column(length = 50, nullable = false)
 	private String name;
 }
