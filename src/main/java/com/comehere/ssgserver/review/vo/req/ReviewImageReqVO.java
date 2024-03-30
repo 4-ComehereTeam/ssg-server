@@ -1,11 +1,10 @@
-package com.comehere.ssgserver.image.dto;
+package com.comehere.ssgserver.review.vo.req;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
-public class ImageReqDTO {
+public class ReviewImageReqVO {
 	private String imageUrl;
 
 	private String alt;

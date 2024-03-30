@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.image.domain;
+package com.comehere.ssgserver.review.domain;
 
 import com.comehere.ssgserver.review.domain.Review;
 

@@ -1,5 +1,7 @@
 package com.comehere.ssgserver.review.domain;
 
+import java.util.UUID;
+
 import com.comehere.ssgserver.common.entity.BaseEntity;
 import com.comehere.ssgserver.member.domain.Member;
 
@@ -23,9 +25,11 @@ public class Review extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id", nullable = false, updatable = false)
-	private Member member;
+	@Column(nullable = false, updatable = false)
+	private UUID uuid;
+
+	@Column(nullable = false)
+	private String signinId;
 
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = false)
 	private Short star;
@@ -40,12 +44,15 @@ public class Review extends BaseEntity {
 	private String itemCode;
 
 	@Builder
-	public Review(Long id, Member member, Short star, String content, Long purchaseListId, String itemCode) {
+
+	public Review(Long id, UUID uuid, String signinId, Short star, String content, Long purchaseListId,
+			String itemCode) {
 		this.id = id;
-		this.member = member;
-		this.purchaseListId = purchaseListId;
-		this.itemCode = itemCode;
+		this.uuid = uuid;
+		this.signinId = signinId;
 		this.star = star;
 		this.content = content;
+		this.purchaseListId = purchaseListId;
+		this.itemCode = itemCode;
 	}
 }

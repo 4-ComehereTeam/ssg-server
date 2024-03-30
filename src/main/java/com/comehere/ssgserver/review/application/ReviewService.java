@@ -1,12 +1,15 @@
 package com.comehere.ssgserver.review.application;
 
-import com.comehere.ssgserver.review.vo.ReviewCreateVO;
-import com.comehere.ssgserver.review.vo.ReviewUpdateVo;
+import java.util.UUID;
+
+import com.comehere.ssgserver.review.dto.req.ReviewCreateReqDTO;
+import com.comehere.ssgserver.review.dto.req.ReviewUpdateReqDTO;
+import com.comehere.ssgserver.review.vo.req.ReviewUpdateReqVo;
 
 public interface ReviewService {
-	void createReview(ReviewCreateVO reviewCreateVO);
+	void createReview(ReviewCreateReqDTO dto, UUID uuid);
 
-	void deleteReview(Long reviewId);
+	void updateReview(ReviewUpdateReqDTO dto, UUID uuid);
 
-	void updateReview(ReviewUpdateVo reviewUpdateVo);
+	void deleteReview(Long reviewId, UUID uuid);
 }
