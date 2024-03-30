@@ -1,9 +1,9 @@
 package com.comehere.ssgserver.category.application;
 
-import com.comehere.ssgserver.category.dto.BigCategoryRespDTO;
-import com.comehere.ssgserver.category.dto.DetailCategoryRespDTO;
-import com.comehere.ssgserver.category.dto.MiddleCategoryRespDTO;
-import com.comehere.ssgserver.category.dto.SmallCategoryRespDTO;
+import com.comehere.ssgserver.category.dto.resp.BigCategoryRespDTO;
+import com.comehere.ssgserver.category.dto.resp.DetailCategoryRespDTO;
+import com.comehere.ssgserver.category.dto.resp.MiddleCategoryRespDTO;
+import com.comehere.ssgserver.category.dto.resp.SmallCategoryRespDTO;
 
 public interface CategoryService {
 	BigCategoryRespDTO findBigCategory();

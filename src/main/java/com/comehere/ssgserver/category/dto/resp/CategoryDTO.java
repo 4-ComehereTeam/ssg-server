@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.category.dto;
+package com.comehere.ssgserver.category.dto.resp;
 
 import com.comehere.ssgserver.category.domain.DetailCategory;
 import com.comehere.ssgserver.category.domain.MiddleCategory;
