@@ -2,11 +2,13 @@ package com.comehere.ssgserver.item.vo.resp;
 
 import com.comehere.ssgserver.item.dto.resp.ItemDetailRespDTO;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemDetailRespVO {
 	private String itemName;
 
@@ -15,13 +17,4 @@ public class ItemDetailRespVO {
 	private Long price;
 
 	private Integer discountRate;
-
-	public static ItemDetailRespVO toBuild(ItemDetailRespDTO dto) {
-		return ItemDetailRespVO.builder()
-				.discountRate(dto.getDiscountRate())
-				.price(dto.getPrice())
-				.itemCode(dto.getItemCode())
-				.itemName(dto.getItemName())
-				.build();
-	}
 }

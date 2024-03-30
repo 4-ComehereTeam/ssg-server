@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.item.domain.ItemCalc;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
+import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemCalcRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemDetailRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemListRespDTO;
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ItemServiceImpl implements ItemService { // 기본 CRUD API 생성하기
+public class ItemServiceImpl implements ItemService {
 	private final ItemRepository itemRepository;
 	private final ItemCalcRepository itemCalcRepository;
 
@@ -57,16 +58,14 @@ public class ItemServiceImpl implements ItemService { // 기본 CRUD API 생성�
 
 	@Override
 	@Transactional
-	public void createItem(ItemReqVO vo) {
-		Item item = Item.builder()
-				.name(vo.getName())
+	public void createItem(ItemReqDTO dto) {
+		itemRepository.save(Item.builder()
+				.name(dto.getName())
 				.code(UUID.randomUUID().toString())
-				.price(vo.getPrice())
+				.price(dto.getPrice())
 				.discountRate(0)
-				.description(vo.getDescription())
+				.description(dto.getDescription())
 				.status((short)1)
-				.build();
-
-		itemRepository.save(item);
+				.build());
 	}
 }

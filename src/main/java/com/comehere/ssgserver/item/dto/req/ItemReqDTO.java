@@ -1,15 +1,12 @@
-package com.comehere.ssgserver.item.vo.req;
+package com.comehere.ssgserver.item.dto.req;
 
-import java.util.List;
-
-import javax.swing.text.html.Option;
-
-import com.comehere.ssgserver.option.domain.ItemOption;
-
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class ItemReqVO {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class ItemReqDTO {
 	private String name;
 
 	private Long price;
