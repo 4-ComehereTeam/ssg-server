@@ -1,20 +1,30 @@
 package com.comehere.ssgserver.review.presentation;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.comehere.ssgserver.image.application.ImageService;
-import com.comehere.ssgserver.image.vo.ReviewImageIdVo;
-import com.comehere.ssgserver.image.vo.ReviewImageVO;
-import com.comehere.ssgserver.image.vo.ReviewImagesVo;
+import com.comehere.ssgserver.common.security.jwt.JWTUtil;
+import com.comehere.ssgserver.review.application.ReviewImageService;
 import com.comehere.ssgserver.review.application.ReviewService;
-import com.comehere.ssgserver.review.vo.ReviewCreateVO;
-import com.comehere.ssgserver.review.vo.ReviewReqVO;
-import com.comehere.ssgserver.review.vo.ReviewUpdateVo;
+import com.comehere.ssgserver.review.dto.req.ReviewCreateReqDTO;
+import com.comehere.ssgserver.review.dto.req.ReviewImageCreateDTO;
+import com.comehere.ssgserver.review.dto.req.ReviewImageUpdateReqDTO;
+import com.comehere.ssgserver.review.dto.req.ReviewUpdateReqDTO;
+import com.comehere.ssgserver.review.vo.req.ReviewCreateReqVO;
+import com.comehere.ssgserver.review.vo.req.ReviewImageCreateReqVO;
+import com.comehere.ssgserver.review.vo.req.ReviewImageUpdateReqVO;
+import com.comehere.ssgserver.review.vo.req.ReviewUpdateReqVo;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,42 +37,74 @@ import lombok.RequiredArgsConstructor;
 public class ReviewController {
 	private final ReviewService reviewService;
 
-	private final ImageService imageService;
+	private final ReviewImageService reviewImageService;
+
+	private final ModelMapper modelMapper;
+
+	private final JWTUtil jwtUtil;
 
 	@PostMapping
 	@Operation(summary = "리뷰 등록")
-	public void createReview(@RequestBody ReviewCreateVO reviewCreateVO) {
-		reviewService.createReview(reviewCreateVO);
-	}
+	public void createReview(@RequestHeader("Authorization") String authorization, @RequestBody ReviewCreateReqVO vo) {
+		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 
-	@DeleteMapping
-	@Operation(summary = "리뷰 삭제")
-	public void deleteReview(@RequestBody ReviewReqVO reviewReqVO) {
-		reviewService.deleteReview(reviewReqVO.getReviewId());
+		reviewService.createReview(modelMapper.map(vo, ReviewCreateReqDTO.class), uuid);
 	}
 
 	@PutMapping
 	@Operation(summary = "리뷰 수정")
-	public void updateReview(@RequestBody ReviewUpdateVo reviewUpdateVo) {
-		reviewService.updateReview(reviewUpdateVo);
+	public void updateReview(@RequestBody ReviewUpdateReqVo vo, @RequestHeader("Authorization") String authorization) {
+		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
+
+		reviewService.updateReview(modelMapper.map(vo, ReviewUpdateReqDTO.class), uuid);
 	}
 
-	@PutMapping("/image")
-	@Operation(summary = "리뷰 이미지 수정")
-	public void updateReviewImage(@RequestBody ReviewImageVO reviewImageVO) {
-		imageService.updateReviewImage(reviewImageVO);
+	@DeleteMapping("/{reviewId}")
+	@Operation(summary = "리뷰 삭제")
+	public void deleteReview(
+			@PathVariable("reviewId") Long reviewId,
+			@RequestHeader("Authorization") String authorization) {
+		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
+
+		System.out.println("reviewId = " + reviewId);
+		System.out.println("uuid = " + uuid);
+		reviewService.deleteReview(reviewId, uuid);
+	}
+
+	@PostMapping("/images")
+	@Operation(summary = "리뷰 이미지 등록")
+	public void createReviewImage(
+			@RequestBody ReviewImageCreateReqVO vo,
+			@RequestHeader("Authorization") String authorization) {
+
+		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
+		reviewImageService.createReviewImage(modelMapper.map(vo, ReviewImageCreateDTO.class), uuid);
 	}
 
 	@PutMapping("/images")
-	@Operation(summary = "리뷰 이미지 전체 수정")
-	public void updateReviewImage(@RequestBody ReviewImagesVo reviewImagesVo) {
-		reviewImagesVo.getReviewImageVO()
-				.forEach(reviewImageVO -> imageService.updateReviewImage(reviewImageVO));
+	@Operation(summary = "리뷰 이미지 수정")
+	public void updateReviewImage(
+			@RequestBody List<ReviewImageUpdateReqVO> vo,
+			@RequestHeader("Authorization") String authorization) {
+
+		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
+
+		List<ReviewImageUpdateReqDTO> dto = new ArrayList<>();
+
+		vo.forEach(reviewImageUpdateReqVO -> {
+			dto.add(modelMapper.map(reviewImageUpdateReqVO, ReviewImageUpdateReqDTO.class));
+		});
+
+		reviewImageService.updateReviewImages(dto, uuid);
 	}
 
-	@DeleteMapping("/image")
+	@DeleteMapping("/images/{reviewImageId}")
 	@Operation(summary = "리뷰 이미지 삭제")
-	public void deleteReviewImage(@RequestBody ReviewImageIdVo reviewImageIdVo) {
-		imageService.deleteReviewImage(reviewImageIdVo.getReviewImageId());
+	public void deleteReviewImage(
+			@PathVariable("reviewImageId") Long reviewImageId,
+			@RequestHeader("Authorization") String authorization) {
+
+		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
+		reviewImageService.deleteReviewImage(reviewImageId, uuid);
 	}
 }

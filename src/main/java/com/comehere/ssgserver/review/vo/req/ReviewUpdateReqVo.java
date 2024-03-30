@@ -1,9 +1,9 @@
-package com.comehere.ssgserver.review.vo;
+package com.comehere.ssgserver.review.vo.req;
 
 import lombok.Getter;
 
 @Getter
-public class ReviewUpdateVo {
+public class ReviewUpdateReqVo {
 	private Long reviewId;
 	private Short star;
 	private String content;
