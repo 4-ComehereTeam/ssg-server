@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,11 +15,11 @@ import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.member.domain.Agree;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.domain.Role;
+import com.comehere.ssgserver.member.dto.request.SigninRequestDTO;
+import com.comehere.ssgserver.member.dto.response.SigninResponseDTO;
 import com.comehere.ssgserver.member.infrastructure.AgreeRepository;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 import com.comehere.ssgserver.member.vo.request.JoinRequestVO;
-import com.comehere.ssgserver.member.vo.request.SignInRequestVO;
-import com.comehere.ssgserver.member.vo.response.SignInResponseVO;
 import com.comehere.ssgserver.purchase.domain.Address;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
 
@@ -55,19 +56,19 @@ public class AuthServiceImpl implements AuthService {
 		log.info("member: {}", member);
 	}
 
-	// 로그인 전
+	// 로그인 처리
 	@Override
-	public SignInResponseVO signIn(SignInRequestVO signInRequestVo) {
+	public SigninResponseDTO signIn(SigninRequestDTO signinRequestDto) {
 
 		// 사용자 정보 조회
-		Member member = memberRepository.findBySigninId(signInRequestVo.getSigninId())
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+		Member member = memberRepository.findBySigninId(signinRequestDto.getSigninId())
+				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 		// 인증 과정 수행
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				member.getUuid(), signInRequestVo.getPassword()));
+				member.getUuid(), signinRequestDto.getPassword()));
 
 		// 인증 성공 응답 생성
-		return SignInResponseVO.builder()
+		return SigninResponseDTO.builder()
 				.uuid(member.getUuid())
 				.name(member.getName())
 				.email(member.getEmail())
