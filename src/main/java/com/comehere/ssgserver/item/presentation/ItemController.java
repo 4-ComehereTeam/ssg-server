@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.common.response.BaseResponse;
+import com.comehere.ssgserver.item.dto.resp.ItemImageRespDTO;
+import com.comehere.ssgserver.item.dto.resp.ItemThumbnailRespDTO;
 import com.comehere.ssgserver.item.application.ItemService;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
-import com.comehere.ssgserver.item.dto.resp.ItemDetailRespDTO;
 import com.comehere.ssgserver.item.vo.req.ItemReqVO;
 import com.comehere.ssgserver.item.vo.resp.ItemCalcRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemDetailRespVO;
@@ -71,5 +72,16 @@ public class ItemController {
 	public BaseResponse<?> createItem(@RequestBody ItemReqVO vo) {
 		itemService.createItem(modelMapper.map(vo, ItemReqDTO.class));
 		return new BaseResponse<>();
+	}
+
+	@GetMapping("/images/{id}")
+	@Operation(summary = "상품 이미지 조회 API", description = "상품 이미지 조회")
+	public ItemImageRespDTO itemWithImages(@PathVariable("id") Long id) {
+		return itemService.getItemImages(id);
+	}
+
+	@GetMapping("/thumbnail/{id}")
+	public ItemThumbnailRespDTO itemThumbnail(@PathVariable("id") Long id) {
+		return itemService.getItemThumbnail(id);
 	}
 }

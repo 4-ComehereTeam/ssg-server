@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.image.infrastructure;
+package com.comehere.ssgserver.item.infrastructual;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.comehere.ssgserver.image.domain.ItemImage;
+import com.comehere.ssgserver.item.domain.ItemImage;
 
 public interface ItemImageRepository extends JpaRepository<ItemImage, Long> {
 	List<ItemImage> findByItemId(Long itemId);

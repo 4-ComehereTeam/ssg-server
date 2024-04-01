@@ -8,14 +8,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.item.domain.ItemCalc;
+import com.comehere.ssgserver.item.domain.ItemImage;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
+import com.comehere.ssgserver.item.dto.resp.ImageDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemCalcRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemDetailRespDTO;
+import com.comehere.ssgserver.item.dto.resp.ItemImageRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemListRespDTO;
+import com.comehere.ssgserver.item.dto.resp.ItemThumbnailRespDTO;
 import com.comehere.ssgserver.item.infrastructual.ItemCalcRepository;
+import com.comehere.ssgserver.item.infrastructual.ItemImageRepository;
 import com.comehere.ssgserver.item.infrastructual.ItemRepository;
-import com.comehere.ssgserver.item.vo.req.ItemReqVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class ItemServiceImpl implements ItemService {
 	private final ItemRepository itemRepository;
 	private final ItemCalcRepository itemCalcRepository;
+	private final ItemImageRepository itemImageRepository;
 
 	@Override
 	public ItemDetailRespDTO getItemDetail(Long id) {
@@ -67,5 +72,27 @@ public class ItemServiceImpl implements ItemService {
 				.description(dto.getDescription())
 				.status((short)1)
 				.build());
+	}
+
+	@Override
+	public ItemImageRespDTO getItemImages(Long itemId) {
+		return ItemImageRespDTO.builder()
+				.itemId(itemId)
+				.itemImages(itemImageRepository.findByItemId(itemId).stream()
+						.map(ImageDTO::new)
+						.toList())
+				.build();
+	}
+
+	@Override
+	public ItemThumbnailRespDTO getItemThumbnail(Long itemId) {
+		ItemImage thumbnail = itemImageRepository.findThumbnail(itemId);
+
+		return ItemThumbnailRespDTO.builder()
+				.itemId(thumbnail.getItemId())
+				.imageId(thumbnail.getId())
+				.url(thumbnail.getImageUrl())
+				.alt(thumbnail.getAlt())
+				.build();
 	}
 }
