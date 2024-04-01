@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.comehere.ssgserver.review.dto.req.ReviewCreateReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewUpdateReqDTO;
+import com.comehere.ssgserver.review.dto.resp.ReviewContentRespDTO;
 import com.comehere.ssgserver.review.dto.resp.ReviewListRespDTO;
 import com.comehere.ssgserver.review.vo.req.ReviewUpdateReqVo;
 
@@ -18,4 +19,6 @@ public interface ReviewService {
 	void deleteReview(Long reviewId, UUID uuid);
 
 	ReviewListRespDTO getReviewList(String itemCode, Pageable page);
+
+	ReviewContentRespDTO getReviewContent(Long reviewId);
 }

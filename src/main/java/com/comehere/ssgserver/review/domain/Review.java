@@ -44,7 +44,6 @@ public class Review extends BaseEntity {
 	private String itemCode;
 
 	@Builder
-
 	public Review(Long id, UUID uuid, String signinId, Short star, String content, Long purchaseListId,
 			String itemCode) {
 		this.id = id;
