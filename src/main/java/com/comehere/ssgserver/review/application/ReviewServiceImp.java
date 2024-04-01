@@ -8,10 +8,13 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.comehere.ssgserver.common.exception.BaseException;
+import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.review.domain.Review;
 import com.comehere.ssgserver.review.dto.req.ReviewCreateReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewUpdateReqDTO;
+import com.comehere.ssgserver.review.dto.resp.ReviewContentRespDTO;
 import com.comehere.ssgserver.review.dto.resp.ReviewListRespDTO;
 import com.comehere.ssgserver.review.infrastructure.ReviewRepository;
 
@@ -79,6 +82,14 @@ public class ReviewServiceImp implements ReviewService {
 				.reviews(reviews.getContent())
 				.hasNext(reviews.hasNext())
 				.build();
+	}
+
+	@Override
+	public ReviewContentRespDTO getReviewContent(Long reviewId) {
+		Review review = reviewRepository.findById(reviewId)
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.REVIEW_NOT_FOUND));
+
+		return ReviewContentRespDTO.toBuild(review);
 	}
 
 	private void createReviewImages(List<ReviewImageReqDTO> dtos, Review review) {

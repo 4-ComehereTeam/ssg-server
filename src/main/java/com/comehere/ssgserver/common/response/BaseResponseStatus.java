@@ -74,7 +74,8 @@ public enum BaseResponseStatus {
 	 */
 	PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7001, "존재하지 않는 상품입니다."),
 	NO_PRODUCT_WITH_BRAND(HttpStatus.BAD_REQUEST, false, 7002, "브랜드 정보가 없는 상품입니다."),
-	BRAND_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7003, "존재하지 않는 브랜드입니다.");
+	BRAND_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7003, "존재하지 않는 브랜드입니다."),
+	REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7004, "존재하지 않는 리뷰입니다.");
 
 	private final HttpStatusCode httpStatusCode;
 	private final boolean isSuccess;

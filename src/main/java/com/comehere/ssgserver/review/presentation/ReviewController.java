@@ -29,6 +29,7 @@ import com.comehere.ssgserver.review.vo.req.ReviewCreateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewImageCreateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewImageUpdateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewUpdateReqVo;
+import com.comehere.ssgserver.review.vo.resp.ReviewContentRespVO;
 import com.comehere.ssgserver.review.vo.resp.ReviewListRespVO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -113,12 +114,19 @@ public class ReviewController {
 		reviewImageService.deleteReviewImage(reviewImageId, uuid);
 	}
 
-	@GetMapping("/{itemCode}")
+	@GetMapping("/list/{itemCode}")
 	@Operation(summary = "상품 별 리뷰 목록 조회")
 	public BaseResponse<ReviewListRespVO> getReviewList(
 			@PathVariable("itemCode") String itemCode,
 			@PageableDefault(size = 5) Pageable page) {
 		return new BaseResponse<>(modelMapper.map(
 				reviewService.getReviewList(itemCode, page), ReviewListRespVO.class));
+	}
+
+	@GetMapping("/content/{reviewId}")
+	@Operation(summary = "리뷰 내용 조회")
+	public BaseResponse<ReviewContentRespVO> getReviewContent(@PathVariable("reviewId") Long reviewId) {
+		return new BaseResponse<>(modelMapper.map(
+				reviewService.getReviewContent(reviewId), ReviewContentRespVO.class));
 	}
 }
