@@ -1,5 +1,7 @@
 package com.comehere.ssgserver.clip.domain;
 
+import java.util.UUID;
+
 import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.member.domain.Member;
 
@@ -22,17 +24,14 @@ public class ItemClip {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "item_id")
-	private Item item;
+	private UUID uuid;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
-	private Member member;
+	private Long itemId;
 
 	@Builder
-	public ItemClip(Item item, Member member) {
-		this.item = item;
-		this.member = member;
+	public ItemClip(Long id, UUID uuid, Long itemId) {
+		this.id = id;
+		this.uuid = uuid;
+		this.itemId = itemId;
 	}
 }
