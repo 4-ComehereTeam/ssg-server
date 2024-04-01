@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.common.response.BaseResponse;
-import com.comehere.ssgserver.item.dto.resp.ItemImageRespDTO;
+import com.comehere.ssgserver.item.dto.resp.ItemImageListRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemThumbnailRespDTO;
 import com.comehere.ssgserver.item.application.ItemService;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
@@ -20,7 +20,9 @@ import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
 import com.comehere.ssgserver.item.vo.req.ItemReqVO;
 import com.comehere.ssgserver.item.vo.resp.ItemCalcRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemDetailRespVO;
+import com.comehere.ssgserver.item.vo.resp.ItemImageListRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemListRespVO;
+import com.comehere.ssgserver.item.vo.resp.ItemThumbnailRespVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -74,14 +76,17 @@ public class ItemController {
 		return new BaseResponse<>();
 	}
 
-	@GetMapping("/images/{id}")
+	@GetMapping("/images/{itemId}")
 	@Operation(summary = "상품 이미지 조회 API", description = "상품 이미지 조회")
-	public ItemImageRespDTO itemWithImages(@PathVariable("id") Long id) {
-		return itemService.getItemImages(id);
+	public BaseResponse<ItemImageListRespVO> itemWithImages(@PathVariable("itemId") Long itemId) {
+		return new BaseResponse<>(modelMapper.map(
+				itemService.getItemImages(itemId), ItemImageListRespVO.class));
 	}
 
-	@GetMapping("/thumbnail/{id}")
-	public ItemThumbnailRespDTO itemThumbnail(@PathVariable("id") Long id) {
-		return itemService.getItemThumbnail(id);
+	@GetMapping("/thumbnail/{itemId}")
+	@Operation(summary = "상품 썸네일 조회 API", description = "상품 이미지 중 썸네일 이미지만 조회")
+	public BaseResponse<ItemThumbnailRespVO> itemThumbnail(@PathVariable("itemId") Long itemId) {
+		return new BaseResponse<>(modelMapper.map(
+				itemService.getItemThumbnail(itemId), ItemThumbnailRespVO.class));
 	}
 }

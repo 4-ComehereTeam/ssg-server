@@ -1,14 +1,14 @@
-package com.comehere.ssgserver.item.dto.resp;
+package com.comehere.ssgserver.item.vo.resp;
 
 import lombok.Getter;
 
 @Getter
-public class ThumbnailDTO {
-	private Long itemId;
-
+public class ImageVO {
 	private Long imageId;
 
 	private String url;
 
 	private String alt;
+
+	private Boolean thumbnail;
 }
