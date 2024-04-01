@@ -1,12 +1,16 @@
 package com.comehere.ssgserver.clip.application;
 
-import com.comehere.ssgserver.clip.dto.ItemClipDto;
-import com.comehere.ssgserver.clip.dto.ItemIdsDTO;
+import java.util.UUID;
+
+import com.comehere.ssgserver.clip.dto.req.ItemsClipDeleteReqDTO;
+import com.comehere.ssgserver.clip.dto.req.ItemsClipGetRespDTO;
 
 public interface ItemClipService {
-	void createItemClip(ItemClipDto itemClipDto);
+	void createItemClip(UUID uuid, Long itemId);
 
-	void deleteItemClip(ItemClipDto itemClipDto);
+	void deleteItemClip(UUID uuid, Long itemId);
 
-	ItemIdsDTO getClipList(Long memberId);
+	void deleteItemsClip(UUID uuid, ItemsClipDeleteReqDTO vo);
+
+	ItemsClipGetRespDTO getItemsClip(UUID uuid);
 }
