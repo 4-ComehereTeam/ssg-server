@@ -3,6 +3,8 @@ package com.comehere.ssgserver.review.application;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +12,7 @@ import com.comehere.ssgserver.review.domain.Review;
 import com.comehere.ssgserver.review.dto.req.ReviewCreateReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewUpdateReqDTO;
+import com.comehere.ssgserver.review.dto.resp.ReviewListRespDTO;
 import com.comehere.ssgserver.review.infrastructure.ReviewRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -65,6 +68,17 @@ public class ReviewServiceImp implements ReviewService {
 		reviewImageService.deleteReviewImages(review);
 
 		reviewRepository.delete(review);
+	}
+
+	@Override
+	public ReviewListRespDTO getReviewList(String itemCode, Pageable page) {
+		Slice<Long> reviews = reviewRepository.findByItemCode(itemCode, page);
+
+		return ReviewListRespDTO.builder()
+				.itemCode(itemCode)
+				.reviews(reviews.getContent())
+				.hasNext(reviews.hasNext())
+				.build();
 	}
 
 	private void createReviewImages(List<ReviewImageReqDTO> dtos, Review review) {

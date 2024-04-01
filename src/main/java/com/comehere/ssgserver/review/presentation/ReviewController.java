@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.review.application.ReviewImageService;
 import com.comehere.ssgserver.review.application.ReviewService;
@@ -25,6 +29,7 @@ import com.comehere.ssgserver.review.vo.req.ReviewCreateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewImageCreateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewImageUpdateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewUpdateReqVo;
+import com.comehere.ssgserver.review.vo.resp.ReviewListRespVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -106,5 +111,14 @@ public class ReviewController {
 
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 		reviewImageService.deleteReviewImage(reviewImageId, uuid);
+	}
+
+	@GetMapping("/{itemCode}")
+	@Operation(summary = "상품 별 리뷰 목록 조회")
+	public BaseResponse<ReviewListRespVO> getReviewList(
+			@PathVariable("itemCode") String itemCode,
+			@PageableDefault(size = 5) Pageable page) {
+		return new BaseResponse<>(modelMapper.map(
+				reviewService.getReviewList(itemCode, page), ReviewListRespVO.class));
 	}
 }
