@@ -14,7 +14,7 @@ import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
 import com.comehere.ssgserver.item.dto.resp.ImageDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemCalcRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemDetailRespDTO;
-import com.comehere.ssgserver.item.dto.resp.ItemImageRespDTO;
+import com.comehere.ssgserver.item.dto.resp.ItemImageListRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemListRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemThumbnailRespDTO;
 import com.comehere.ssgserver.item.infrastructual.ItemCalcRepository;
@@ -75,8 +75,8 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public ItemImageRespDTO getItemImages(Long itemId) {
-		return ItemImageRespDTO.builder()
+	public ItemImageListRespDTO getItemImages(Long itemId) {
+		return ItemImageListRespDTO.builder()
 				.itemId(itemId)
 				.itemImages(itemImageRepository.findByItemId(itemId).stream()
 						.map(ImageDTO::new)
@@ -86,13 +86,6 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	public ItemThumbnailRespDTO getItemThumbnail(Long itemId) {
-		ItemImage thumbnail = itemImageRepository.findThumbnail(itemId);
-
-		return ItemThumbnailRespDTO.builder()
-				.itemId(thumbnail.getItemId())
-				.imageId(thumbnail.getId())
-				.url(thumbnail.getImageUrl())
-				.alt(thumbnail.getAlt())
-				.build();
+		return ItemThumbnailRespDTO.toBuild(itemImageRepository.findThumbnail(itemId));
 	}
 }
