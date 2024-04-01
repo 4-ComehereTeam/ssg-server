@@ -15,7 +15,9 @@ import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.member.domain.Agree;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.domain.Role;
+import com.comehere.ssgserver.member.dto.request.CheckStatusRequestDTO;
 import com.comehere.ssgserver.member.dto.request.SigninRequestDTO;
+import com.comehere.ssgserver.member.dto.response.CheckResignCountResponseDTO;
 import com.comehere.ssgserver.member.dto.response.SigninResponseDTO;
 import com.comehere.ssgserver.member.infrastructure.AgreeRepository;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
@@ -144,5 +146,27 @@ public class AuthServiceImpl implements AuthService {
 		boolean test = memberRepository.existsByEmail(email);
 		log.info(test + "");
 		return memberRepository.existsByEmail(email);
+	}
+
+	public CheckResignCountResponseDTO checkResignCount(CheckStatusRequestDTO checkStatusRequestDTO) {
+
+		Member member = memberRepository.findBySigninId(checkStatusRequestDTO.getSigninId())
+				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+		CheckResignCountResponseDTO checkResignCountResponseDTO = new CheckResignCountResponseDTO();
+		checkResignCountResponseDTO.setResignCount(member.getResignCount());
+
+		return checkResignCountResponseDTO;
+	}
+
+	public boolean checkDormancy(CheckStatusRequestDTO checkStatusRequestDTO) {
+		Member member = memberRepository.findBySigninId(checkStatusRequestDTO.getSigninId())
+				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+		if (member.getStatus() == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

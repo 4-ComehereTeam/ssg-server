@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.member.application.AuthService;
+import com.comehere.ssgserver.member.dto.request.CheckStatusRequestDTO;
 import com.comehere.ssgserver.member.dto.request.SigninRequestDTO;
 import com.comehere.ssgserver.member.dto.response.SigninResponseDTO;
+import com.comehere.ssgserver.member.vo.request.CheckStatusRequestVO;
 import com.comehere.ssgserver.member.vo.request.JoinRequestVO;
 import com.comehere.ssgserver.member.vo.request.SigninRequestVO;
+import com.comehere.ssgserver.member.vo.response.CheckResignCountResponseVO;
 import com.comehere.ssgserver.member.vo.response.SigninResponseVO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -95,4 +98,30 @@ public class AuthController {
 			return new BaseResponse<>(HttpStatus.OK, true, "사용 가능한 이메일입니다.", 200, true);
 		}
 	}
+
+	@PostMapping("/resign")
+	@Operation(summary = "탈퇴 횟수 조회")
+	public BaseResponse<?> checkUserResignCount(@RequestBody CheckStatusRequestVO checkStatusRequestVO) {
+
+		CheckStatusRequestDTO checkStatusRequestDTO = modelMapper.map(checkStatusRequestVO,
+				CheckStatusRequestDTO.class);
+
+		return new BaseResponse<>(modelMapper.map(authService.checkResignCount(checkStatusRequestDTO),
+				CheckResignCountResponseVO.class));
+	}
+
+	@PostMapping("/dormancy")
+	@Operation(summary = "휴면 계정 여부 조회")
+	public BaseResponse<?> checkUserDormancy(@RequestBody CheckStatusRequestVO checkStatusRequestVO) {
+
+		boolean isDormancy = authService.checkDormancy(
+				modelMapper.map(checkStatusRequestVO, CheckStatusRequestDTO.class));
+
+		if (isDormancy) {
+			return new BaseResponse<>(true);
+		} else {
+			return new BaseResponse<>(false);
+		}
+	}
+
 }
