@@ -1,6 +1,6 @@
 package com.comehere.ssgserver.member.application;
 
-import com.comehere.ssgserver.member.dto.request.CheckStatusRequestDTO;
+import com.comehere.ssgserver.member.dto.request.CheckStateRequestDTO;
 import com.comehere.ssgserver.member.dto.request.SigninRequestDTO;
 import com.comehere.ssgserver.member.dto.response.CheckResignCountResponseDTO;
 import com.comehere.ssgserver.member.dto.response.SigninResponseDTO;
@@ -15,7 +15,9 @@ public interface AuthService {
 
 	boolean checkUserSignInIdDuplication(String signInId);
 
-	boolean checkDormancy(CheckStatusRequestDTO checkStatusRequestDto);
+	boolean checkDormancy(CheckStateRequestDTO checkStateRequestDto);
 
-	CheckResignCountResponseDTO checkResignCount(CheckStatusRequestDTO checkStatusRequestDto);
+	boolean checkResign(CheckStateRequestDTO checkStateRequestDto);
+
+	CheckResignCountResponseDTO checkResignCount(CheckStateRequestDTO checkStateRequestDto);
 }

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CheckStatusRequestDTO {
+public class CheckStateRequestDTO {
 
 	private String signinId;
 }

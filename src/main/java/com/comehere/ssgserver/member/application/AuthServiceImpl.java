@@ -15,7 +15,7 @@ import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.member.domain.Agree;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.domain.Role;
-import com.comehere.ssgserver.member.dto.request.CheckStatusRequestDTO;
+import com.comehere.ssgserver.member.dto.request.CheckStateRequestDTO;
 import com.comehere.ssgserver.member.dto.request.SigninRequestDTO;
 import com.comehere.ssgserver.member.dto.response.CheckResignCountResponseDTO;
 import com.comehere.ssgserver.member.dto.response.SigninResponseDTO;
@@ -148,9 +148,9 @@ public class AuthServiceImpl implements AuthService {
 		return memberRepository.existsByEmail(email);
 	}
 
-	public CheckResignCountResponseDTO checkResignCount(CheckStatusRequestDTO checkStatusRequestDTO) {
+	public CheckResignCountResponseDTO checkResignCount(CheckStateRequestDTO checkStateRequestDTO) {
 
-		Member member = memberRepository.findBySigninId(checkStatusRequestDTO.getSigninId())
+		Member member = memberRepository.findBySigninId(checkStateRequestDTO.getSigninId())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
 		CheckResignCountResponseDTO checkResignCountResponseDTO = new CheckResignCountResponseDTO();
@@ -159,11 +159,22 @@ public class AuthServiceImpl implements AuthService {
 		return checkResignCountResponseDTO;
 	}
 
-	public boolean checkDormancy(CheckStatusRequestDTO checkStatusRequestDTO) {
-		Member member = memberRepository.findBySigninId(checkStatusRequestDTO.getSigninId())
+	public boolean checkDormancy(CheckStateRequestDTO checkStateRequestDTO) {
+		Member member = memberRepository.findBySigninId(checkStateRequestDTO.getSigninId())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
 		if (member.getStatus() == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean checkResign(CheckStateRequestDTO checkStateRequestDTO) {
+		Member member = memberRepository.findBySigninId(checkStateRequestDTO.getSigninId())
+				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+		if (member.getStatus() == -1) {
 			return true;
 		} else {
 			return false;

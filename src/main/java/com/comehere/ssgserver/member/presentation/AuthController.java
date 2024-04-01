@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.member.application.AuthService;
-import com.comehere.ssgserver.member.dto.request.CheckStatusRequestDTO;
+import com.comehere.ssgserver.member.dto.request.CheckStateRequestDTO;
 import com.comehere.ssgserver.member.dto.request.SigninRequestDTO;
 import com.comehere.ssgserver.member.dto.response.SigninResponseDTO;
-import com.comehere.ssgserver.member.vo.request.CheckStatusRequestVO;
+import com.comehere.ssgserver.member.vo.request.CheckStateRequestVO;
 import com.comehere.ssgserver.member.vo.request.JoinRequestVO;
 import com.comehere.ssgserver.member.vo.request.SigninRequestVO;
 import com.comehere.ssgserver.member.vo.response.CheckResignCountResponseVO;
@@ -99,23 +99,23 @@ public class AuthController {
 		}
 	}
 
-	@PostMapping("/resign")
+	@PostMapping("/resign/count")
 	@Operation(summary = "탈퇴 횟수 조회")
-	public BaseResponse<?> checkUserResignCount(@RequestBody CheckStatusRequestVO checkStatusRequestVO) {
+	public BaseResponse<?> checkUserResignCount(@RequestBody CheckStateRequestVO checkStateRequestVO) {
 
-		CheckStatusRequestDTO checkStatusRequestDTO = modelMapper.map(checkStatusRequestVO,
-				CheckStatusRequestDTO.class);
+		CheckStateRequestDTO checkStateRequestDTO = modelMapper.map(checkStateRequestVO,
+				CheckStateRequestDTO.class);
 
-		return new BaseResponse<>(modelMapper.map(authService.checkResignCount(checkStatusRequestDTO),
+		return new BaseResponse<>(modelMapper.map(authService.checkResignCount(checkStateRequestDTO),
 				CheckResignCountResponseVO.class));
 	}
 
-	@PostMapping("/dormancy")
+	@PostMapping("/dormancy/state")
 	@Operation(summary = "휴면 계정 여부 조회")
-	public BaseResponse<?> checkUserDormancy(@RequestBody CheckStatusRequestVO checkStatusRequestVO) {
+	public BaseResponse<?> checkUserDormancyState(@RequestBody CheckStateRequestVO checkStateRequestVO) {
 
 		boolean isDormancy = authService.checkDormancy(
-				modelMapper.map(checkStatusRequestVO, CheckStatusRequestDTO.class));
+				modelMapper.map(checkStateRequestVO, CheckStateRequestDTO.class));
 
 		if (isDormancy) {
 			return new BaseResponse<>(true);
@@ -124,4 +124,17 @@ public class AuthController {
 		}
 	}
 
+	@PostMapping("/resign/state")
+	@Operation(summary = "탈퇴 여부 조회")
+	public BaseResponse<?> checkUserResignState(@RequestBody CheckStateRequestVO checkStateRequestVO) {
+
+		boolean isResign = authService.checkResign(
+				modelMapper.map(checkStateRequestVO, CheckStateRequestDTO.class));
+
+		if (isResign) {
+			return new BaseResponse<>(true);
+		} else {
+			return new BaseResponse<>(false);
+		}
+	}
 }
