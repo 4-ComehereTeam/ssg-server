@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.comehere.ssgserver.common.exception.BaseException;
+import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.item.domain.ItemCalc;
 import com.comehere.ssgserver.item.domain.ItemImage;
@@ -34,7 +36,7 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public ItemDetailRespDTO getItemDetail(Long id) {
 		Item item = itemRepository.findById(id)
-				.orElseThrow(() -> new IllegalStateException("존재하지 않는 상품입니다."));
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.PRODUCT_NOT_FOUND));
 
 		return ItemDetailRespDTO.toBuild(item);
 	}
@@ -42,7 +44,7 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public String getDescription(Long id) {
 		Item item = itemRepository.findById(id)
-				.orElseThrow(() -> new IllegalStateException("존재하지 않는 상품입니다."));
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.PRODUCT_NOT_FOUND));
 
 		return item.getDescription();
 	}

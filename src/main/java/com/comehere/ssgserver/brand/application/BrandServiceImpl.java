@@ -14,6 +14,8 @@ import com.comehere.ssgserver.brand.dto.resp.BrandInfoRespDTO;
 import com.comehere.ssgserver.brand.dto.resp.BrandItemListRespDTO;
 import com.comehere.ssgserver.brand.infrastructure.BrandRepository;
 import com.comehere.ssgserver.brand.infrastructure.BrandWithItemRepository;
+import com.comehere.ssgserver.common.exception.BaseException;
+import com.comehere.ssgserver.common.response.BaseResponseStatus;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +28,7 @@ public class BrandServiceImpl implements BrandService {
 	@Override
 	public BrandInfoRespDTO getBrand(Long itemId) {
 		BrandWithItem brandWithItem = brandWithItemRepository.findByItemId(itemId)
-				.orElseThrow(() -> new IllegalStateException("브랜드 정보가 없는 상품입니다."));
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.NO_PRODUCT_WITH_BRAND));
 
 		return BrandInfoRespDTO.toBuild(brandWithItem.getBrand());
 	}
@@ -43,7 +45,7 @@ public class BrandServiceImpl implements BrandService {
 		Slice<Long> result = brandWithItemRepository.findByBrandId(brandId, page);
 
 		if(result.isEmpty()) {
-			throw new IllegalStateException("존재하지 않는 브랜드입니다.");
+			throw new BaseException(BaseResponseStatus.BRAND_NOT_FOUND);
 		}
 
 		return BrandItemListRespDTO.builder()
