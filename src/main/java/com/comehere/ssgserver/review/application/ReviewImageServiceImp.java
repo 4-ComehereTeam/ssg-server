@@ -11,6 +11,8 @@ import com.comehere.ssgserver.review.domain.ReviewImage;
 import com.comehere.ssgserver.review.dto.req.ReviewImageCreateDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageUpdateReqDTO;
+import com.comehere.ssgserver.review.dto.resp.ReviewImageDTO;
+import com.comehere.ssgserver.review.dto.resp.ReviewImageRespDTO;
 import com.comehere.ssgserver.review.infrastructure.ReviewImageRepository;
 import com.comehere.ssgserver.review.infrastructure.ReviewRepository;
 
@@ -85,6 +87,16 @@ public class ReviewImageServiceImp implements ReviewImageService {
 				.imageUrl(dto.getImageUrl())
 				.alt(dto.getAlt())
 				.build());
+	}
+
+	@Override
+	public ReviewImageRespDTO getReviewImages(Long reviewId) {
+		return ReviewImageRespDTO.builder()
+				.reviewId(reviewId)
+				.images(reviewImageRepository.findByReviewId(reviewId).stream()
+						.map(ReviewImageDTO::new)
+						.toList())
+				.build();
 	}
 
 	private void builderReviewImage(Review review, String imageUrl, String alt) {
