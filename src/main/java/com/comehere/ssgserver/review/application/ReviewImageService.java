@@ -7,6 +7,7 @@ import com.comehere.ssgserver.review.domain.Review;
 import com.comehere.ssgserver.review.dto.req.ReviewImageCreateDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageUpdateReqDTO;
+import com.comehere.ssgserver.review.dto.resp.ReviewImageRespDTO;
 
 public interface ReviewImageService {
 
@@ -21,4 +22,7 @@ public interface ReviewImageService {
 	void createReviewImage(ReviewImageReqDTO dto, Review review);
 
 	void deleteReviewImages(Review review);
+
+	ReviewImageRespDTO getReviewImages(Long reviewId);
+
 }
