@@ -1,6 +1,6 @@
-package com.comehere.ssgserver.image.dto;
+package com.comehere.ssgserver.item.dto.resp;
 
-import com.comehere.ssgserver.image.domain.ItemImage;
+import com.comehere.ssgserver.item.domain.ItemImage;
 
 import lombok.Getter;
 

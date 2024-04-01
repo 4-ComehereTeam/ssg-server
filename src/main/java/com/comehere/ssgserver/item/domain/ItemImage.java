@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.image.domain;
+package com.comehere.ssgserver.item.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
