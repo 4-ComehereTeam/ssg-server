@@ -2,6 +2,7 @@ package com.comehere.ssgserver.item.presentation;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,7 @@ import com.comehere.ssgserver.item.vo.resp.ItemDetailRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemImageListRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemListRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemThumbnailRespVO;
+import com.comehere.ssgserver.item.vo.resp.RecentViewListRespVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -110,5 +112,15 @@ public class ItemController {
 
 		return new BaseResponse<>(itemService
 				.createRecentViewItem(itemId, jwtUtil.getUuidByAuthorization(accessToken)));
+	}
+
+	@GetMapping("/recent")
+	@Operation(summary = "최근 본 상품 내역 조회 API", description = "최근 본 상품 내역 등록 및 수정")
+	public BaseResponse<RecentViewListRespVO> getRecentViewItems(
+			@RequestHeader(name = "Authorization", defaultValue = "") String accessToken,
+			@PageableDefault(size = 10, sort = "viewDate", direction = Sort.Direction.DESC) Pageable page) {
+		return new BaseResponse<>(modelMapper.map(
+				itemService.getRecentViewItems(jwtUtil.getUuidByAuthorization(accessToken), page),
+				RecentViewListRespVO.class));
 	}
 }
