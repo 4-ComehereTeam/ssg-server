@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 
+import com.comehere.ssgserver.item.dto.req.DeleteRecentViewReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemCalcRespDTO;
@@ -31,4 +32,6 @@ public interface ItemService {
 	String createRecentViewItem(Long itemId, UUID uuid);
 
 	RecentViewListRespDTO getRecentViewItems(UUID uuid, Pageable page);
+
+	void deleteRecentViewItems(UUID uuid, DeleteRecentViewReqDTO dto);
 }
