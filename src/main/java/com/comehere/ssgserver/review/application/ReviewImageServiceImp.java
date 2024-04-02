@@ -8,6 +8,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.comehere.ssgserver.common.exception.BaseException;
+import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.review.domain.Review;
 import com.comehere.ssgserver.review.domain.ReviewImage;
 import com.comehere.ssgserver.review.dto.req.ReviewImageCreateDTO;
@@ -32,14 +34,14 @@ public class ReviewImageServiceImp implements ReviewImageService {
 	@Override
 	public void createReviewImage(ReviewImageCreateDTO dto, UUID uuid) {
 		Review review = reviewRepository.findById(dto.getReviewId())
-				.orElseThrow(() -> new IllegalArgumentException("리뷰를 찾을 수 없습니다."));
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.REVIEW_NOT_FOUND));
 
 		if (!review.getUuid().equals(uuid)) {
-			throw new IllegalArgumentException("리뷰 이미지를 등록할 권한이 없습니다.");
+			throw new BaseException(BaseResponseStatus.REVIEW_IMAGE_AUTHORITY);
 		}
 
 		if (reviewImageRepository.findByReview(review).size() >= 3) {
-			throw new IllegalArgumentException("리뷰 이미지는 3개까지 등록할 수 있습니다.");
+			throw new BaseException(BaseResponseStatus.REVIEW_IMAGE_LIMIT);
 		}
 
 		builderReviewImage(review, dto.getImageUrl(), dto.getAlt());
@@ -59,10 +61,10 @@ public class ReviewImageServiceImp implements ReviewImageService {
 	@Override
 	public void deleteReviewImage(Long reviewImageId, UUID uuid) {
 		ReviewImage reviewImage = reviewImageRepository.findById(reviewImageId)
-				.orElseThrow(() -> new IllegalArgumentException("리뷰 이미지를 찾을 수 없습니다."));
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.REVIEW_IMAGE_NOT_FOUND));
 
 		if (!reviewImage.getReview().getUuid().equals(uuid)) {
-			throw new IllegalArgumentException("리뷰 이미지를 삭제할 권한이 없습니다.");
+			throw new BaseException(BaseResponseStatus.REVIEW_IMAGE_AUTHORITY);
 		}
 
 		reviewImageRepository.delete(reviewImage);
@@ -80,10 +82,10 @@ public class ReviewImageServiceImp implements ReviewImageService {
 	@Transactional
 	public void updateReviewImage(ReviewImageUpdateReqDTO dto, UUID uuid) {
 		ReviewImage reviewImage = reviewImageRepository.findById(dto.getReviewImageId())
-				.orElseThrow(() -> new IllegalArgumentException("리뷰 이미지를 찾을 수 없습니다."));
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.REVIEW_IMAGE_NOT_FOUND));
 
 		if (!reviewImage.getReview().getUuid().equals(uuid)) {
-			throw new IllegalArgumentException("리뷰 이미지를 수정할 권한이 없습니다.");
+			throw new BaseException(BaseResponseStatus.REVIEW_IMAGE_AUTHORITY);
 		}
 
 		reviewImageRepository.save(ReviewImage.builder()
@@ -105,16 +107,6 @@ public class ReviewImageServiceImp implements ReviewImageService {
 
 	@Override
 	public ReviewImageListRespDTO getReviewImageList(String itemCode, Pageable page) {
-		// Slice<ReviewImage> reviewImages = reviewImageRepository.findReviewImages(itemCode, page);
-		//
-		// return ReviewImageListRespDTO.builder()
-		// 		.itemCode(itemCode)
-		// 		.images(reviewImages.stream()
-		// 				.map(ReviewImageListDTO::new)
-		// 				.toList())
-		// 		.hasNext(reviewImages.hasNext())
-		// 		.build();
-
 		Slice<ReviewImageListDTO> reviews = reviewImageRepository.getReviewImageList(itemCode, page);
 
 		return ReviewImageListRespDTO.builder()

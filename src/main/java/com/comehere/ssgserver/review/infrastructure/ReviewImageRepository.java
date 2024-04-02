@@ -17,7 +17,4 @@ public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long>,
 	List<ReviewImage> findByReview(Review review);
 
 	List<ReviewImage> findByReviewId(Long reviewId);
-
-	@Query("select ri  from ReviewImage ri left join ri.review r where r.itemCode = :itemCode")
-	Slice<ReviewImage> findReviewImages(@Param("itemCode") String itemCode, Pageable page);
 }

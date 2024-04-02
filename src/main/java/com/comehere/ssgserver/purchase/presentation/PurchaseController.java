@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.purchase.application.PurchaseService;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
@@ -38,36 +39,40 @@ public class PurchaseController {
 
 	@PostMapping
 	@Operation(summary = "주문 등록")
-	public void createPurchase(
+	public BaseResponse<?> createPurchase(
 			@RequestBody PurchaseCreateReqVO vo,
 			@RequestHeader("Authorization") String authorization) {
 
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 		purchaseService.createPurchase(modelMapper.map(vo, PurchaseCreateReqDTO.class), uuid);
+
+		return new BaseResponse<>();
 	}
 
 	// 주문 삭제
 	@DeleteMapping
 	@Operation(summary = "주문 삭제")
-	public void deletePurchaseList(
+	public BaseResponse<?> deletePurchaseList(
 			@RequestBody PurchaseListDeleteReqVO vo,
 			@RequestHeader("Authorization") String authorization) {
 
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 		purchaseService.deletePurchaseList(modelMapper.map(vo, PurchaseListDeleteReqDTO.class), uuid);
+
+		return new BaseResponse<>();
 	}
 
 	// 주문 조회
 	@GetMapping("/list")
 	@Operation(summary = "주문 전체 조회")
-	public List<PurchasesGetRespVO> getPurchases(
+	public BaseResponse<List<PurchasesGetRespVO>>  getPurchases(
 			@RequestHeader("Authorization") String authorization) {
 
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 
-		return purchaseService.getPurchases(uuid).stream()
+		return new BaseResponse<>(purchaseService.getPurchases(uuid).stream()
 				.map(dto -> modelMapper.map(dto, PurchasesGetRespVO.class))
-				.collect(Collectors.toList());
+				.collect(Collectors.toList()));
 	}
 
 }

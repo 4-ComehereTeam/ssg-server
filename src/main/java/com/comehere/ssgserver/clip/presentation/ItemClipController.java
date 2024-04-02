@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comehere.ssgserver.clip.application.ItemClipService;
 import com.comehere.ssgserver.clip.dto.req.ItemsClipDeleteReqDTO;
 import com.comehere.ssgserver.clip.vo.req.ItemsClipDeleteReqVO;
+import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,43 +35,48 @@ public class ItemClipController {
 
 	@Operation(summary = "상품 좋아요")
 	@PostMapping("/item/{itemId}")
-	public void createItemClip(
+	public BaseResponse<?> createItemClip(
 			@PathVariable("itemId") Long itemId,
 			@RequestHeader("Authorization") String accessToken) {
 
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
 
 		itemClipService.createItemClip(uuid, itemId);
+
+		return new BaseResponse<>();
 	}
 
 	@Operation(summary = "상품 좋아요 취소")
 	@DeleteMapping("/item/{itemId}")
-	public void deleteItemClip(
+	public BaseResponse<?> deleteItemClip(
 			@PathVariable("itemId") Long itemId,
 			@RequestHeader("Authorization") String accessToken) {
 
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
 		itemClipService.deleteItemClip(uuid, itemId);
+
+		return new BaseResponse<>();
 	}
 
 	@Operation(summary = "상품 좋아요 여러개 취소")
 	@DeleteMapping("/items")
-	public void deleteItemsClip(
+	public BaseResponse<?> deleteItemsClip(
 			@RequestBody ItemsClipDeleteReqVO vo,
 			@RequestHeader("Authorization") String accessToken) {
 
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
 
 		itemClipService.deleteItemsClip(uuid, modelMapper.map(vo, ItemsClipDeleteReqDTO.class));
-	}
 
+		return new BaseResponse<>();
+	}
 
 	@Operation(summary = "상품 좋아요 목록 조회")
 	@GetMapping("/items")
-	public ItemsClipDeleteReqVO getItemsClip(@RequestHeader("Authorization") String accessToken) {
+	public BaseResponse<ItemsClipDeleteReqVO> getItemsClip(@RequestHeader("Authorization") String accessToken) {
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
 
-		return modelMapper.map(itemClipService.getItemsClip(uuid), ItemsClipDeleteReqVO.class);
+		return new BaseResponse<>(modelMapper.map(itemClipService.getItemsClip(uuid), ItemsClipDeleteReqVO.class));
 	}
 }
 
