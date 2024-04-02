@@ -25,7 +25,6 @@ import com.comehere.ssgserver.review.dto.req.ReviewCreateReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageCreateDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageUpdateReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewUpdateReqDTO;
-import com.comehere.ssgserver.review.dto.resp.ReviewImageListDTO;
 import com.comehere.ssgserver.review.vo.req.ReviewCreateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewImageCreateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewImageUpdateReqVO;
@@ -54,45 +53,50 @@ public class ReviewController {
 
 	@PostMapping
 	@Operation(summary = "리뷰 등록")
-	public void createReview(@RequestHeader("Authorization") String authorization, @RequestBody ReviewCreateReqVO vo) {
+	public BaseResponse<?> createReview(@RequestHeader("Authorization") String authorization,
+			@RequestBody ReviewCreateReqVO vo) {
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
-
 		reviewService.createReview(modelMapper.map(vo, ReviewCreateReqDTO.class), uuid);
+		return new BaseResponse<>();
 	}
 
 	@PutMapping
 	@Operation(summary = "리뷰 수정")
-	public void updateReview(@RequestBody ReviewUpdateReqVo vo, @RequestHeader("Authorization") String authorization) {
+	public BaseResponse<?> updateReview(@RequestBody ReviewUpdateReqVo vo,
+			@RequestHeader("Authorization") String authorization) {
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 
 		reviewService.updateReview(modelMapper.map(vo, ReviewUpdateReqDTO.class), uuid);
+		return new BaseResponse<>();
 	}
 
 	@DeleteMapping("/{reviewId}")
 	@Operation(summary = "리뷰 삭제")
-	public void deleteReview(
+	public BaseResponse<?> deleteReview(
 			@PathVariable("reviewId") Long reviewId,
 			@RequestHeader("Authorization") String authorization) {
-		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 
-		System.out.println("reviewId = " + reviewId);
-		System.out.println("uuid = " + uuid);
+		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 		reviewService.deleteReview(reviewId, uuid);
+
+		return new BaseResponse<>();
 	}
 
 	@PostMapping("/images")
 	@Operation(summary = "리뷰 이미지 등록")
-	public void createReviewImage(
+	public BaseResponse<?> createReviewImage(
 			@RequestBody ReviewImageCreateReqVO vo,
 			@RequestHeader("Authorization") String authorization) {
 
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 		reviewImageService.createReviewImage(modelMapper.map(vo, ReviewImageCreateDTO.class), uuid);
+
+		return new BaseResponse<>();
 	}
 
 	@PutMapping("/images")
 	@Operation(summary = "리뷰 이미지 수정")
-	public void updateReviewImage(
+	public BaseResponse<?> updateReviewImage(
 			@RequestBody List<ReviewImageUpdateReqVO> vo,
 			@RequestHeader("Authorization") String authorization) {
 
@@ -105,16 +109,20 @@ public class ReviewController {
 		});
 
 		reviewImageService.updateReviewImages(dto, uuid);
+
+		return new BaseResponse<>();
 	}
 
 	@DeleteMapping("/images/{reviewImageId}")
 	@Operation(summary = "리뷰 이미지 삭제")
-	public void deleteReviewImage(
+	public BaseResponse<?> deleteReviewImage(
 			@PathVariable("reviewImageId") Long reviewImageId,
 			@RequestHeader("Authorization") String authorization) {
 
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 		reviewImageService.deleteReviewImage(reviewImageId, uuid);
+
+		return new BaseResponse<>();
 	}
 
 	@GetMapping("/item/{itemCode}")
