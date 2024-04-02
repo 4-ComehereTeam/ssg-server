@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,15 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.comehere.ssgserver.common.exception.BaseException;
 import com.comehere.ssgserver.common.response.BaseResponse;
-import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
-import com.comehere.ssgserver.item.dto.resp.ItemImageListRespDTO;
-import com.comehere.ssgserver.item.dto.resp.ItemThumbnailRespDTO;
 import com.comehere.ssgserver.item.application.ItemService;
+import com.comehere.ssgserver.item.dto.req.DeleteRecentViewReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
+import com.comehere.ssgserver.item.vo.req.DeleteRecentViewReqVO;
 import com.comehere.ssgserver.item.vo.req.ItemReqVO;
 import com.comehere.ssgserver.item.vo.resp.ItemCalcRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemDetailRespVO;
@@ -122,5 +121,18 @@ public class ItemController {
 		return new BaseResponse<>(modelMapper.map(
 				itemService.getRecentViewItems(jwtUtil.getUuidByAuthorization(accessToken), page),
 				RecentViewListRespVO.class));
+	}
+
+	@DeleteMapping("/recent")
+	@Operation(summary = "최근 본 상품 내역 삭제 API", description = "최근 본 상품 내역 삭제 (복수 가능)")
+	public BaseResponse<?> deleteRecentViewItem(
+			@RequestHeader(name = "Authorization") String accessToken,
+			@RequestBody DeleteRecentViewReqVO vo) {
+
+		itemService.deleteRecentViewItems(
+				jwtUtil.getUuidByAuthorization(accessToken),
+				modelMapper.map(vo, DeleteRecentViewReqDTO.class));
+
+		return new BaseResponse<>();
 	}
 }

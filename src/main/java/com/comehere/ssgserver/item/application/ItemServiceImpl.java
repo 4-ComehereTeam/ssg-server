@@ -13,8 +13,8 @@ import com.comehere.ssgserver.common.exception.BaseException;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.item.domain.ItemCalc;
-import com.comehere.ssgserver.item.domain.ItemImage;
 import com.comehere.ssgserver.item.domain.RecentViewItem;
+import com.comehere.ssgserver.item.dto.req.DeleteRecentViewReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
 import com.comehere.ssgserver.item.dto.resp.ImageDTO;
@@ -132,5 +132,11 @@ public class ItemServiceImpl implements ItemService {
 						.toList())
 				.hasNext(items.hasNext())
 				.build();
+	}
+
+	@Override
+	@Transactional
+	public void deleteRecentViewItems(UUID uuid, DeleteRecentViewReqDTO dto) {
+		recentViewItemRepository.deleteByUuidAndIds(uuid, dto.getRecentIds());
 	}
 }
