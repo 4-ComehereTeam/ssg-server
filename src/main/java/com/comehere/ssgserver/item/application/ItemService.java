@@ -11,6 +11,7 @@ import com.comehere.ssgserver.item.dto.resp.ItemDetailRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemImageListRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemListRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemThumbnailRespDTO;
+import com.comehere.ssgserver.item.dto.resp.RecentViewListRespDTO;
 
 public interface ItemService {
 	ItemDetailRespDTO getItemDetail(Long id);
@@ -28,4 +29,6 @@ public interface ItemService {
 	ItemThumbnailRespDTO getItemThumbnail(Long itemId);
 
 	String createRecentViewItem(Long itemId, UUID uuid);
+
+	RecentViewListRespDTO getRecentViewItems(UUID uuid, Pageable page);
 }

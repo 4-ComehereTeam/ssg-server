@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,8 @@ import com.comehere.ssgserver.item.dto.resp.ItemDetailRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemImageListRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemListRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemThumbnailRespDTO;
+import com.comehere.ssgserver.item.dto.resp.RecentViewDTO;
+import com.comehere.ssgserver.item.dto.resp.RecentViewListRespDTO;
 import com.comehere.ssgserver.item.infrastructual.ItemCalcRepository;
 import com.comehere.ssgserver.item.infrastructual.ItemImageRepository;
 import com.comehere.ssgserver.item.infrastructual.ItemRepository;
@@ -117,5 +120,17 @@ public class ItemServiceImpl implements ItemService {
 
 			return "UPDATE RECENT VIEW ITEM";
 		}
+	}
+
+	@Override
+	public RecentViewListRespDTO getRecentViewItems(UUID uuid, Pageable page) {
+		Slice<RecentViewItem> items = recentViewItemRepository.findByUuid(uuid, page);
+
+		return RecentViewListRespDTO.builder()
+				.recentItems(items.stream()
+						.map(RecentViewDTO::new)
+						.toList())
+				.hasNext(items.hasNext())
+				.build();
 	}
 }
