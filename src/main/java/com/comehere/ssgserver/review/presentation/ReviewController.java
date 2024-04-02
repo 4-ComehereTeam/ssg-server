@@ -115,13 +115,13 @@ public class ReviewController {
 		reviewImageService.deleteReviewImage(reviewImageId, uuid);
 	}
 
-	@GetMapping("/list/{itemCode}")
+	@GetMapping("/item/{itemCode}")
 	@Operation(summary = "상품 별 리뷰 목록 조회")
-	public BaseResponse<ReviewListRespVO> getReviewList(
+	public BaseResponse<ReviewListRespVO> getItemReviewList(
 			@PathVariable("itemCode") String itemCode,
 			@PageableDefault(size = 5) Pageable page) {
 		return new BaseResponse<>(modelMapper.map(
-				reviewService.getReviewList(itemCode, page), ReviewListRespVO.class));
+				reviewService.getItemReviewList(itemCode, page), ReviewListRespVO.class));
 	}
 
 	@GetMapping("/content/{reviewId}")
@@ -133,8 +133,19 @@ public class ReviewController {
 
 	@GetMapping("/images/{reviewId}")
 	@Operation(summary = "리뷰 별 이미지 조회")
-	public BaseResponse<ReviewImageRespVO> gegReviewImage(@PathVariable("reviewId") Long reviewId) {
+	public BaseResponse<ReviewImageRespVO> getReviewImage(@PathVariable("reviewId") Long reviewId) {
 		return new BaseResponse<>(modelMapper.map(
 				reviewImageService.getReviewImages(reviewId), ReviewImageRespVO.class));
+	}
+
+	@GetMapping("/member")
+	@Operation(summary = "회원 별 리뷰 목록 조회")
+	public BaseResponse<?> getMemberReviewList(
+			@RequestHeader("Authorization") String accessToken,
+			@PageableDefault(size = 5) Pageable page) {
+
+		return new BaseResponse<>(modelMapper.map(
+				reviewService.getMemberReviewList(jwtUtil.getUuidByAuthorization(accessToken), page),
+				ReviewListRespVO.class));
 	}
 }

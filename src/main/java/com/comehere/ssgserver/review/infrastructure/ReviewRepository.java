@@ -19,4 +19,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
 	@Query("select r.id from Review r where r.itemCode = :itemCode")
 	Slice<Long> findByItemCode(String itemCode, Pageable page);
+
+	@Query("select r.id from Review r where r.uuid = :uuid")
+	Slice<Long> findByUuid(UUID uuid, Pageable page);
 }

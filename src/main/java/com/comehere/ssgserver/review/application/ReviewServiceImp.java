@@ -74,14 +74,8 @@ public class ReviewServiceImp implements ReviewService {
 	}
 
 	@Override
-	public ReviewListRespDTO getReviewList(String itemCode, Pageable page) {
-		Slice<Long> reviews = reviewRepository.findByItemCode(itemCode, page);
-
-		return ReviewListRespDTO.builder()
-				.itemCode(itemCode)
-				.reviews(reviews.getContent())
-				.hasNext(reviews.hasNext())
-				.build();
+	public ReviewListRespDTO getItemReviewList(String itemCode, Pageable page) {
+		return ReviewListRespDTO.toBuild(reviewRepository.findByItemCode(itemCode, page));
 	}
 
 	@Override
@@ -90,6 +84,11 @@ public class ReviewServiceImp implements ReviewService {
 				.orElseThrow(() -> new BaseException(BaseResponseStatus.REVIEW_NOT_FOUND));
 
 		return ReviewContentRespDTO.toBuild(review);
+	}
+
+	@Override
+	public ReviewListRespDTO getMemberReviewList(UUID uuid, Pageable page) {
+		return ReviewListRespDTO.toBuild(reviewRepository.findByUuid(uuid, page));
 	}
 
 	private void createReviewImages(List<ReviewImageReqDTO> dtos, Review review) {
