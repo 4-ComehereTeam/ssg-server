@@ -75,7 +75,29 @@ public enum BaseResponseStatus {
 	PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7001, "존재하지 않는 상품입니다."),
 	NO_PRODUCT_WITH_BRAND(HttpStatus.BAD_REQUEST, false, 7002, "브랜드 정보가 없는 상품입니다."),
 	BRAND_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7003, "존재하지 않는 브랜드입니다."),
-	REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7004, "존재하지 않는 리뷰입니다.");
+	REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7004, "존재하지 않는 리뷰입니다."),
+
+	/**
+	 * 8000 : purchase Service Error
+	 */
+	PURCHASE_NOT_FOUND(HttpStatus.NOT_FOUND, false, 8001, "존재하지 않는 주문입니다."),
+	PURCHASE_LIST_NOT_FOUND(HttpStatus.NOT_FOUND, false, 8002, "존재하지 않는 주문 상품입니다."),
+	PURCHASE_LIST_DUPLICATE(HttpStatus.CONFLICT, false, 8002, "이미 주문한 상품입니다. 주문 상품을 확인해주세요."),
+
+	/**
+	 * 9000 : review Service Error
+	 */
+	REVIEW_ALREADY_WRITTEN(HttpStatus.BAD_REQUEST, false, 9001, "이미 리뷰를 작성한 구매목록입니다."),
+	REVIEW_IMAGE_LIMIT(HttpStatus.BAD_REQUEST, false, 9002, "리뷰 이미지는 최대 3개까지 등록 가능합니다."),
+	REVIEW_IMAGE_AUTHORITY(HttpStatus.BAD_REQUEST, false, 9003, "리뷰 이미지를 등록할 권한이 없습니다."),
+	REVIEW_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, false, 9004, "존재하지 않는 리뷰 이미지입니다."),
+
+	/**
+	 * 10000 : clip Service Error
+	 */
+	CLIP_ITEM_ALREADY_ADDED(HttpStatus.BAD_REQUEST, false, 10001, "이미 좋아요한 상품입니다."),
+	CLIP_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, false, 10002, "좋아요한 상품이 아닙니다.");
+
 
 	private final HttpStatusCode httpStatusCode;
 	private final boolean isSuccess;

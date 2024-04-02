@@ -11,6 +11,8 @@ import com.comehere.ssgserver.clip.domain.ItemClip;
 import com.comehere.ssgserver.clip.dto.req.ItemsClipDeleteReqDTO;
 import com.comehere.ssgserver.clip.dto.req.ItemsClipGetRespDTO;
 import com.comehere.ssgserver.clip.infrastructure.ItemClipRepository;
+import com.comehere.ssgserver.common.exception.BaseException;
+import com.comehere.ssgserver.common.response.BaseResponseStatus;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +25,7 @@ public class ItemClipServiceImp implements ItemClipService {
 	@Transactional
 	public void createItemClip(UUID uuid, Long itemId) {
 		if (itemClipRepository.existsByUuidAndItemId(uuid, itemId)) {
-			throw new IllegalArgumentException("이미 좋아요한 상품입니다.");
+			throw new BaseException(BaseResponseStatus.CLIP_ITEM_ALREADY_ADDED);
 		}
 
 		itemClipRepository.save(ItemClip.builder()
@@ -36,7 +38,7 @@ public class ItemClipServiceImp implements ItemClipService {
 	@Transactional
 	public void deleteItemClip(UUID uuid, Long itemId) {
 		ItemClip itemClip = itemClipRepository.findByUuidAndItemId(uuid, itemId)
-				.orElseThrow(() -> new IllegalArgumentException("좋아요한 상품이 아닙니다."));
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.CLIP_ITEM_NOT_FOUND));
 
 		itemClipRepository.delete(itemClip);
 	}

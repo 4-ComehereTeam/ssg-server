@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.comehere.ssgserver.common.exception.BaseException;
+import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.purchase.domain.Purchase;
 import com.comehere.ssgserver.purchase.domain.PurchaseList;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
@@ -55,7 +57,7 @@ public class PurchaseServiceImp implements PurchaseService {
 	@Transactional
 	public void createPurchaseList(PurchaseListCreateReqDTO dto, Long purchaseId) {
 		if (purchaseListRepository.existsByPurchaseIdAndItemOptionId(purchaseId, dto.getItemOptionId())) {
-			throw new IllegalArgumentException("이미 주문한 상품입니다. 주문 상품을 확인해주세요.");
+			throw new BaseException(BaseResponseStatus.PURCHASE_LIST_DUPLICATE);
 		}
 
 		purchaseListRepository.save(PurchaseList.builder()
@@ -76,11 +78,11 @@ public class PurchaseServiceImp implements PurchaseService {
 	@Transactional
 	public void deletePurchaseList(PurchaseListDeleteReqDTO dto, UUID uuid) {
 		Purchase purchase = purchaseRepository.findByPurchaseCodeAndUuid(dto.getPurchaseCode(), uuid)
-				.orElseThrow(() -> new IllegalArgumentException("주문 정보가 없습니다."));
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.PURCHASE_NOT_FOUND));
 
 		PurchaseList purchaseList = purchaseListRepository.findByIdAndPurchaseId(dto.getPurchaseListId(),
 						purchase.getId())
-				.orElseThrow(() -> new IllegalArgumentException("주문 상품 정보가 없습니다."));
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.PURCHASE_LIST_NOT_FOUND));
 
 		Long purchaseId = purchaseList.getPurchaseId();
 
