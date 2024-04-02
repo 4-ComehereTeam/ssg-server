@@ -25,11 +25,13 @@ import com.comehere.ssgserver.review.dto.req.ReviewCreateReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageCreateDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageUpdateReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewUpdateReqDTO;
+import com.comehere.ssgserver.review.dto.resp.ReviewImageListDTO;
 import com.comehere.ssgserver.review.vo.req.ReviewCreateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewImageCreateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewImageUpdateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewUpdateReqVo;
 import com.comehere.ssgserver.review.vo.resp.ReviewContentRespVO;
+import com.comehere.ssgserver.review.vo.resp.ReviewImageListRespVO;
 import com.comehere.ssgserver.review.vo.resp.ReviewImageRespVO;
 import com.comehere.ssgserver.review.vo.resp.ReviewListRespVO;
 
@@ -140,12 +142,22 @@ public class ReviewController {
 
 	@GetMapping("/member")
 	@Operation(summary = "회원 별 리뷰 목록 조회")
-	public BaseResponse<?> getMemberReviewList(
+	public BaseResponse<ReviewListRespVO> getMemberReviewList(
 			@RequestHeader("Authorization") String accessToken,
 			@PageableDefault(size = 5) Pageable page) {
 
 		return new BaseResponse<>(modelMapper.map(
 				reviewService.getMemberReviewList(jwtUtil.getUuidByAuthorization(accessToken), page),
 				ReviewListRespVO.class));
+	}
+
+	@GetMapping("/images/item/{itemCode}")
+	@Operation(summary = "상품 별 전체 리뷰 이미지 조회")
+	public BaseResponse<ReviewImageListRespVO> getReviewImageList(
+			@PathVariable("itemCode") String itemCode,
+			@PageableDefault(size = 5) Pageable page) {
+		return new BaseResponse<>(modelMapper.map(
+				reviewImageService.getReviewImageList(itemCode, page),
+				ReviewImageListRespVO.class));
 	}
 }

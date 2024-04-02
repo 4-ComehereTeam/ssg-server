@@ -4,14 +4,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.comehere.ssgserver.review.domain.Review;
 import com.comehere.ssgserver.review.domain.ReviewImage;
 
-public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long> {
+public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long>, CustomReviewRepository {
 	List<ReviewImage> findByReview(Review review);
 
 	List<ReviewImage> findByReviewId(Long reviewId);
+
+	@Query("select ri  from ReviewImage ri left join ri.review r where r.itemCode = :itemCode")
+	Slice<ReviewImage> findReviewImages(@Param("itemCode") String itemCode, Pageable page);
 }

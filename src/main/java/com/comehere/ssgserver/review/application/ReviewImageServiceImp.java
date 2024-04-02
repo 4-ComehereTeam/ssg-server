@@ -3,6 +3,8 @@ package com.comehere.ssgserver.review.application;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,8 @@ import com.comehere.ssgserver.review.dto.req.ReviewImageCreateDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageUpdateReqDTO;
 import com.comehere.ssgserver.review.dto.resp.ReviewImageDTO;
+import com.comehere.ssgserver.review.dto.resp.ReviewImageListDTO;
+import com.comehere.ssgserver.review.dto.resp.ReviewImageListRespDTO;
 import com.comehere.ssgserver.review.dto.resp.ReviewImageRespDTO;
 import com.comehere.ssgserver.review.infrastructure.ReviewImageRepository;
 import com.comehere.ssgserver.review.infrastructure.ReviewRepository;
@@ -96,6 +100,27 @@ public class ReviewImageServiceImp implements ReviewImageService {
 				.images(reviewImageRepository.findByReviewId(reviewId).stream()
 						.map(ReviewImageDTO::new)
 						.toList())
+				.build();
+	}
+
+	@Override
+	public ReviewImageListRespDTO getReviewImageList(String itemCode, Pageable page) {
+		// Slice<ReviewImage> reviewImages = reviewImageRepository.findReviewImages(itemCode, page);
+		//
+		// return ReviewImageListRespDTO.builder()
+		// 		.itemCode(itemCode)
+		// 		.images(reviewImages.stream()
+		// 				.map(ReviewImageListDTO::new)
+		// 				.toList())
+		// 		.hasNext(reviewImages.hasNext())
+		// 		.build();
+
+		Slice<ReviewImageListDTO> reviews = reviewImageRepository.getReviewImageList(itemCode, page);
+
+		return ReviewImageListRespDTO.builder()
+				.itemCode(itemCode)
+				.images(reviews.getContent())
+				.hasNext(reviews.hasNext())
 				.build();
 	}
 

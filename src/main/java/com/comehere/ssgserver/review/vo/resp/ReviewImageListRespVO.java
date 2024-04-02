@@ -1,13 +1,13 @@
-package com.comehere.ssgserver.review.dto.resp;
+package com.comehere.ssgserver.review.vo.resp;
 
 import java.util.List;
 
-import lombok.Builder;
+import com.comehere.ssgserver.review.dto.resp.ReviewImageListDTO;
+
 import lombok.Getter;
 
 @Getter
-@Builder
-public class ReviewImageListRespDTO {
+public class ReviewImageListRespVO {
 	private String itemCode;
 
 	private List<ReviewImageListDTO> images;
