@@ -6,7 +6,6 @@ import lombok.Getter;
 
 @Getter
 public class ReviewListRespVO {
-	private String itemCode;
 
 	private List<Long> reviews;
 
