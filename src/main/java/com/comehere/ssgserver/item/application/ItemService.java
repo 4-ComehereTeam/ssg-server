@@ -1,5 +1,7 @@
 package com.comehere.ssgserver.item.application;
 
+import java.util.UUID;
+
 import org.springframework.data.domain.Pageable;
 
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
@@ -24,4 +26,6 @@ public interface ItemService {
 	ItemImageListRespDTO getItemImages(Long itemId);
 
 	ItemThumbnailRespDTO getItemThumbnail(Long itemId);
+
+	String createRecentViewItem(Long itemId, UUID uuid);
 }

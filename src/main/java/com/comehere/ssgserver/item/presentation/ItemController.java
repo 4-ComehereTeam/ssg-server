@@ -3,15 +3,20 @@ package com.comehere.ssgserver.item.presentation;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.comehere.ssgserver.common.exception.BaseException;
 import com.comehere.ssgserver.common.response.BaseResponse;
+import com.comehere.ssgserver.common.response.BaseResponseStatus;
+import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.item.dto.resp.ItemImageListRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemThumbnailRespDTO;
 import com.comehere.ssgserver.item.application.ItemService;
@@ -27,14 +32,17 @@ import com.comehere.ssgserver.item.vo.resp.ItemThumbnailRespVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/items")
 @Tag(name = "items", description = "상품 관리 컨트롤러")
+@Slf4j
 public class ItemController {
 	private final ItemService itemService;
 	private final ModelMapper modelMapper;
+	private final JWTUtil jwtUtil;
 
 	@GetMapping("/detail/{itemId}")
 	@Operation(summary = "상품 기본 정보 API", description = "상품 기본 정보 (상품명, 가격) 조회")
@@ -88,5 +96,19 @@ public class ItemController {
 	public BaseResponse<ItemThumbnailRespVO> itemThumbnail(@PathVariable("itemId") Long itemId) {
 		return new BaseResponse<>(modelMapper.map(
 				itemService.getItemThumbnail(itemId), ItemThumbnailRespVO.class));
+	}
+
+	@PostMapping("/recent/{itemId}")
+	@Operation(summary = "최근 본 상품 내역 등록 API", description = "최근 본 상품 내역 등록 및 수정")
+	public BaseResponse<String> createRecentViewItem(
+			@RequestHeader(name = "Authorization", defaultValue = "") String accessToken,
+			@PathVariable("itemId") Long itemId) {
+
+		if(!StringUtils.hasText(accessToken)) {
+			return new BaseResponse<>("비회원입니다. 최근 본 상품 내역을 저장하지 않습니다.");
+		}
+
+		return new BaseResponse<>(itemService
+				.createRecentViewItem(itemId, jwtUtil.getUuidByAuthorization(accessToken)));
 	}
 }
