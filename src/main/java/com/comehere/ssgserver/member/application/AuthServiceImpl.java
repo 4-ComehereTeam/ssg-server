@@ -103,6 +103,7 @@ public class AuthServiceImpl implements AuthService {
 				.address(joinRequestVo.getAddressInfoVo().getAddress())
 				.detailAddress(joinRequestVo.getAddressInfoVo().getDetailAddress())
 				.defaultAddress((boolean)true)
+				.uuid(member.getUuid())
 				.build());
 	}
 
