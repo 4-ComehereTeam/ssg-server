@@ -38,6 +38,22 @@ public class SwaggerConfig {
 	}
 
 	@Bean
+	public GroupedOpenApi CartAPI() {
+		return GroupedOpenApi.builder()
+				.group("장바구니")
+				.pathsToMatch("/api/v1/cart/**")
+				.build();
+	}
+
+	@Bean
+	public GroupedOpenApi AddressAPI() {
+		return GroupedOpenApi.builder()
+				.group("배송지")
+				.pathsToMatch("/api/v1/cart/**")
+				.build();
+	}
+
+	@Bean
 	public GroupedOpenApi PurchaseAPI() {
 		return GroupedOpenApi.builder()
 				.group("주문")

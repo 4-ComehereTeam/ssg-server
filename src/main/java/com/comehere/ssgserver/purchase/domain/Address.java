@@ -1,5 +1,7 @@
 package com.comehere.ssgserver.purchase.domain;
 
+import java.util.UUID;
+
 import com.comehere.ssgserver.common.entity.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -37,6 +39,8 @@ public class Address extends BaseEntity {
 
 	private String detailAddress;
 
+	private UUID uuid;
+
 	@Column(columnDefinition = "Longtext", nullable = true)
 	private String requestMessage;
 
@@ -46,7 +50,7 @@ public class Address extends BaseEntity {
 
 	@Builder
 	public Address(String name, String nickname, String phone, String tel, String zipcode,
-			String address, String detailAddress, String requestMessage, Boolean defaultAddress) {
+			String address, String detailAddress, String requestMessage, Boolean defaultAddress, UUID uuid) {
 
 		this.name = name;
 		this.nickname = nickname;
@@ -57,5 +61,6 @@ public class Address extends BaseEntity {
 		this.detailAddress = detailAddress;
 		this.requestMessage = requestMessage;
 		this.defaultAddress = defaultAddress;
+		this.uuid = uuid;
 	}
 }

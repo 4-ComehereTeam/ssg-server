@@ -4,8 +4,6 @@ import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,26 +48,15 @@ public class AuthController {
 
 	@PostMapping("/signIn")
 	@Operation(summary = "로그인", description = "로그인 성공 시 JWT 토큰 발급.")
+	
 	public BaseResponse<?> signIn(@RequestBody SigninRequestVO signinRequestVo, HttpServletResponse response) {
-		try {
+		SigninRequestDTO signinRequestDTO = modelMapper.map(signinRequestVo, SigninRequestDTO.class);
+		SigninResponseDTO signinResponseDTO = authService.signIn(signinRequestDTO);
 
-			SigninRequestDTO signinRequestDTO = modelMapper.map(signinRequestVo, SigninRequestDTO.class);
-			SigninResponseDTO signinResponseDTO = authService.signIn(signinRequestDTO);
+		// jwt 토큰을 http 응답 헤더에 추가
+		response.addHeader("accessToken", "Bearer " + signinResponseDTO.getAccessToken());
 
-			// jwt 토큰을 http 응답 헤더에 추가
-			response.addHeader("accessToken", "Bearer " + signinResponseDTO.getAccessToken());
-
-			return new BaseResponse<>(modelMapper.map(signinResponseDTO, SigninResponseVO.class));
-		} catch (BadCredentialsException e) {
-			// 아이디 또는 비밀번호가 잘못된 경우
-			return new BaseResponse<>(BaseResponseStatus.FAILED_TO_LOGIN);
-		} catch (UsernameNotFoundException e) {
-			// 존재하지 않는 회원인 경우
-			return new BaseResponse<>(BaseResponseStatus.NO_EXIST_MEMBERS);
-		} catch (Exception e) {
-			// 기타 에러 발생 시
-			return new BaseResponse<>(BaseResponseStatus.INTERNAL_SERVER_ERROR);
-		}
+		return new BaseResponse<>(modelMapper.map(signinResponseDTO, SigninResponseVO.class));
 	}
 
 	@GetMapping("/signInId/check")
