@@ -3,9 +3,11 @@ package com.comehere.ssgserver.cart.application;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.cart.domain.Cart;
 import com.comehere.ssgserver.cart.dto.request.AddProductReqDTO;
+import com.comehere.ssgserver.cart.dto.request.ChangeCheckStateReqDTO;
 import com.comehere.ssgserver.cart.dto.response.GetCartListRespDTO;
 import com.comehere.ssgserver.cart.infrastructure.CartRepository;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
@@ -33,6 +35,14 @@ public class CartServiceImpl implements CartService {
 		getCartListRespDTO.setItemOptions(cartRepository.getCartId(uuid));
 
 		return getCartListRespDTO;
+	}
+
+	@Override
+	@Transactional
+	public Boolean changeProductChangeState(UUID uuid, ChangeCheckStateReqDTO changeCheckStateReqDTO) {
+
+		Long result = cartRepository.updateCheckState(uuid, changeCheckStateReqDTO);
+		return result > 0;
 	}
 
 	private Cart addProduct(UUID uuid, AddProductReqDTO addProductReqDTO) {

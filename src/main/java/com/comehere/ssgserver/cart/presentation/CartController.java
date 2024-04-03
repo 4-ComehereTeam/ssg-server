@@ -3,6 +3,7 @@ package com.comehere.ssgserver.cart.presentation;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.cart.application.CartService;
 import com.comehere.ssgserver.cart.dto.request.AddProductReqDTO;
+import com.comehere.ssgserver.cart.dto.request.ChangeCheckStateReqDTO;
 import com.comehere.ssgserver.cart.dto.response.GetCartListRespDTO;
 import com.comehere.ssgserver.cart.vo.request.AddProductReqVO;
+import com.comehere.ssgserver.cart.vo.request.ChangeCheckStateReqVO;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 
@@ -46,5 +49,15 @@ public class CartController {
 
 		GetCartListRespDTO getCartListRespDTO = cartService.getCartList(jwtUtil.getUuidByAuthorization(accessToken));
 		return new BaseResponse<>(modelMapper.map(getCartListRespDTO, GetCartListRespDTO.class));
+	}
+
+	@PutMapping("checkstate/change")
+	@Operation(summary = "장바구니 상품 체크 상태 변경")
+	public BaseResponse<?> changeProductCheckState(@RequestHeader("Authorization") String accessToken,
+			@RequestBody ChangeCheckStateReqVO changeCheckStateReqVO) {
+		ChangeCheckStateReqDTO changeCheckStateReqDTO = modelMapper.map(changeCheckStateReqVO,
+				ChangeCheckStateReqDTO.class);
+		return new BaseResponse<>(cartService.changeProductChangeState(jwtUtil.getUuidByAuthorization(accessToken),
+				changeCheckStateReqDTO));
 	}
 }
