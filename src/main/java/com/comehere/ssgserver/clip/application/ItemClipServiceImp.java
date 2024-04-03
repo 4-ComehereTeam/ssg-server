@@ -37,10 +37,7 @@ public class ItemClipServiceImp implements ItemClipService {
 	@Override
 	@Transactional
 	public void deleteItemClip(UUID uuid, Long itemId) {
-		ItemClip itemClip = itemClipRepository.findByUuidAndItemId(uuid, itemId)
-				.orElseThrow(() -> new BaseException(BaseResponseStatus.CLIP_ITEM_NOT_FOUND));
-
-		itemClipRepository.delete(itemClip);
+		itemClipRepository.deleteItemClip(uuid, itemId);
 	}
 
 	@Override
