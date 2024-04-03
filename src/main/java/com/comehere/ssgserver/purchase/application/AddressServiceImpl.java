@@ -9,6 +9,8 @@ import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 import com.comehere.ssgserver.purchase.domain.Address;
 import com.comehere.ssgserver.purchase.dto.req.AddressAddReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.AddressDetailReqDTO;
+import com.comehere.ssgserver.purchase.dto.resp.AddressDetailRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.AddressListRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.DefaultCheckRespDTO;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
@@ -44,11 +46,27 @@ public class AddressServiceImpl implements AddressService {
 	public AddressListRespDTO getAddressList(UUID uuid) {
 
 		Member member = findMember(uuid);
-		
+
 		return AddressListRespDTO.builder()
 				.addressIds(addressRepository.findAllByUuid(member.getUuid()).stream()
 						.map(Address::getId) // Address 엔티티에서 ID를 가져오는 메소드를 호출
 						.collect(Collectors.toList()))
+				.build();
+	}
+
+	public AddressDetailRespDTO getAddressDetail(AddressDetailReqDTO addressDetailReqDTO) {
+
+		log.info("addressDetailReqDTO: {}", addressDetailReqDTO);
+		Address address = addressRepository.findById(addressDetailReqDTO.getAddressId())
+				.orElseThrow(() -> new IllegalArgumentException("해당 배송지가 존재하지 않습니다."));
+
+		log.info("address: {}", address);
+		return AddressDetailRespDTO.builder()
+				.nickname(address.getNickname())
+				.address(address.getAddress())
+				.dtailAddress(address.getDetailAddress())
+				.zipcode(address.getZipcode())
+				.phone(address.getPhone())
 				.build();
 	}
 

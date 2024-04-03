@@ -5,4 +5,5 @@ import java.util.UUID;
 public interface CustomAddressRepository {
 
 	Long getDefaultAddress(UUID uuid);
+
 }
