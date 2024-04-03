@@ -48,6 +48,7 @@ public class ItemController {
 	@GetMapping("/detail/{itemId}")
 	@Operation(summary = "상품 기본 정보 API", description = "상품 기본 정보 (상품명, 가격) 조회")
 	public BaseResponse<ItemDetailRespVO> itemDetail(@PathVariable("itemId") Long id) {
+		log.info("요청 받음");
 		return new BaseResponse<>(modelMapper.map(itemService.getItemDetail(id), ItemDetailRespVO.class));
 	}
 
