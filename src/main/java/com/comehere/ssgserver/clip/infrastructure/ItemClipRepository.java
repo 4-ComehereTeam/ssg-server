@@ -10,10 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.comehere.ssgserver.clip.domain.ItemClip;
 
-public interface ItemClipRepository extends JpaRepository<ItemClip, Long> {
+public interface ItemClipRepository extends JpaRepository<ItemClip, Long>, CustomItemClipRepository {
 	boolean existsByUuidAndItemId(UUID uuid, Long itemId);
-
-	Optional<ItemClip> findByUuidAndItemId(UUID uuid, Long itemId);
 
 	@Modifying
 	@Query("delete from ItemClip ic where ic.uuid = :uuid and ic.itemId in :itemIds")
