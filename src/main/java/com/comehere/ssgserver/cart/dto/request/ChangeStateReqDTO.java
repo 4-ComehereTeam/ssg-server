@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ChangeCheckStateReqDTO {
+public class ChangeStateReqDTO {
 
 	private Long cartId;
 	private Long itemOptionId;

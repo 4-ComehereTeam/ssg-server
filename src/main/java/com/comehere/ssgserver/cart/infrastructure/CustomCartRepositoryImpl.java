@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import com.comehere.ssgserver.cart.domain.QCart;
 import com.comehere.ssgserver.cart.dto.ItemCountDTO;
-import com.comehere.ssgserver.cart.dto.request.ChangeCheckStateReqDTO;
+import com.comehere.ssgserver.cart.dto.request.ChangeStateReqDTO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -34,7 +34,7 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 	}
 
 	@Override
-	public Long updateCheckState(UUID uuid, ChangeCheckStateReqDTO changeCheckStateReqDTO) {
+	public Long updateCheckState(UUID uuid, ChangeStateReqDTO changeStateReqDTO) {
 
 		return query
 				.update(QCart.cart)
@@ -44,8 +44,24 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 								.then(false)
 								.otherwise(true))
 				.where(QCart.cart.uuid.eq(uuid),
-						QCart.cart.itemOptionId.eq(changeCheckStateReqDTO.getItemOptionId()),
-						QCart.cart.id.eq(changeCheckStateReqDTO.getCartId()))
+						QCart.cart.itemOptionId.eq(changeStateReqDTO.getItemOptionId()),
+						QCart.cart.id.eq(changeStateReqDTO.getCartId()))
+				.execute();
+	}
+
+	@Override
+	public Long updatePinState(UUID uuid, ChangeStateReqDTO changeStateReqDTO) {
+
+		return query
+				.update(QCart.cart)
+				.set(QCart.cart.pinStatus,
+						new CaseBuilder()
+								.when(QCart.cart.pinStatus.eq(true))
+								.then(false)
+								.otherwise(true))
+				.where(QCart.cart.uuid.eq(uuid),
+						QCart.cart.itemOptionId.eq(changeStateReqDTO.getItemOptionId()),
+						QCart.cart.id.eq(changeStateReqDTO.getCartId()))
 				.execute();
 	}
 }
