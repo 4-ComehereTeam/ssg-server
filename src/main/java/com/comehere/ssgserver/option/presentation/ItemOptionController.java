@@ -20,10 +20,12 @@ import com.comehere.ssgserver.option.dto.OptionRespDTO;
 import com.comehere.ssgserver.option.dto.SizeRespDTO;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
+@Slf4j
 public class ItemOptionController {
 	private final ItemOptionService itemOptionService;
 
@@ -32,28 +34,32 @@ public class ItemOptionController {
 		return itemOptionService.findByItemId(itemId);
 	}
 
-	@GetMapping("/items/options/{id}")
-	public BaseResponse<OptionRespDTO> hasOptions(@PathVariable("id") Long itemId) {
+	@GetMapping("/items/options/{itemId}")
+	public BaseResponse<OptionRespDTO> hasOptions(@PathVariable("itemId") Long itemId) {
+		log.info("옵션 여부 조회 : itemId={}", itemId);
 		return new BaseResponse<>(itemOptionService.hasOptions(itemId));
 	}
 
-	@GetMapping("/option/color/{id}")
-	public BaseResponse<ColorRespDTO> getColors(@PathVariable("id") Long id) {
+	@GetMapping("/option/color/{itemId}")
+	public BaseResponse<ColorRespDTO> getColors(@PathVariable("itemId") Long id) {
+		log.info("색상 옵션 목록 조회 : itemId={}", id);
 		return new BaseResponse<>(itemOptionService.getColors(id));
 	}
 
-	@GetMapping("/option/size/{id}")
+	@GetMapping("/option/size/{itemId}")
 	public BaseResponse<SizeRespDTO> getSizes(
-			@PathVariable("id") Long itemId,
+			@PathVariable("itemId") Long itemId,
 			@RequestParam(required = false) Long colorId) {
+		log.info("사이즈 옵션 목록 조회 : itemId={}, colorId={}", itemId, colorId);
 		return new BaseResponse<>(itemOptionService.getSizes(itemId, colorId));
 	}
 
-	@GetMapping("/option/etc/{id}")
+	@GetMapping("/option/etc/{itemId}")
 	public BaseResponse<EtcRespDTO> getEtcs(
-			@PathVariable("id") Long itemId,
+			@PathVariable("itemId") Long itemId,
 			@RequestParam(required = false) Long colorId,
 			@RequestParam(required = false) Long sizeId) {
+		log.info("기타 옵션 목록 조회 : itemId={}, colorId={}, sizeId={}", itemId, colorId, sizeId);
 		return new BaseResponse<>(itemOptionService.getEtcs(itemId, colorId, sizeId));
 	}
 }

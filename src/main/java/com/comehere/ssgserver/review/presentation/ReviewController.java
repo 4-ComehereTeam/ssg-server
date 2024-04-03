@@ -37,11 +37,13 @@ import com.comehere.ssgserver.review.vo.resp.ReviewListRespVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/v1/review")
 @RequiredArgsConstructor
 @Tag(name = "review", description = "리뷰 컨트롤러")
+@Slf4j
 public class ReviewController {
 	private final ReviewService reviewService;
 
@@ -130,6 +132,7 @@ public class ReviewController {
 	public BaseResponse<ReviewListRespVO> getItemReviewList(
 			@PathVariable("itemCode") String itemCode,
 			@PageableDefault(size = 5) Pageable page) {
+		log.info("상품 리뷰 목록 조회 : itemCode={}", itemCode);
 		return new BaseResponse<>(modelMapper.map(
 				reviewService.getItemReviewList(itemCode, page), ReviewListRespVO.class));
 	}
@@ -137,6 +140,7 @@ public class ReviewController {
 	@GetMapping("/content/{reviewId}")
 	@Operation(summary = "리뷰 내용 조회")
 	public BaseResponse<ReviewContentRespVO> getReviewContent(@PathVariable("reviewId") Long reviewId) {
+		log.info("리뷰 내용 조회 : reviewId={}", reviewId);
 		return new BaseResponse<>(modelMapper.map(
 				reviewService.getReviewContent(reviewId), ReviewContentRespVO.class));
 	}
@@ -144,6 +148,7 @@ public class ReviewController {
 	@GetMapping("/images/{reviewId}")
 	@Operation(summary = "리뷰 별 이미지 조회")
 	public BaseResponse<ReviewImageRespVO> getReviewImage(@PathVariable("reviewId") Long reviewId) {
+		log.info("리뷰 이미지 조회 : reviewId={}", reviewId);
 		return new BaseResponse<>(modelMapper.map(
 				reviewImageService.getReviewImages(reviewId), ReviewImageRespVO.class));
 	}
@@ -154,6 +159,7 @@ public class ReviewController {
 			@RequestHeader("Authorization") String accessToken,
 			@PageableDefault(size = 5) Pageable page) {
 
+		log.info("회원 리뷰 목록 조회");
 		return new BaseResponse<>(modelMapper.map(
 				reviewService.getMemberReviewList(jwtUtil.getUuidByAuthorization(accessToken), page),
 				ReviewListRespVO.class));
@@ -164,6 +170,7 @@ public class ReviewController {
 	public BaseResponse<ReviewImageListRespVO> getReviewImageList(
 			@PathVariable("itemCode") String itemCode,
 			@PageableDefault(size = 5) Pageable page) {
+		log.info("상품 리뷰 이미지 전체 조회 : itemCode={}", itemCode);
 		return new BaseResponse<>(modelMapper.map(
 				reviewImageService.getReviewImageList(itemCode, page),
 				ReviewImageListRespVO.class));
