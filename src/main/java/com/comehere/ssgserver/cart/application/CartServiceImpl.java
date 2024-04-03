@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.cart.domain.Cart;
 import com.comehere.ssgserver.cart.dto.request.AddProductReqDTO;
-import com.comehere.ssgserver.cart.dto.request.ChangeCheckStateReqDTO;
+import com.comehere.ssgserver.cart.dto.request.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.response.GetCartListRespDTO;
 import com.comehere.ssgserver.cart.infrastructure.CartRepository;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
@@ -39,10 +39,16 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	@Transactional
-	public Boolean changeProductChangeState(UUID uuid, ChangeCheckStateReqDTO changeCheckStateReqDTO) {
+	public Boolean changeProductChangeState(UUID uuid, ChangeStateReqDTO changeStateReqDTO) {
 
-		Long result = cartRepository.updateCheckState(uuid, changeCheckStateReqDTO);
-		return result > 0;
+		return cartRepository.updateCheckState(uuid, changeStateReqDTO) > 0;
+	}
+
+	@Override
+	@Transactional
+	public Boolean changeProductPinState(UUID uuid, ChangeStateReqDTO changeStateReqDTO) {
+
+		return cartRepository.updatePinState(uuid, changeStateReqDTO) > 0;
 	}
 
 	private Cart addProduct(UUID uuid, AddProductReqDTO addProductReqDTO) {
