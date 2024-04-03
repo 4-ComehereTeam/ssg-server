@@ -27,9 +27,9 @@ public class Address extends BaseEntity {
 	private String nickname;
 
 	// 받는 사람 휴대폰번호
-	@Column(nullable = false)
 	private String phone;
 
+	@Column(nullable = true)
 	// 받는 사람 전화번호
 	private String tel;
 
