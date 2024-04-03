@@ -49,7 +49,7 @@ public class SwaggerConfig {
 	public GroupedOpenApi AddressAPI() {
 		return GroupedOpenApi.builder()
 				.group("배송지")
-				.pathsToMatch("/api/v1/cart/**")
+				.pathsToMatch("/api/v1/address/**")
 				.build();
 	}
 
