@@ -1,6 +1,7 @@
 package com.comehere.ssgserver.cart.presentation;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.cart.application.CartService;
 import com.comehere.ssgserver.cart.dto.request.AddProductReqDTO;
+import com.comehere.ssgserver.cart.dto.response.GetCartListRespDTO;
 import com.comehere.ssgserver.cart.vo.request.AddProductReqVO;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
@@ -36,5 +38,13 @@ public class CartController {
 
 		return new BaseResponse<>(
 				cartService.addProductToCart(jwtUtil.getUuidByAuthorization(accessToken), addProductReqDTO));
+	}
+
+	@GetMapping("/list")
+	@Operation(summary = "장바구니 조회")
+	public BaseResponse<?> getUserCartList(@RequestHeader("Authorization") String accessToken) {
+
+		GetCartListRespDTO getCartListRespDTO = cartService.getCartList(jwtUtil.getUuidByAuthorization(accessToken));
+		return new BaseResponse<>(modelMapper.map(getCartListRespDTO, GetCartListRespDTO.class));
 	}
 }

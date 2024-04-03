@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.comehere.ssgserver.cart.domain.Cart;
 import com.comehere.ssgserver.cart.dto.request.AddProductReqDTO;
+import com.comehere.ssgserver.cart.dto.response.GetCartListRespDTO;
 import com.comehere.ssgserver.cart.infrastructure.CartRepository;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
 
@@ -23,6 +24,15 @@ public class CartServiceImpl implements CartService {
 
 		cartRepository.save(addProduct(uuid, addProductReqDTO));
 		return true;
+	}
+
+	@Override
+	public GetCartListRespDTO getCartList(UUID uuid) {
+
+		GetCartListRespDTO getCartListRespDTO = new GetCartListRespDTO();
+		getCartListRespDTO.setItemOptions(cartRepository.getCartId(uuid));
+
+		return getCartListRespDTO;
 	}
 
 	private Cart addProduct(UUID uuid, AddProductReqDTO addProductReqDTO) {
