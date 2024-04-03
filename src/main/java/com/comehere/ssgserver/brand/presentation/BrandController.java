@@ -20,11 +20,13 @@ import com.comehere.ssgserver.common.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 @Tag(name = "brand", description = "브랜드 관리 컨트롤러")
+@Slf4j
 public class BrandController {
 	private final BrandService brandService;
 	private final ModelMapper modelMapper;
@@ -32,6 +34,7 @@ public class BrandController {
 	@GetMapping("/items/brand/{itemId}")
 	@Operation(summary = "상품 별 브랜드 정보 조회 API", description = "특정 상품의 브랜드 정보")
 	public BaseResponse<BrandInfoRespVO> getBrand(@PathVariable("itemId") Long itemId) {
+		log.info("상품 브랜드 정보 조회 : itemId={}", itemId);
 		return new BaseResponse<>(
 				modelMapper.map(brandService.getBrand(itemId), BrandInfoRespVO.class));
 	}
@@ -48,6 +51,7 @@ public class BrandController {
 	public BaseResponse<BrandItemListRespVO> brandItemList(
 			@PathVariable("brandId") Long brandId,
 			@PageableDefault(size = 5) Pageable page) {
+		log.info("브랜드 별 상품 목록 조회 : brandId={}", brandId);
 		return new BaseResponse<>(modelMapper.map(
 				brandService.brandItemList(brandId, page), BrandItemListRespVO.class));
 	}

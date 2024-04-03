@@ -48,19 +48,21 @@ public class ItemController {
 	@GetMapping("/detail/{itemId}")
 	@Operation(summary = "상품 기본 정보 API", description = "상품 기본 정보 (상품명, 가격) 조회")
 	public BaseResponse<ItemDetailRespVO> itemDetail(@PathVariable("itemId") Long id) {
-		log.info("요청 받음");
+		log.info("상품 기본 정보 조회 : itemId={}", id);
 		return new BaseResponse<>(modelMapper.map(itemService.getItemDetail(id), ItemDetailRespVO.class));
 	}
 
 	@GetMapping("/description/{itemId}")
 	@Operation(summary = "상품 상세 정보 API", description = "상품 상세 정보 조회")
 	public BaseResponse<String> getItemDescription(@PathVariable("itemId") Long id) {
+		log.info("상품 상세 정보 조회 : itemId={}", id);
 		return new BaseResponse<>(itemService.getDescription(id));
 	}
 
 	@GetMapping("/calc/{itemId}")
 	@Operation(summary = "상품 집계 API", description = "상품 집계 정보 (평균 별점, 리뷰 개수) 조회")
 	public BaseResponse<ItemCalcRespVO> getItemCalc(@PathVariable("itemId") Long id) {
+		log.info("상품 집계 정보 조회 : itemId={}", id);
 		return new BaseResponse<>(modelMapper.map(itemService.getItemCalc(id), ItemCalcRespVO.class));
 	}
 
@@ -72,6 +74,9 @@ public class ItemController {
 			@RequestParam(required = false) Integer smallCategoryId,
 			@RequestParam(required = false) Integer detailCategoryId,
 			@PageableDefault(size = 40) Pageable page) {
+
+		log.info("카테고리 별 상품 목록 조회 : big={}, middle={}, small={}, detail={}",
+				bigCategoryId, middleCategoryId, smallCategoryId, detailCategoryId);
 
 		return new BaseResponse<>(modelMapper.map(
 				itemService.getItemList(
@@ -89,6 +94,7 @@ public class ItemController {
 	@GetMapping("/images/{itemId}")
 	@Operation(summary = "상품 이미지 조회 API", description = "상품 이미지 조회")
 	public BaseResponse<ItemImageListRespVO> itemWithImages(@PathVariable("itemId") Long itemId) {
+		log.info("상품 이미지 목록 조회 : itemId={}", itemId);
 		return new BaseResponse<>(modelMapper.map(
 				itemService.getItemImages(itemId), ItemImageListRespVO.class));
 	}
@@ -96,6 +102,7 @@ public class ItemController {
 	@GetMapping("/thumbnail/{itemId}")
 	@Operation(summary = "상품 썸네일 조회 API", description = "상품 이미지 중 썸네일 이미지만 조회")
 	public BaseResponse<ItemThumbnailRespVO> itemThumbnail(@PathVariable("itemId") Long itemId) {
+		log.info("상품 썸네일 조회 : itemId={}", itemId);
 		return new BaseResponse<>(modelMapper.map(
 				itemService.getItemThumbnail(itemId), ItemThumbnailRespVO.class));
 	}
@@ -119,6 +126,9 @@ public class ItemController {
 	public BaseResponse<RecentViewListRespVO> getRecentViewItems(
 			@RequestHeader(name = "Authorization", defaultValue = "") String accessToken,
 			@PageableDefault(size = 10, sort = "viewDate", direction = Sort.Direction.DESC) Pageable page) {
+
+		log.info("최근 본 상품 목록 조회");
+
 		return new BaseResponse<>(modelMapper.map(
 				itemService.getRecentViewItems(jwtUtil.getUuidByAuthorization(accessToken), page),
 				RecentViewListRespVO.class));

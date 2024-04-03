@@ -22,10 +22,12 @@ import com.comehere.ssgserver.common.response.BaseResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/bundle")
+@Slf4j
 public class BundleController {
 	private final BundleService bundleService;
 	private final ModelMapper modelMapper;
@@ -42,6 +44,7 @@ public class BundleController {
 	public BaseResponse<BundleListRespVO> getBundleList(
 			@RequestParam(required = false) Integer categoryId,
 			@PageableDefault(size = 20) Pageable page) {
+		log.info("묶음 상품 목록 조회 : categoryId={}", categoryId);
 		return null;
 	}
 
@@ -51,9 +54,10 @@ public class BundleController {
 		return new BaseResponse<>(bundleService.updateBundleStatus(id));
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/{bundleId}")
 	@Operation(summary = "특정 묶음 기본 정보 조회 API", description = "묶음(특가) 정보 조회")
-	public BaseResponse<BundleRespDTO> getBundleDetail(@PathVariable("id") Long id) {
+	public BaseResponse<BundleRespDTO> getBundleDetail(@PathVariable("bundleId") Long id) {
+		log.info("묶음 상품 기본 정보 조회 : bundleId={}", id);
 		return new BaseResponse<>(bundleService.getBundleDetail(id));
 	}
 }
