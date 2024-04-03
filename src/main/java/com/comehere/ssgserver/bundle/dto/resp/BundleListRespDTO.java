@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.bundle.dto;
+package com.comehere.ssgserver.bundle.dto.resp;
 
 import java.util.List;
 

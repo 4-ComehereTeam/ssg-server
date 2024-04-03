@@ -1,20 +1,18 @@
 package com.comehere.ssgserver.bundle.application;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 
 import com.comehere.ssgserver.bundle.domain.Bundle;
-import com.comehere.ssgserver.bundle.dto.BundleListRespDTO;
-import com.comehere.ssgserver.bundle.dto.BundleRespDTO;
-import com.comehere.ssgserver.bundle.vo.BundleReqVO;
+import com.comehere.ssgserver.bundle.dto.req.CreateBundleReqDTO;
+import com.comehere.ssgserver.bundle.dto.resp.BundleListRespDTO;
+import com.comehere.ssgserver.bundle.dto.resp.BundleRespDTO;
+import com.comehere.ssgserver.bundle.vo.req.CreateBundleReqVO;
 
 public interface BundleService {
-	void createBundle(BundleReqVO vo);
+	void createBundle(CreateBundleReqDTO dto);
 
-	Page<Bundle> getBundleList(Pageable page);
+	BundleListRespDTO getBundleList(Integer categoryId, Pageable page);
 
 	Bundle updateBundleStatus(Long id);
 
