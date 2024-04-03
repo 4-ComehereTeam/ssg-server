@@ -12,7 +12,10 @@ import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.purchase.application.AddressService;
 import com.comehere.ssgserver.purchase.dto.req.AddressAddReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.AddressDetailReqDTO;
 import com.comehere.ssgserver.purchase.vo.req.AddressAddReqVO;
+import com.comehere.ssgserver.purchase.vo.req.AddressDatailReqVO;
+import com.comehere.ssgserver.purchase.vo.resp.AddressDetailRespVO;
 import com.comehere.ssgserver.purchase.vo.resp.AddressListRespVO;
 import com.comehere.ssgserver.purchase.vo.resp.DefaultCheckRespVO;
 
@@ -57,5 +60,15 @@ public class AddressController {
 				.map(addressService.getAddressList(jwtUtil.getUuidByAuthorization(accessToken)),
 						AddressListRespVO.class);
 		return new BaseResponse<>(addressListRespVO);
+	}
+
+	@PostMapping("/detail")
+	@Operation(summary = "배송지 상세 조회")
+	public BaseResponse<?> userAddressDetail(@RequestBody AddressDatailReqVO addressDatailReqVO) {
+
+		AddressDetailReqDTO addressDetailReqDTO = modelMapper.map(addressDatailReqVO, AddressDetailReqDTO.class);
+		
+		return new BaseResponse<>(modelMapper
+				.map(addressService.getAddressDetail(addressDetailReqDTO), AddressDetailRespVO.class));
 	}
 }
