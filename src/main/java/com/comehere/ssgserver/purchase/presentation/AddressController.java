@@ -13,6 +13,7 @@ import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.purchase.application.AddressService;
 import com.comehere.ssgserver.purchase.dto.req.AddressAddReqDTO;
 import com.comehere.ssgserver.purchase.vo.req.AddressAddReqVO;
+import com.comehere.ssgserver.purchase.vo.resp.AddressListRespVO;
 import com.comehere.ssgserver.purchase.vo.resp.DefaultCheckRespVO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +30,7 @@ public class AddressController {
 	private final AddressService addressService; // 'AddressService' has no 'getDefaultAddress' method
 	private final ModelMapper modelMapper;
 
-	@GetMapping("default/check")
+	@GetMapping("/default/check")
 	@Operation(summary = "기본 배송지 조회")
 	public BaseResponse<?> userDefaultAddressCheck(@RequestHeader("Authorization") String accessToken) {
 
@@ -38,7 +39,7 @@ public class AddressController {
 						DefaultCheckRespVO.class));
 	}
 
-	@PostMapping("add")
+	@PostMapping("/add")
 	@Operation(summary = "배송지 추가")
 	public BaseResponse<?> userAddressAdd(@RequestHeader("Authorization") String accessToken,
 			@RequestBody AddressAddReqVO addressAddReqVO) {
@@ -46,5 +47,15 @@ public class AddressController {
 		AddressAddReqDTO addressAddReqDTO = modelMapper.map(addressAddReqVO, AddressAddReqDTO.class);
 		addressService.addAddress(jwtUtil.getUuidByAuthorization(accessToken), addressAddReqDTO);
 		return new BaseResponse<>(true);
+	}
+
+	@GetMapping("/list")
+	@Operation(summary = "회원 배송지 목록 조회")
+	public BaseResponse<?> userAddressList(@RequestHeader("Authorization") String accessToken) {
+
+		AddressListRespVO addressListRespVO = modelMapper
+				.map(addressService.getAddressList(jwtUtil.getUuidByAuthorization(accessToken)),
+						AddressListRespVO.class);
+		return new BaseResponse<>(addressListRespVO);
 	}
 }
