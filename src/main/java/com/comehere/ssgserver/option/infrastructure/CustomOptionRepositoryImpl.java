@@ -10,9 +10,8 @@ import static com.comehere.ssgserver.review.domain.QReview.*;
 import java.util.List;
 
 import com.comehere.ssgserver.option.domain.ItemOption;
-import com.comehere.ssgserver.option.domain.QSize;
-import com.comehere.ssgserver.purchase.domain.QPurchaseList;
-import com.comehere.ssgserver.review.domain.QReview;
+import com.comehere.ssgserver.option.dto.resp.ItemOptionInfoRespDTO;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -54,6 +53,22 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 				.join(purchaseList)
 				.on(review.purchaseListId.eq(purchaseList.id))
 				.where(review.id.eq(reviewId))
+				.fetchOne();
+	}
+
+	@Override
+	public ItemOptionInfoRespDTO getOptionInfo(Long optionId) {
+		return query.select(Projections.constructor(ItemOptionInfoRespDTO.class,
+					itemOption.id.as("optionId"),
+					color.value.as("color"),
+					size.value.as("size"),
+					etc.value.as("etc")
+				))
+				.from(itemOption)
+				.leftJoin(color).on(color.id.eq(itemOption.color.id))
+				.leftJoin(size).on(size.id.eq(itemOption.size.id))
+				.leftJoin(etc).on(etc.id.eq(itemOption.etc.id))
+				.where(itemOption.id.eq(optionId))
 				.fetchOne();
 	}
 
