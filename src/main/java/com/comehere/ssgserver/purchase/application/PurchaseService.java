@@ -16,4 +16,6 @@ public interface PurchaseService {
 	void deletePurchaseList(PurchaseListDeleteReqDTO dto, UUID uuid);
 
 	List<PurchasesGetRespDTO> getPurchases(UUID uuid);
+
+	void deletePurchase(String purchaseCode, UUID uuid);
 }

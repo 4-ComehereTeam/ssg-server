@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -41,7 +42,7 @@ public class PurchaseController {
 	@Operation(summary = "주문 등록")
 	public BaseResponse<?> createPurchase(
 			@RequestBody PurchaseCreateReqVO vo,
-			@RequestHeader("Authorization") String authorization) {
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
 
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 		purchaseService.createPurchase(modelMapper.map(vo, PurchaseCreateReqDTO.class), uuid);
@@ -49,9 +50,9 @@ public class PurchaseController {
 		return new BaseResponse<>();
 	}
 
-	// 주문 삭제
+	// 주문 취소
 	@DeleteMapping
-	@Operation(summary = "주문 삭제")
+	@Operation(summary = "주문 리스트(상품) 취소")
 	public BaseResponse<?> deletePurchaseList(
 			@RequestBody PurchaseListDeleteReqVO vo,
 			@RequestHeader("Authorization") String authorization) {
@@ -62,12 +63,22 @@ public class PurchaseController {
 		return new BaseResponse<>();
 	}
 
+	// 주문 삭제
+	@DeleteMapping("/{purchaseCode}")
+	@Operation(summary = "주문 삭제", description = "주문 삭제시 연관 주문 리스트(상품) 같이 삭제")
+	public BaseResponse<?> deletePurchase(
+			@PathVariable("purchaseCode") String purchaseCode,
+			@RequestHeader("Authorization") String authorization) {
+		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
+		purchaseService.deletePurchase(purchaseCode, uuid);
+
+		return new BaseResponse<>();
+	}
+
 	// 주문 조회
 	@GetMapping("/list")
 	@Operation(summary = "주문 전체 조회")
-	public BaseResponse<List<PurchasesGetRespVO>>  getPurchases(
-			@RequestHeader("Authorization") String authorization) {
-
+	public BaseResponse<List<PurchasesGetRespVO>> getPurchases(@RequestHeader("Authorization") String authorization) {
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 
 		return new BaseResponse<>(purchaseService.getPurchases(uuid).stream()
