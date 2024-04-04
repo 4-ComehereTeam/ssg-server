@@ -2,6 +2,8 @@ package com.comehere.ssgserver.purchase.dto.resp;
 
 import java.util.List;
 
+import com.comehere.ssgserver.purchase.dto.AddressDetailDTO;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,5 +11,5 @@ import lombok.Getter;
 @Builder
 public class AddressListRespDTO {
 
-	List<Long> addressIds;
+	List<AddressDetailDTO> addressIds;
 }

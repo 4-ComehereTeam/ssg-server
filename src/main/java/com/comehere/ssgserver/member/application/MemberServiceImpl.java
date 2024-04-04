@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.dto.FindSigninIdDTO;
 import com.comehere.ssgserver.member.dto.ModifyEmailDTO;
@@ -25,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Override
-	public BaseResponse<?> modifyPassword(UUID userUuid, ModifyPwdDTO modifyPwdDTO) {
+	public Boolean modifyPassword(UUID userUuid, ModifyPwdDTO modifyPwdDTO) {
 
 		Member member = getMemberByUuid(userUuid);
 
@@ -36,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
 				.password(passwordEncoder.encode(modifyPwdDTO.getNewPassword()))
 				.build());
 
-		return new BaseResponse<>(true);
+		return true;
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public BaseResponse<?> modifyEmail(UUID userUuid, ModifyEmailDTO modifyEmailDTO) {
+	public Boolean modifyEmail(UUID userUuid, ModifyEmailDTO modifyEmailDTO) {
 
 		Member member = getMemberByUuid(userUuid);
 
@@ -61,11 +60,11 @@ public class MemberServiceImpl implements MemberService {
 				.password(member.getPassword())
 				.build());
 
-		return new BaseResponse<>(true);
+		return true;
 	}
 
 	@Override
-	public BaseResponse<?> modifyPhone(UUID userUuid, ModifyPhoneDTO modifyPhoneDTO) {
+	public Boolean modifyPhone(UUID userUuid, ModifyPhoneDTO modifyPhoneDTO) {
 
 		Member member = getMemberByUuid(userUuid);
 
@@ -76,7 +75,7 @@ public class MemberServiceImpl implements MemberService {
 				.password(member.getPassword())
 				.build());
 
-		return new BaseResponse<>(true);
+		return true;
 	}
 
 	private Member getMemberByUuid(UUID userUuid) {

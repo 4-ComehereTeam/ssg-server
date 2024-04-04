@@ -15,6 +15,7 @@ import com.comehere.ssgserver.cart.dto.request.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.response.GetCartListRespDTO;
 import com.comehere.ssgserver.cart.vo.request.AddProductReqVO;
 import com.comehere.ssgserver.cart.vo.request.ChangeStateReqVO;
+import com.comehere.ssgserver.cart.vo.response.GetCartListRespVO;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 
@@ -32,9 +33,9 @@ public class CartController {
 	private final ModelMapper modelMapper;
 	private final JWTUtil jwtUtil;
 
-	@PostMapping("/product/add")
+	@PostMapping("/")
 	@Operation(summary = "상품 장바구니에 추가")
-	public BaseResponse<?> addProductToCart(@RequestHeader("Authorization") String accessToken,
+	public BaseResponse<Boolean> addProductToCart(@RequestHeader("Authorization") String accessToken,
 			@RequestBody AddProductReqVO addProductReqVO) {
 
 		AddProductReqDTO addProductReqDTO = modelMapper.map(addProductReqVO, AddProductReqDTO.class);
@@ -45,15 +46,15 @@ public class CartController {
 
 	@GetMapping("/list")
 	@Operation(summary = "장바구니 조회")
-	public BaseResponse<?> getUserCartList(@RequestHeader("Authorization") String accessToken) {
+	public BaseResponse<GetCartListRespVO> getUserCartList(@RequestHeader("Authorization") String accessToken) {
 
 		GetCartListRespDTO getCartListRespDTO = cartService.getCartList(jwtUtil.getUuidByAuthorization(accessToken));
-		return new BaseResponse<>(modelMapper.map(getCartListRespDTO, GetCartListRespDTO.class));
+		return new BaseResponse<>(modelMapper.map(getCartListRespDTO, GetCartListRespVO.class));
 	}
 
-	@PutMapping("checkstate/change")
+	@PutMapping("/check-state/change")
 	@Operation(summary = "장바구니 상품 체크 상태 변경")
-	public BaseResponse<?> changeProductCheckState(@RequestHeader("Authorization") String accessToken,
+	public BaseResponse<Boolean> changeProductCheckState(@RequestHeader("Authorization") String accessToken,
 			@RequestBody ChangeStateReqVO changeStateReqVO) {
 		ChangeStateReqDTO changeStateReqDTO = modelMapper.map(changeStateReqVO,
 				ChangeStateReqDTO.class);
@@ -61,9 +62,9 @@ public class CartController {
 				changeStateReqDTO));
 	}
 
-	@PutMapping("pinstate/change")
+	@PutMapping("/pin-state/change")
 	@Operation(summary = "장바구니 상품 핀 상태 변경")
-	public BaseResponse<?> changeProductPinState(@RequestHeader("Authorization") String accessToken,
+	public BaseResponse<Boolean> changeProductPinState(@RequestHeader("Authorization") String accessToken,
 			@RequestBody ChangeStateReqVO changeStateReqVO) {
 		ChangeStateReqDTO changeStateReqDTO = modelMapper.map(changeStateReqVO,
 				ChangeStateReqDTO.class);

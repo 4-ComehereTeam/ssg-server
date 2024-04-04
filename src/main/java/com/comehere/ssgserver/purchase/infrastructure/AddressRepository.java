@@ -11,5 +11,5 @@ import com.comehere.ssgserver.purchase.domain.Address;
 public interface AddressRepository extends JpaRepository<Address, Long>, CustomAddressRepository {
 	List<Address> findAllByUuid(UUID uuid);
 
-	Optional<Address> findById(Long id);
+	Optional<Address> findByIdAndUuid(Long id, UUID uuid);
 }

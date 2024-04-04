@@ -2,6 +2,8 @@ package com.comehere.ssgserver.purchase.vo.resp;
 
 import java.util.List;
 
+import com.comehere.ssgserver.purchase.vo.AddressDetailVO;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddressListRespVO {
 
-	List<Long> addressIds;
+	List<AddressDetailVO> addressIds;
 }

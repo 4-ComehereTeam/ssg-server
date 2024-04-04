@@ -1,11 +1,11 @@
-package com.comehere.ssgserver.purchase.dto.resp;
+package com.comehere.ssgserver.purchase.vo;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
-public class AddressDetailRespDTO {
+@NoArgsConstructor
+public class AddressDetailVO {
 
 	private String nickname;
 

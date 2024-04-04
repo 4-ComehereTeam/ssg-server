@@ -45,16 +45,17 @@ public class MemberController {
 
 	@PutMapping("/modify/password")
 	@Operation(summary = "비밀번호 변경")
-	public BaseResponse<?> userModifyPassword(@RequestHeader("Authorization") String accessToken,
+	public BaseResponse<Boolean> userModifyPassword(@RequestHeader("Authorization") String accessToken,
 			@RequestBody ModifyPwdRequestVO modifyPwdRequestVo) {
 
 		ModifyPwdDTO modifyPwdDTO = modelMapper.map(modifyPwdRequestVo, ModifyPwdDTO.class);
-		return memberService.modifyPassword(jwtUtil.getUuidByAuthorization(accessToken), modifyPwdDTO);
+		return new BaseResponse<>(
+				memberService.modifyPassword(jwtUtil.getUuidByAuthorization(accessToken), modifyPwdDTO));
 	}
 
 	@GetMapping("/find/signinId")
 	@Operation(summary = "아이디 찾기")
-	public BaseResponse<?> userFindSigninId(@RequestHeader("Authorization") String accessToken) {
+	public BaseResponse<FindSigninIdResponseVO> userFindSigninId(@RequestHeader("Authorization") String accessToken) {
 
 		FindSigninIdDTO findSigninIdDTO = memberService.findSigninId(jwtUtil.getUuidByAuthorization(accessToken));
 		return new BaseResponse<>(modelMapper.map(findSigninIdDTO, FindSigninIdResponseVO.class));
@@ -62,20 +63,22 @@ public class MemberController {
 
 	@PutMapping("/modify/email")
 	@Operation(summary = "이메일 변경")
-	public BaseResponse<?> userModifyEmail(@RequestHeader("Authorization") String accessToken,
+	public BaseResponse<Boolean> userModifyEmail(@RequestHeader("Authorization") String accessToken,
 			@RequestBody ModifyEmailRequestVO modifyEmailRequestVo) {
 
 		ModifyEmailDTO modifyEmailDTO = modelMapper.map(modifyEmailRequestVo, ModifyEmailDTO.class);
-		return memberService.modifyEmail(jwtUtil.getUuidByAuthorization(accessToken), modifyEmailDTO);
+		return new BaseResponse<>(
+				memberService.modifyEmail(jwtUtil.getUuidByAuthorization(accessToken), modifyEmailDTO));
 	}
 
 	@PutMapping("/modify/phone")
 	@Operation(summary = "전화번호 변경")
-	public BaseResponse<?> userModifyPhone(@RequestHeader("Authorization") String accessToken,
+	public BaseResponse<Boolean> userModifyPhone(@RequestHeader("Authorization") String accessToken,
 			@RequestBody ModifyPhoneRequestVO modifyPhoneRequestVo) {
 
 		ModifyPhoneDTO modifyPhoneDTO = modelMapper.map(modifyPhoneRequestVo, ModifyPhoneDTO.class);
 
-		return memberService.modifyPhone(jwtUtil.getUuidByAuthorization(accessToken), modifyPhoneDTO);
+		return new BaseResponse<>(
+				memberService.modifyPhone(jwtUtil.getUuidByAuthorization(accessToken), modifyPhoneDTO));
 	}
 }
