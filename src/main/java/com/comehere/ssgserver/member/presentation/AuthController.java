@@ -39,7 +39,7 @@ public class AuthController {
 
 	@PostMapping("/signUp")
 	@Operation(summary = "회원가입")
-	public BaseResponse<?> joinProcess(@RequestBody JoinRequestVO joinRequestVo) {
+	public BaseResponse<Void> joinProcess(@RequestBody JoinRequestVO joinRequestVo) {
 
 		System.out.println("joinReqeustVo: " + joinRequestVo.getSigninId());
 		authService.signUp(joinRequestVo);
@@ -48,10 +48,11 @@ public class AuthController {
 
 	@PostMapping("/signIn")
 	@Operation(summary = "로그인", description = "로그인 성공 시 JWT 토큰 발급.")
-	
-	public BaseResponse<?> signIn(@RequestBody SigninRequestVO signinRequestVo, HttpServletResponse response) {
-		SigninRequestDTO signinRequestDTO = modelMapper.map(signinRequestVo, SigninRequestDTO.class);
-		SigninResponseDTO signinResponseDTO = authService.signIn(signinRequestDTO);
+	public BaseResponse<SigninResponseVO> signIn(@RequestBody SigninRequestVO signinRequestVo,
+			HttpServletResponse response) {
+
+		SigninResponseDTO signinResponseDTO = authService.signIn(
+				modelMapper.map(signinRequestVo, SigninRequestDTO.class));
 
 		// jwt 토큰을 http 응답 헤더에 추가
 		response.addHeader("accessToken", "Bearer " + signinResponseDTO.getAccessToken());
@@ -61,7 +62,7 @@ public class AuthController {
 
 	@GetMapping("/signInId/check")
 	@Operation(summary = "로그인 Id 중복확인")
-	public BaseResponse<?> checkUserSignInIdDuplication(@RequestParam String signinId) {
+	public BaseResponse<Boolean> checkUserSignInIdDuplication(@RequestParam String signinId) {
 
 		boolean isDuplicated = authService.checkUserSignInIdDuplication(signinId);
 		if (isDuplicated) {
@@ -73,7 +74,7 @@ public class AuthController {
 
 	@PostMapping("/email/check")
 	@Operation(summary = "이메일 중복확인", description = "이메일 중복확인을 통해서 가입된 회원인지 조회")
-	public BaseResponse<?> checkUserEmailDuplication(@RequestBody Map<String, String> email) {
+	public BaseResponse<Boolean> checkUserEmailDuplication(@RequestBody Map<String, String> email) {
 
 		String emailStr = email.get("email");
 		boolean isDuplicated = authService.checkUserEmailDuplication(emailStr);
@@ -88,18 +89,17 @@ public class AuthController {
 
 	@PostMapping("/resign/count")
 	@Operation(summary = "탈퇴 횟수 조회")
-	public BaseResponse<?> checkUserResignCount(@RequestBody CheckStateRequestVO checkStateRequestVO) {
+	public BaseResponse<CheckResignCountResponseVO> checkUserResignCount(
+			@RequestBody CheckStateRequestVO checkStateRequestVO) {
 
-		CheckStateRequestDTO checkStateRequestDTO = modelMapper.map(checkStateRequestVO,
-				CheckStateRequestDTO.class);
-
-		return new BaseResponse<>(modelMapper.map(authService.checkResignCount(checkStateRequestDTO),
+		return new BaseResponse<>(modelMapper.map(authService.checkResignCount(modelMapper.map(checkStateRequestVO,
+						CheckStateRequestDTO.class)),
 				CheckResignCountResponseVO.class));
 	}
 
 	@PostMapping("/dormancy/state")
 	@Operation(summary = "휴면 계정 여부 조회")
-	public BaseResponse<?> checkUserDormancyState(@RequestBody CheckStateRequestVO checkStateRequestVO) {
+	public BaseResponse<Boolean> checkUserDormancyState(@RequestBody CheckStateRequestVO checkStateRequestVO) {
 
 		boolean isDormancy = authService.checkDormancy(
 				modelMapper.map(checkStateRequestVO, CheckStateRequestDTO.class));
@@ -113,7 +113,7 @@ public class AuthController {
 
 	@PostMapping("/resign/state")
 	@Operation(summary = "탈퇴 여부 조회")
-	public BaseResponse<?> checkUserResignState(@RequestBody CheckStateRequestVO checkStateRequestVO) {
+	public BaseResponse<Boolean> checkUserResignState(@RequestBody CheckStateRequestVO checkStateRequestVO) {
 
 		boolean isResign = authService.checkResign(
 				modelMapper.map(checkStateRequestVO, CheckStateRequestDTO.class));

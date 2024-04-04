@@ -12,10 +12,7 @@ import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.purchase.application.AddressService;
 import com.comehere.ssgserver.purchase.dto.req.AddressAddReqDTO;
-import com.comehere.ssgserver.purchase.dto.req.AddressDetailReqDTO;
 import com.comehere.ssgserver.purchase.vo.req.AddressAddReqVO;
-import com.comehere.ssgserver.purchase.vo.req.AddressDatailReqVO;
-import com.comehere.ssgserver.purchase.vo.resp.AddressDetailRespVO;
 import com.comehere.ssgserver.purchase.vo.resp.AddressListRespVO;
 import com.comehere.ssgserver.purchase.vo.resp.DefaultCheckRespVO;
 
@@ -33,42 +30,32 @@ public class AddressController {
 	private final AddressService addressService; // 'AddressService' has no 'getDefaultAddress' method
 	private final ModelMapper modelMapper;
 
-	@GetMapping("/default/check")
+	@GetMapping("/default")
 	@Operation(summary = "기본 배송지 조회")
-	public BaseResponse<?> userDefaultAddressCheck(@RequestHeader("Authorization") String accessToken) {
+	public BaseResponse<DefaultCheckRespVO> userDefaultAddressCheck(
+			@RequestHeader("Authorization") String accessToken) {
 
 		return new BaseResponse<>(
 				modelMapper.map(addressService.getDefaultAddress(jwtUtil.getUuidByAuthorization(accessToken)),
 						DefaultCheckRespVO.class));
 	}
 
-	@PostMapping("/add")
+	@PostMapping("/")
 	@Operation(summary = "배송지 추가")
-	public BaseResponse<?> userAddressAdd(@RequestHeader("Authorization") String accessToken,
+	public BaseResponse<Boolean> userAddressAdd(@RequestHeader("Authorization") String accessToken,
 			@RequestBody AddressAddReqVO addressAddReqVO) {
 
-		AddressAddReqDTO addressAddReqDTO = modelMapper.map(addressAddReqVO, AddressAddReqDTO.class);
-		addressService.addAddress(jwtUtil.getUuidByAuthorization(accessToken), addressAddReqDTO);
+		addressService.addAddress(jwtUtil.getUuidByAuthorization(accessToken),
+				modelMapper.map(addressAddReqVO, AddressAddReqDTO.class));
 		return new BaseResponse<>(true);
 	}
 
 	@GetMapping("/list")
-	@Operation(summary = "회원 배송지 목록 조회")
-	public BaseResponse<?> userAddressList(@RequestHeader("Authorization") String accessToken) {
-
-		AddressListRespVO addressListRespVO = modelMapper
-				.map(addressService.getAddressList(jwtUtil.getUuidByAuthorization(accessToken)),
-						AddressListRespVO.class);
-		return new BaseResponse<>(addressListRespVO);
-	}
-
-	@PostMapping("/detail")
-	@Operation(summary = "배송지 상세 조회")
-	public BaseResponse<?> userAddressDetail(@RequestBody AddressDatailReqVO addressDatailReqVO) {
-
-		AddressDetailReqDTO addressDetailReqDTO = modelMapper.map(addressDatailReqVO, AddressDetailReqDTO.class);
+	@Operation(summary = "배송지 조회")
+	public BaseResponse<AddressListRespVO> userAddressDetail(@RequestHeader("Authorization") String accessToken) {
 		
-		return new BaseResponse<>(modelMapper
-				.map(addressService.getAddressDetail(addressDetailReqDTO), AddressDetailRespVO.class));
+		return new BaseResponse<>(modelMapper.map(addressService
+				.getAddressList(jwtUtil.getUuidByAuthorization(accessToken)), AddressListRespVO.class));
 	}
+
 }
