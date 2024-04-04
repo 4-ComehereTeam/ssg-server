@@ -1,23 +1,20 @@
 package com.comehere.ssgserver.option.presentation;
 
-import java.util.List;
-
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.comehere.ssgserver.common.entity.BaseEntity;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.option.application.ItemOptionService;
-import com.comehere.ssgserver.option.domain.Color;
-import com.comehere.ssgserver.option.domain.ItemOption;
-import com.comehere.ssgserver.option.dto.ColorRespDTO;
-import com.comehere.ssgserver.option.dto.EtcRespDTO;
-import com.comehere.ssgserver.option.dto.ItemOptionRespDTO;
-import com.comehere.ssgserver.option.dto.OptionRespDTO;
-import com.comehere.ssgserver.option.dto.SizeRespDTO;
+import com.comehere.ssgserver.option.dto.resp.ColorRespDTO;
+import com.comehere.ssgserver.option.dto.resp.EtcRespDTO;
+import com.comehere.ssgserver.option.dto.resp.ItemOptionRespDTO;
+import com.comehere.ssgserver.option.dto.resp.OptionRespDTO;
+import com.comehere.ssgserver.option.dto.resp.SizeRespDTO;
+import com.comehere.ssgserver.option.vo.resp.ItemOptionIdRespVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ItemOptionController {
 	private final ItemOptionService itemOptionService;
+	private final ModelMapper modelMapper;
 
 	// @GetMapping("/items/options/{id}")
 	public ItemOptionRespDTO itemOption(@PathVariable("id") Long itemId) {
@@ -61,5 +59,18 @@ public class ItemOptionController {
 			@RequestParam(required = false) Long sizeId) {
 		log.info("기타 옵션 목록 조회 : itemId={}, colorId={}, sizeId={}", itemId, colorId, sizeId);
 		return new BaseResponse<>(itemOptionService.getEtcs(itemId, colorId, sizeId));
+	}
+
+	@GetMapping("/option/review/{reviewId}")
+	public BaseResponse<ItemOptionIdRespVO> getItemOptions(@PathVariable("reviewId") Long reviewId) {
+		log.info("리뷰 옵션 조회 : reviewId={}", reviewId);
+		return new BaseResponse<>(modelMapper.map(
+				itemOptionService.getOptionId(reviewId), ItemOptionIdRespVO.class));
+	}
+
+	@GetMapping("/option/{optionId}")
+	public BaseResponse<?> getOptionInfo(@PathVariable("optionId") Long optionId) {
+		log.info("옵션 값 조회 : optionId={}", optionId);
+		return new BaseResponse<>();
 	}
 }

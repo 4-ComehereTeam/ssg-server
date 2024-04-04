@@ -1,14 +1,14 @@
-package com.comehere.ssgserver.option.dto;
+package com.comehere.ssgserver.option.dto.resp;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class SizeDTO {
+public class EtcDTO {
 	private Long optionId;
 
-	private Long sizeId;
+	private Long etcId;
 
 	private String value;
 

@@ -1,11 +1,13 @@
-package com.comehere.ssgserver.option.dto;
+package com.comehere.ssgserver.option.dto.resp;
 
 import com.comehere.ssgserver.option.domain.ItemOption;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@NoArgsConstructor
 public class OptionDTO {
 	private Boolean color;
 	private Boolean size;
