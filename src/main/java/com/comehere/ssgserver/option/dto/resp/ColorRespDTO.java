@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.option.dto;
+package com.comehere.ssgserver.option.dto.resp;
 
 import java.util.List;
 

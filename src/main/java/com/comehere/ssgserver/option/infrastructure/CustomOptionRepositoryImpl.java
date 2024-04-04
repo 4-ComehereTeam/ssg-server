@@ -4,11 +4,15 @@ import static com.comehere.ssgserver.option.domain.QColor.*;
 import static com.comehere.ssgserver.option.domain.QEtc.*;
 import static com.comehere.ssgserver.option.domain.QItemOption.*;
 import static com.comehere.ssgserver.option.domain.QSize.*;
+import static com.comehere.ssgserver.purchase.domain.QPurchaseList.*;
+import static com.comehere.ssgserver.review.domain.QReview.*;
 
 import java.util.List;
 
 import com.comehere.ssgserver.option.domain.ItemOption;
 import com.comehere.ssgserver.option.domain.QSize;
+import com.comehere.ssgserver.purchase.domain.QPurchaseList;
+import com.comehere.ssgserver.review.domain.QReview;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -41,6 +45,16 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 						sizeIdEq(sizeId)
 				)
 				.fetch();
+	}
+
+	@Override
+	public Long findOptionId(Long reviewId) {
+		return query.select(purchaseList.itemOptionId)
+				.from(review)
+				.join(purchaseList)
+				.on(review.purchaseListId.eq(purchaseList.id))
+				.where(review.id.eq(reviewId))
+				.fetchOne();
 	}
 
 	private BooleanExpression colorIdEq(Long colorId) {

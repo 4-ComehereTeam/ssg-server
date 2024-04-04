@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.option.dto;
+package com.comehere.ssgserver.option.dto.resp;
 
 import java.util.List;
 
@@ -7,10 +7,12 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class SizeRespDTO {
+public class EtcRespDTO {
 	private Long itemId;
 
 	private Long colorId;
 
-	private List<SizeDTO> sizes;
+	private Long sizeId;
+
+	private List<EtcDTO> etcs;
 }

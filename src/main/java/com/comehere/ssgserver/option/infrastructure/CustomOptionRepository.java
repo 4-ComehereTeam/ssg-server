@@ -8,4 +8,6 @@ public interface CustomOptionRepository {
 	List<ItemOption> findSize(Long itemId, Long colorId);
 
 	List<ItemOption> findEtc(Long itemId, Long colorId, Long sizeId);
+
+	Long findOptionId(Long reviewId);
 }

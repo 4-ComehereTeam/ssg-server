@@ -5,18 +5,17 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.comehere.ssgserver.item.domain.Item;
-import com.comehere.ssgserver.option.domain.Color;
 import com.comehere.ssgserver.option.domain.ItemOption;
-import com.comehere.ssgserver.option.dto.ColorDTO;
-import com.comehere.ssgserver.option.dto.ColorRespDTO;
-import com.comehere.ssgserver.option.dto.EtcDTO;
-import com.comehere.ssgserver.option.dto.EtcRespDTO;
-import com.comehere.ssgserver.option.dto.ItemOptionRespDTO;
-import com.comehere.ssgserver.option.dto.OptionDTO;
-import com.comehere.ssgserver.option.dto.OptionRespDTO;
-import com.comehere.ssgserver.option.dto.SizeDTO;
-import com.comehere.ssgserver.option.dto.SizeRespDTO;
+import com.comehere.ssgserver.option.dto.resp.ColorDTO;
+import com.comehere.ssgserver.option.dto.resp.ColorRespDTO;
+import com.comehere.ssgserver.option.dto.resp.EtcDTO;
+import com.comehere.ssgserver.option.dto.resp.EtcRespDTO;
+import com.comehere.ssgserver.option.dto.resp.ItemOptionIdRespDTO;
+import com.comehere.ssgserver.option.dto.resp.ItemOptionRespDTO;
+import com.comehere.ssgserver.option.dto.resp.OptionDTO;
+import com.comehere.ssgserver.option.dto.resp.OptionRespDTO;
+import com.comehere.ssgserver.option.dto.resp.SizeDTO;
+import com.comehere.ssgserver.option.dto.resp.SizeRespDTO;
 import com.comehere.ssgserver.option.infrastructure.ItemOptionRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -43,14 +42,14 @@ public class ItemOptionServiceImpl implements ItemOptionService {
 
 		// OptionRespDTO optionRespDTO = ;
 
-		// return OptionRespDTO.builder()
-		// 		.itemId(itemId)
-		// 		.hasColor(io.getColor() != null)
-		// 		.hasSize(io.getSize() != null)
-		// 		.hasEtc(io.getEtc() != null)
-		// 		.build();
+		return OptionRespDTO.builder()
+				.itemId(itemId)
+				.hasColor(io.getColor() != null)
+				.hasSize(io.getSize() != null)
+				.hasEtc(io.getEtc() != null)
+				.build();
 
-		return modelMapper.map(io, OptionRespDTO.class);
+		// return modelMapper.map(io, OptionRespDTO.class);
 	}
 
 	@Override
@@ -89,6 +88,13 @@ public class ItemOptionServiceImpl implements ItemOptionService {
 				.etcs(itemOption.stream()
 						.map(ItemOptionServiceImpl::createEtc)
 						.toList())
+				.build();
+	}
+
+	@Override
+	public ItemOptionIdRespDTO getOptionId(Long reviewId) {
+		return ItemOptionIdRespDTO.builder()
+				.itemOptionId(itemOptionRepository.findOptionId(reviewId))
 				.build();
 	}
 
