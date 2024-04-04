@@ -7,6 +7,8 @@ import com.comehere.ssgserver.common.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -52,13 +54,16 @@ public class PurchaseList extends BaseEntity {
 	private Boolean wroteReview;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private PurchaseListStatus status;
+
+	@Column(nullable = false)
 	private Boolean deleted;
 
 	@Builder
-
 	public PurchaseList(Long id, Long purchaseId, Long itemOptionId, String itemName, Long itemPrice,
 			Integer itemDiscountRate, Integer count, String cancelReason, String detailReason, Boolean wroteReview,
-			Boolean deleted) {
+			PurchaseListStatus status, Boolean deleted) {
 		this.id = id;
 		this.purchaseId = purchaseId;
 		this.itemOptionId = itemOptionId;
@@ -69,6 +74,7 @@ public class PurchaseList extends BaseEntity {
 		this.cancelReason = cancelReason;
 		this.detailReason = detailReason;
 		this.wroteReview = wroteReview;
+		this.status = status;
 		this.deleted = deleted;
 	}
 }

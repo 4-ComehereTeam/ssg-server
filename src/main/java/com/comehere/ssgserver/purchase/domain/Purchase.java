@@ -11,6 +11,8 @@ import com.comehere.ssgserver.common.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -58,12 +60,17 @@ public class Purchase extends BaseEntity {
 	@Column(columnDefinition = "Longtext")
 	private String requestMessage;
 
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private PurchaseStatus status;
+
 	private Boolean deleted;
 
 	@Builder
+
 	public Purchase(Long id, String purchaseCode, UUID uuid, String name, String phone, String email,
 			String addressNickname, String address, String detailAddress, String zipcode, String requestMessage,
-			Boolean deleted) {
+			PurchaseStatus status, Boolean deleted) {
 		this.id = id;
 		this.purchaseCode = purchaseCode;
 		this.uuid = uuid;
@@ -75,6 +82,7 @@ public class Purchase extends BaseEntity {
 		this.detailAddress = detailAddress;
 		this.zipcode = zipcode;
 		this.requestMessage = requestMessage;
+		this.status = status;
 		this.deleted = deleted;
 	}
 }

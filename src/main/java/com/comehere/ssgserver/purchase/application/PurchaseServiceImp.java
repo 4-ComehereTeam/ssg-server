@@ -14,6 +14,8 @@ import com.comehere.ssgserver.common.exception.BaseException;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.purchase.domain.Purchase;
 import com.comehere.ssgserver.purchase.domain.PurchaseList;
+import com.comehere.ssgserver.purchase.domain.PurchaseListStatus;
+import com.comehere.ssgserver.purchase.domain.PurchaseStatus;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListDeleteReqDTO;
@@ -44,6 +46,7 @@ public class PurchaseServiceImp implements PurchaseService {
 				.detailAddress(dto.getDetailAddress())
 				.zipcode(dto.getZipcode())
 				.requestMessage(dto.getRequestMessage())
+				.status(PurchaseStatus.ACCEPTED)
 				.deleted(false)
 				.build();
 
@@ -69,6 +72,7 @@ public class PurchaseServiceImp implements PurchaseService {
 				.count(dto.getCount())
 				.cancelReason("")
 				.detailReason("")
+				.status(PurchaseListStatus.ACCEPTED)
 				.wroteReview(false)
 				.deleted(false)
 				.build());
@@ -92,12 +96,13 @@ public class PurchaseServiceImp implements PurchaseService {
 				.cancelReason(dto.getCancelReason())
 				.detailReason(dto.getDetailReason())
 				.wroteReview(purchaseList.getWroteReview())
-				.deleted(true)
+				.deleted(false)
+				.status(PurchaseListStatus.CANCEL)
 				.build());
 
 		// 주문 상품이 하나도 없을 경우 주문 정보 삭제
-		if (!purchaseListRepository.existsByPurchaseId(purchaseId)) {
-			purchaseRepository.delete(purchase);
+		if (purchaseListRepository.existsPurchaseCanceled(purchaseId)) {
+			purchaseRepository.updatePurchaseStatusToCancel(purchaseId);
 		}
 	}
 
@@ -107,11 +112,27 @@ public class PurchaseServiceImp implements PurchaseService {
 				.stream()
 				.map(purchase -> PurchasesGetRespDTO.builder()
 						.purchaseCode(purchase.getPurchaseCode())
-						.purchaseListIds(purchaseListRepository.findByPurchaseId(purchase.getId())
-								.stream()
-								.map(PurchaseList::getId)
-								.collect(Collectors.toList()))
+						.purchaseListIds(getPurchaseListIds(purchase))
 						.build())
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	@Transactional
+	public void deletePurchase(String purchaseCode, UUID uuid) {
+		Purchase purchase = purchaseRepository.findByPurchaseCodeAndUuid(purchaseCode, uuid)
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.PURCHASE_NOT_FOUND));
+
+		Long purchaseId = purchase.getId();
+
+		purchaseListRepository.deleteAllPurchaseList(purchaseId);
+		purchaseRepository.delete(purchase);
+	}
+
+	private List<Long> getPurchaseListIds(Purchase purchase) {
+		return purchaseListRepository.findByPurchaseId(purchase.getId())
+				.stream()
+				.map(PurchaseList::getId)
 				.collect(Collectors.toList());
 	}
 
