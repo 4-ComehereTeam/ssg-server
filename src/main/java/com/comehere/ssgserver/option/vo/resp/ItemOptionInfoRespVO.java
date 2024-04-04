@@ -1,14 +1,14 @@
 package com.comehere.ssgserver.option.vo.resp;
 
-import java.util.List;
-
-import com.comehere.ssgserver.option.dto.resp.OptionInfoDTO;
-
 import lombok.Getter;
 
 @Getter
 public class ItemOptionInfoRespVO {
-	private Long OptionId;
+	private Long itemOptionId;
 
-	private List<OptionInfoDTO> options;
+	private String color;
+
+	private String size;
+
+	private String etc;
 }

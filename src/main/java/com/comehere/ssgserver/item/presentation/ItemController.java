@@ -86,7 +86,7 @@ public class ItemController {
 
 	@PostMapping
 	@Operation(summary = "상품 등록 API", description = "상품 정보 등록")
-	public BaseResponse<?> createItem(@RequestBody ItemReqVO vo) {
+	public BaseResponse<Void> createItem(@RequestBody ItemReqVO vo) {
 		itemService.createItem(modelMapper.map(vo, ItemReqDTO.class));
 		return new BaseResponse<>();
 	}

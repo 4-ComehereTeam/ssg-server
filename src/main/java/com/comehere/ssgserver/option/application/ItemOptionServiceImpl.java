@@ -11,6 +11,7 @@ import com.comehere.ssgserver.option.dto.resp.ColorRespDTO;
 import com.comehere.ssgserver.option.dto.resp.EtcDTO;
 import com.comehere.ssgserver.option.dto.resp.EtcRespDTO;
 import com.comehere.ssgserver.option.dto.resp.ItemOptionIdRespDTO;
+import com.comehere.ssgserver.option.dto.resp.ItemOptionInfoRespDTO;
 import com.comehere.ssgserver.option.dto.resp.ItemOptionRespDTO;
 import com.comehere.ssgserver.option.dto.resp.OptionDTO;
 import com.comehere.ssgserver.option.dto.resp.OptionRespDTO;
@@ -96,6 +97,11 @@ public class ItemOptionServiceImpl implements ItemOptionService {
 		return ItemOptionIdRespDTO.builder()
 				.itemOptionId(itemOptionRepository.findOptionId(reviewId))
 				.build();
+	}
+
+	@Override
+	public ItemOptionInfoRespDTO getOptionInfo(Long itemId) {
+		return itemOptionRepository.getOptionInfo(itemId);
 	}
 
 	private ColorDTO createColor(ItemOption io) {
