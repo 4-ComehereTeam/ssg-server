@@ -40,7 +40,7 @@ public class PurchaseController {
 
 	@PostMapping
 	@Operation(summary = "주문 등록")
-	public BaseResponse<?> createPurchase(
+	public BaseResponse<Void> createPurchase(
 			@RequestBody PurchaseCreateReqVO vo,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 
@@ -50,10 +50,9 @@ public class PurchaseController {
 		return new BaseResponse<>();
 	}
 
-	// 주문 취소
-	@DeleteMapping
+	@DeleteMapping("/list")
 	@Operation(summary = "주문 리스트(상품) 취소")
-	public BaseResponse<?> deletePurchaseList(
+	public BaseResponse<Void> deletePurchaseList(
 			@RequestBody PurchaseListDeleteReqVO vo,
 			@RequestHeader("Authorization") String authorization) {
 
@@ -63,10 +62,9 @@ public class PurchaseController {
 		return new BaseResponse<>();
 	}
 
-	// 주문 삭제
 	@DeleteMapping("/{purchaseCode}")
 	@Operation(summary = "주문 삭제", description = "주문 삭제시 연관 주문 리스트(상품) 같이 삭제")
-	public BaseResponse<?> deletePurchase(
+	public BaseResponse<Void> deletePurchase(
 			@PathVariable("purchaseCode") String purchaseCode,
 			@RequestHeader("Authorization") String authorization) {
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
@@ -75,8 +73,7 @@ public class PurchaseController {
 		return new BaseResponse<>();
 	}
 
-	// 주문 조회
-	@GetMapping("/list")
+	@GetMapping
 	@Operation(summary = "주문 전체 조회")
 	public BaseResponse<List<PurchasesGetRespVO>> getPurchases(@RequestHeader("Authorization") String authorization) {
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
@@ -85,5 +82,4 @@ public class PurchaseController {
 				.map(dto -> modelMapper.map(dto, PurchasesGetRespVO.class))
 				.collect(Collectors.toList()));
 	}
-
 }
