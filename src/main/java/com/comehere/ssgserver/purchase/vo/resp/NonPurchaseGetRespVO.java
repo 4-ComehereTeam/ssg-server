@@ -8,5 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class NonPurchaseGetRespVO {
+	private String purchaseCode;
+
 	private List<Long> purchaseListIds;
 }

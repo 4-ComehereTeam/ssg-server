@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.purchase.application.NonPurchaseService;
 import com.comehere.ssgserver.purchase.application.PurchaseService;
+import com.comehere.ssgserver.purchase.dto.req.NonPurchaseDeleteReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.NonPurchaseGetReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.NonPurchaseListDeleteReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.NonPurchaseGetRespDTO;
+import com.comehere.ssgserver.purchase.vo.NonPurchaseDeleteReqVO;
 import com.comehere.ssgserver.purchase.vo.req.NonPurchaseGetReqVO;
+import com.comehere.ssgserver.purchase.vo.req.NonPurchaseListDeleteReqVO;
 import com.comehere.ssgserver.purchase.vo.req.PurchaseCreateReqVO;
-import com.comehere.ssgserver.purchase.vo.req.PurchaseListDeleteReqVO;
+import com.comehere.ssgserver.purchase.vo.resp.NonPurchaseGetRespVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,24 +39,34 @@ public class NonPurchaseController {
 
 	@PostMapping
 	@Operation(summary = "비회원 주문 등록")
-	public BaseResponse<?> createNonPurchase(@RequestBody PurchaseCreateReqVO vo) {
+	public BaseResponse<Void> createNonPurchase(@RequestBody PurchaseCreateReqVO vo) {
 		purchaseService.createPurchase(modelMapper.map(vo, PurchaseCreateReqDTO.class), null);
 
 		return new BaseResponse<>();
 	}
 
-	/*@DeleteMapping
+	@DeleteMapping("/list")
 	@Operation(summary = "비회원 주문 리스트 (상품) 취소")
-	public void deleteNonPurchaseList() {
+	public BaseResponse<Void> deleteNonPurchaseList(@RequestBody NonPurchaseListDeleteReqVO vo) {
+		nonPurchaseService.deleteNonPurchaseList(modelMapper.map(vo, NonPurchaseListDeleteReqDTO.class));
+
+		return new BaseResponse<>();
 	}
 
 	@DeleteMapping
 	@Operation(summary = "비회원 주문 삭제")
-	public void deleteNonPurchase() {
-	}*/
+	public BaseResponse<Void> deleteNonPurchase(@RequestBody NonPurchaseDeleteReqVO vo) {
+		nonPurchaseService.deleteNonPurchase(modelMapper.map(vo, NonPurchaseDeleteReqDTO.class));
+
+		return new BaseResponse<>();
+	}
+
 	@GetMapping
 	@Operation(summary = "비회원 주문 조회")
-	public BaseResponse<NonPurchaseGetRespDTO> getNonPurchase(@RequestBody NonPurchaseGetReqVO vo) {
-		return new BaseResponse<>(nonPurchaseService.getNonPurchase(modelMapper.map(vo, NonPurchaseGetReqDTO.class)));
+	public BaseResponse<NonPurchaseGetRespVO> getNonPurchase(@RequestBody NonPurchaseGetReqVO vo) {
+		NonPurchaseGetRespDTO respDTO = nonPurchaseService.getNonPurchase(
+				modelMapper.map(vo, NonPurchaseGetReqDTO.class));
+
+		return new BaseResponse<>(modelMapper.map(respDTO, NonPurchaseGetRespVO.class));
 	}
 }

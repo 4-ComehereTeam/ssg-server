@@ -9,7 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.comehere.ssgserver.purchase.domain.Purchase;
 
 public interface PurchaseRepository extends JpaRepository<Purchase, Long>, CustomPurchaseRepository {
-
 	Optional<Purchase> findByPurchaseCodeAndUuid(String purchaseCode, UUID uuid);
 
-	List<Purchase> findByUuid(UUID uuid);}
+	List<Purchase> findByUuid(UUID uuid);
+
+	Optional<Purchase> findByPurchaseCodeAndNameAndPhone(String purchaseCode, String name, String phone);
+}

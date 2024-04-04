@@ -123,9 +123,7 @@ public class PurchaseServiceImp implements PurchaseService {
 		Purchase purchase = purchaseRepository.findByPurchaseCodeAndUuid(purchaseCode, uuid)
 				.orElseThrow(() -> new BaseException(BaseResponseStatus.PURCHASE_NOT_FOUND));
 
-		Long purchaseId = purchase.getId();
-
-		purchaseListRepository.deleteAllPurchaseList(purchaseId);
+		purchaseListRepository.deleteAllPurchaseList(purchase.getId());
 		purchaseRepository.delete(purchase);
 	}
 
