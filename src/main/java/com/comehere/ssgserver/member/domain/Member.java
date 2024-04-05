@@ -25,10 +25,8 @@ public class Member extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(updatable = false)
 	private UUID uuid;
 
-	@Column(updatable = false)
 	private String signinId;
 
 	@Column(nullable = false, updatable = false)
