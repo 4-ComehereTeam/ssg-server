@@ -32,6 +32,7 @@ public class Member extends BaseEntity {
 	@Column(nullable = false, updatable = false)
 	private String name;
 
+	@Column(updatable = false)
 	private String password;
 
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true, updatable = false)
@@ -42,7 +43,7 @@ public class Member extends BaseEntity {
 	@Column(nullable = false)
 	private String email;
 
-	@Column(columnDefinition = "DATETIME", updatable = false)
+	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime resignTime;
 
 	private Integer resignCount = 0;

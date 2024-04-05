@@ -43,6 +43,14 @@ public class MemberController {
 		return "Main Controller";
 	}
 
+	@GetMapping("/find/signinId")
+	@Operation(summary = "아이디 찾기")
+	public BaseResponse<FindSigninIdRespVO> userFindSigninId(@RequestHeader("Authorization") String accessToken) {
+
+		FindSigninIdDTO findSigninIdDTO = memberService.findSigninId(jwtUtil.getUuidByAuthorization(accessToken));
+		return new BaseResponse<>(modelMapper.map(findSigninIdDTO, FindSigninIdRespVO.class));
+	}
+	
 	@PutMapping("/modify/password")
 	@Operation(summary = "비밀번호 변경")
 	public BaseResponse<Boolean> userModifyPassword(@RequestHeader("Authorization") String accessToken,
@@ -51,14 +59,6 @@ public class MemberController {
 		ModifyPwdDTO modifyPwdDTO = modelMapper.map(modifyPwdReqVo, ModifyPwdDTO.class);
 		return new BaseResponse<>(
 				memberService.modifyPassword(jwtUtil.getUuidByAuthorization(accessToken), modifyPwdDTO));
-	}
-
-	@GetMapping("/find/signinId")
-	@Operation(summary = "아이디 찾기")
-	public BaseResponse<FindSigninIdRespVO> userFindSigninId(@RequestHeader("Authorization") String accessToken) {
-
-		FindSigninIdDTO findSigninIdDTO = memberService.findSigninId(jwtUtil.getUuidByAuthorization(accessToken));
-		return new BaseResponse<>(modelMapper.map(findSigninIdDTO, FindSigninIdRespVO.class));
 	}
 
 	@PutMapping("/modify/email")

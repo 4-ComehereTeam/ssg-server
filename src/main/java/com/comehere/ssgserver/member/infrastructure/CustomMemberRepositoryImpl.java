@@ -16,6 +16,33 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 	private final JPAQueryFactory query;
 
 	@Override
+	public Long updatePassword(UUID uuid, String newPassword) {
+
+		return query.update(QMember.member)
+				.set(QMember.member.password, newPassword)
+				.where(QMember.member.uuid.eq(uuid))
+				.execute();
+	}
+
+	@Override
+	public Long updateEmail(UUID uuid, String newEmail) {
+
+		return query.update(QMember.member)
+				.set(QMember.member.email, newEmail)
+				.where(QMember.member.uuid.eq(uuid))
+				.execute();
+	}
+
+	@Override
+	public Long updatePhone(UUID uuid, String newPhone) {
+
+		return query.update(QMember.member)
+				.set(QMember.member.phone, newPhone)
+				.where(QMember.member.uuid.eq(uuid))
+				.execute();
+	}
+
+	@Override
 	public Long ResignMember(String signinId) {
 
 		Long result = query.update(QMember.member)
