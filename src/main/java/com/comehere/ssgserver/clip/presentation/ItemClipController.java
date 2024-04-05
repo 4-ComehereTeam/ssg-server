@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comehere.ssgserver.clip.application.ItemClipService;
 import com.comehere.ssgserver.clip.dto.req.ItemsClipDeleteReqDTO;
 import com.comehere.ssgserver.clip.vo.req.ItemsClipDeleteReqVO;
+import com.comehere.ssgserver.clip.vo.resp.ItemClipGetRespVO;
+import com.comehere.ssgserver.clip.vo.resp.ItemsClipGetRespVO;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 
@@ -71,12 +73,22 @@ public class ItemClipController {
 		return new BaseResponse<>();
 	}
 
-	@Operation(summary = "상품 좋아요 목록 조회")
-	@GetMapping("/items")
-	public BaseResponse<ItemsClipDeleteReqVO> getItemsClip(@RequestHeader("Authorization") String accessToken) {
+	@Operation(summary = "상품 좋아요 단건 조회")
+	@GetMapping("/item/{itemId}")
+	public BaseResponse<ItemClipGetRespVO> getItemClip(
+			@RequestHeader("Authorization") String accessToken,
+			@PathVariable("itemId") Long itemId) {
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
 
-		return new BaseResponse<>(modelMapper.map(itemClipService.getItemsClip(uuid), ItemsClipDeleteReqVO.class));
+		return new BaseResponse<>(modelMapper.map(itemClipService.getItemClip(itemId, uuid), ItemClipGetRespVO.class));
+	}
+
+	@Operation(summary = "상품 좋아요 목록 조회")
+	@GetMapping("/items")
+	public BaseResponse<ItemsClipGetRespVO> getItemsClip(@RequestHeader("Authorization") String accessToken) {
+		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
+
+		return new BaseResponse<>(modelMapper.map(itemClipService.getItemsClip(uuid), ItemsClipGetRespVO.class));
 	}
 }
 
