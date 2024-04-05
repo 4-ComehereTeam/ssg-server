@@ -2,7 +2,6 @@ package com.comehere.ssgserver.option.application;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.comehere.ssgserver.option.domain.ItemOption;
@@ -10,11 +9,9 @@ import com.comehere.ssgserver.option.dto.resp.ColorDTO;
 import com.comehere.ssgserver.option.dto.resp.ColorRespDTO;
 import com.comehere.ssgserver.option.dto.resp.EtcDTO;
 import com.comehere.ssgserver.option.dto.resp.EtcRespDTO;
+import com.comehere.ssgserver.option.dto.resp.HasOptionRespDTO;
 import com.comehere.ssgserver.option.dto.resp.ItemOptionIdRespDTO;
 import com.comehere.ssgserver.option.dto.resp.ItemOptionInfoRespDTO;
-import com.comehere.ssgserver.option.dto.resp.ItemOptionRespDTO;
-import com.comehere.ssgserver.option.dto.resp.OptionDTO;
-import com.comehere.ssgserver.option.dto.resp.OptionRespDTO;
 import com.comehere.ssgserver.option.dto.resp.SizeDTO;
 import com.comehere.ssgserver.option.dto.resp.SizeRespDTO;
 import com.comehere.ssgserver.option.infrastructure.ItemOptionRepository;
@@ -25,56 +22,33 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ItemOptionServiceImpl implements ItemOptionService {
 	private final ItemOptionRepository itemOptionRepository;
-	private final ModelMapper modelMapper;
 
 	@Override
-	public ItemOptionRespDTO findByItemId(Long itemId) {
-		return ItemOptionRespDTO.builder()
-				.itemId(itemId)
-				.options(itemOptionRepository.findOptions(itemId).stream()
-						.map(OptionDTO::new)
-						.toList())
-				.build();
-	}
-
-	@Override
-	public OptionRespDTO hasOptions(Long itemId) {
+	public HasOptionRespDTO hasOptions(Long itemId) {
 		ItemOption io = itemOptionRepository.findFirstByItemId(itemId);
 
-		// OptionRespDTO optionRespDTO = ;
-
-		return OptionRespDTO.builder()
+		return HasOptionRespDTO.builder()
 				.itemId(itemId)
 				.hasColor(io.getColor() != null)
 				.hasSize(io.getSize() != null)
 				.hasEtc(io.getEtc() != null)
 				.build();
-
-		// return modelMapper.map(io, OptionRespDTO.class);
 	}
 
 	@Override
 	public ColorRespDTO getColors(Long itemId) {
-		List<ItemOption> itemOption = itemOptionRepository.findColorByItemId(itemId);
-
 		return ColorRespDTO.builder()
 				.itemId(itemId)
-				.colors(itemOption.stream()
-						.map(this::createColor)
-						.toList())
+				.colors(itemOptionRepository.findColor(itemId))
 				.build();
 	}
 
 	@Override
 	public SizeRespDTO getSizes(Long itemId, Long colorId) {
-		List<ItemOption> itemOption = itemOptionRepository.findSize(itemId, colorId);
-
 		return SizeRespDTO.builder()
 				.itemId(itemId)
 				.colorId(colorId)
-				.sizes(itemOption.stream()
-						.map(this::createSize)
-						.toList())
+				.sizes(itemOptionRepository.findSize(itemId, colorId))
 				.build();
 	}
 
@@ -102,24 +76,6 @@ public class ItemOptionServiceImpl implements ItemOptionService {
 	@Override
 	public ItemOptionInfoRespDTO getOptionInfo(Long itemId) {
 		return itemOptionRepository.getOptionInfo(itemId);
-	}
-
-	private ColorDTO createColor(ItemOption io) {
-		return ColorDTO.builder()
-				.optionId(io.getId())
-				.colorId(io.getColor().getId())
-				.value(io.getColor().getValue())
-				.stock(io.getStock())
-				.build();
-	}
-
-	private SizeDTO createSize(ItemOption io) {
-		return SizeDTO.builder()
-				.optionId(io.getId())
-				.sizeId(io.getSize().getId())
-				.value(io.getSize().getValue())
-				.stock(io.getStock())
-				.build();
 	}
 
 	private static EtcDTO createEtc(ItemOption io) {

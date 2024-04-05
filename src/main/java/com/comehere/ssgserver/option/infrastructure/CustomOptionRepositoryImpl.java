@@ -10,7 +10,9 @@ import static com.comehere.ssgserver.review.domain.QReview.*;
 import java.util.List;
 
 import com.comehere.ssgserver.option.domain.ItemOption;
+import com.comehere.ssgserver.option.dto.resp.ColorDTO;
 import com.comehere.ssgserver.option.dto.resp.ItemOptionInfoRespDTO;
+import com.comehere.ssgserver.option.dto.resp.SizeDTO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -22,14 +24,35 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 	private final JPAQueryFactory query;
 
 	@Override
-	public List<ItemOption> findSize(Long itemId, Long colorId) {
-		return query.selectFrom(itemOption)
+	public List<ColorDTO> findColor(Long itemId) {
+		return query.select(Projections.constructor(ColorDTO.class,
+					itemOption.id.min().as("optionId"),
+					color.id.as("colorId"),
+					color.value.as("value"),
+					itemOption.stock.min().as("stock")
+				))
+				.from(itemOption)
+				.leftJoin(itemOption.color, color)
+				.where(itemOption.item.id.eq(itemId))
+				.groupBy(color.id)
+				.fetch();
+	}
+
+	@Override
+	public List<SizeDTO> findSize(Long itemId, Long colorId) {
+		return query.select(Projections.constructor(SizeDTO.class,
+					itemOption.id.min().as("optionId"),
+					size.id.as("sizeId"),
+					size.value.as("value"),
+					itemOption.stock.min().as("stock")
+				))
+				.from(itemOption)
 				.leftJoin(itemOption.size, size)
-				.fetchJoin()
 				.where(
 						itemOption.item.id.eq(itemId),
 						colorIdEq(colorId)
 				)
+				.groupBy(size.id)
 				.fetch();
 	}
 
