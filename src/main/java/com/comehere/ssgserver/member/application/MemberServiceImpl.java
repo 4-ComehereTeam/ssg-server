@@ -31,6 +31,7 @@ public class MemberServiceImpl implements MemberService {
 
 		memberRepository.save(Member.builder()
 				.id(member.getId())
+				.signinId(member.getSigninId())
 				.phone(member.getPhone())
 				.email(member.getEmail())
 				.password(passwordEncoder.encode(modifyPwdDTO.getNewPassword()))
@@ -59,6 +60,7 @@ public class MemberServiceImpl implements MemberService {
 
 		memberRepository.save(Member.builder()
 				.id(member.getId())
+				.signinId(member.getSigninId())
 				.phone(member.getPhone())
 				.email(modifyEmailDTO.getNewEmail())
 				.password(member.getPassword())
@@ -77,6 +79,7 @@ public class MemberServiceImpl implements MemberService {
 
 		memberRepository.save(Member.builder()
 				.id(member.getId())
+				.signinId(member.getSigninId())
 				.phone(modifyPhoneDTO.getNewPhone())
 				.email(member.getEmail())
 				.password(member.getPassword())
@@ -93,7 +96,10 @@ public class MemberServiceImpl implements MemberService {
 	public Boolean resignMember(UUID userUuid) {
 
 		Member member = getMemberByUuid(userUuid);
-		memberRepository.ResignMember(member.getSigninId());
+		memberRepository.resignMember(member.getSigninId());
+		memberRepository.deleteAddress(member.getUuid());
+		memberRepository.deldteAgree(member.getEmail());
+
 		return true;
 	}
 

@@ -50,15 +50,26 @@ public class AuthServiceImpl implements AuthService {
 
 	private final JWTUtil jwtUtil;
 
+	// 회원가입
 	@Override
 	@Transactional
 	public void signUp(JoinReqVO joinReqVo) {
 
-		validateDuplicateMember(joinReqVo);
-		Member member = this.createMember(joinReqVo);
-		Address address = this.createAddress(member, joinReqVo);
-		Agree agree = this.create(joinReqVo);
-		log.info("member: {}", member);
+		Member newMember = new Member();
+		if (memberRepository.existsByEmail(joinReqVo.getEmail())) {
+			Member member = memberRepository.findByEmail(joinReqVo.getEmail());
+			
+			if (member.getStatus() == -1) {
+				newMember = this.recreateMember(member, joinReqVo);
+			} else {
+				throw new BaseException(DUPLICATED_MEMBERS);
+			}
+		} else {
+			newMember = this.createMember(joinReqVo);
+		}
+
+		Address address = this.createAddress(newMember, joinReqVo);
+		Agree agree = this.createAgree(newMember, joinReqVo);
 	}
 
 	// 로그인 처리
@@ -96,6 +107,27 @@ public class AuthServiceImpl implements AuthService {
 				.phone(joinReqVo.getPhone())
 				.email(joinReqVo.getEmail())
 				.gender(joinReqVo.getGender())
+				.status((short)1)
+				.resignCount(0)
+				.uuid(UUID.randomUUID())
+				.role(Role.valueOf("USER"))
+				.build());
+	}
+
+	// 탈퇴 이력이 있는 회원이 재가입 하는 경우
+	private Member recreateMember(Member member, JoinReqVO joinReqVo) {
+
+		return memberRepository.save(Member
+				.builder()
+				.id(member.getId())
+				.signinId(joinReqVo.getSigninId())
+				.password(bCryptPasswordEncoder.encode(joinReqVo.getPassword()))
+				.name(joinReqVo.getName())
+				.phone(joinReqVo.getPhone())
+				.email(member.getEmail())
+				.gender(joinReqVo.getGender())
+				.status((short)1)
+				.resignCount(member.getResignCount() + 1)
 				.uuid(UUID.randomUUID())
 				.role(Role.valueOf("USER"))
 				.build());
@@ -114,11 +146,11 @@ public class AuthServiceImpl implements AuthService {
 				.build());
 	}
 
-	private Agree create(JoinReqVO joinReqVo) {
+	private Agree createAgree(Member member, JoinReqVO joinReqVo) {
 
 		return agreeRepository.save(Agree
 				.builder()
-				.email(joinReqVo.getEmail())
+				.email(member.getEmail())
 				.ssgPointMktAgr1(joinReqVo.getSsgPointAgreesVo().getSsgPointMktAgr1())
 				.ssgPointMktAgr2(joinReqVo.getSsgPointAgreesVo().getSsgPointMktAgr2())
 				.ssgPointEmail(joinReqVo.getSsgPointAgreesVo().getSsgPointEmail())
@@ -129,14 +161,6 @@ public class AuthServiceImpl implements AuthService {
 				.ssgcomEmail(joinReqVo.getSsgcomAgreesVo().getSsgcomEmail())
 				.ssgcomSms(joinReqVo.getSsgcomAgreesVo().getSsgcomSms())
 				.build());
-	}
-
-	// 회원가입 전 중복 회원 검증
-	private void validateDuplicateMember(JoinReqVO joinReqVo) {
-		memberRepository.findBySigninId(joinReqVo.getSigninId())
-				.ifPresent(m -> {
-					throw new IllegalStateException("이미 존재하는 회원입니다.");
-				});
 	}
 
 	// 회원가입 전 중복 로그인 아이디 검증

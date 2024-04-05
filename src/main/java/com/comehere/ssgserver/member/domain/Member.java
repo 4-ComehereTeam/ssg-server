@@ -28,7 +28,6 @@ public class Member extends BaseEntity {
 	@Column(updatable = false)
 	private UUID uuid;
 
-	@Column(updatable = false)
 	private String signinId;
 
 	@Column(nullable = false, updatable = false)
