@@ -15,6 +15,4 @@ public interface MemberService {
 	Boolean modifyPhone(UUID uuid, ModifyPhoneDTO modifyPhoneDTO);
 
 	FindSigninIdDTO findSigninId(UUID uuidByAuthorization);
-
-	Boolean resignMember(UUID uuid);
 }

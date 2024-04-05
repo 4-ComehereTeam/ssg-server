@@ -16,10 +16,10 @@ import com.comehere.ssgserver.member.dto.FindSigninIdDTO;
 import com.comehere.ssgserver.member.dto.ModifyEmailDTO;
 import com.comehere.ssgserver.member.dto.ModifyPhoneDTO;
 import com.comehere.ssgserver.member.dto.ModifyPwdDTO;
-import com.comehere.ssgserver.member.vo.req.ModifyEmailReqVO;
-import com.comehere.ssgserver.member.vo.req.ModifyPhoneReqVO;
-import com.comehere.ssgserver.member.vo.req.ModifyPwdReqVO;
-import com.comehere.ssgserver.member.vo.resp.FindSigninIdRespVO;
+import com.comehere.ssgserver.member.vo.request.ModifyEmailRequestVO;
+import com.comehere.ssgserver.member.vo.request.ModifyPhoneRequestVO;
+import com.comehere.ssgserver.member.vo.request.ModifyPwdRequestVO;
+import com.comehere.ssgserver.member.vo.response.FindSigninIdResponseVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,27 +46,27 @@ public class MemberController {
 	@PutMapping("/modify/password")
 	@Operation(summary = "비밀번호 변경")
 	public BaseResponse<Boolean> userModifyPassword(@RequestHeader("Authorization") String accessToken,
-			@RequestBody ModifyPwdReqVO modifyPwdReqVo) {
+			@RequestBody ModifyPwdRequestVO modifyPwdRequestVo) {
 
-		ModifyPwdDTO modifyPwdDTO = modelMapper.map(modifyPwdReqVo, ModifyPwdDTO.class);
+		ModifyPwdDTO modifyPwdDTO = modelMapper.map(modifyPwdRequestVo, ModifyPwdDTO.class);
 		return new BaseResponse<>(
 				memberService.modifyPassword(jwtUtil.getUuidByAuthorization(accessToken), modifyPwdDTO));
 	}
 
 	@GetMapping("/find/signinId")
 	@Operation(summary = "아이디 찾기")
-	public BaseResponse<FindSigninIdRespVO> userFindSigninId(@RequestHeader("Authorization") String accessToken) {
+	public BaseResponse<FindSigninIdResponseVO> userFindSigninId(@RequestHeader("Authorization") String accessToken) {
 
 		FindSigninIdDTO findSigninIdDTO = memberService.findSigninId(jwtUtil.getUuidByAuthorization(accessToken));
-		return new BaseResponse<>(modelMapper.map(findSigninIdDTO, FindSigninIdRespVO.class));
+		return new BaseResponse<>(modelMapper.map(findSigninIdDTO, FindSigninIdResponseVO.class));
 	}
 
 	@PutMapping("/modify/email")
 	@Operation(summary = "이메일 변경")
 	public BaseResponse<Boolean> userModifyEmail(@RequestHeader("Authorization") String accessToken,
-			@RequestBody ModifyEmailReqVO modifyEmailReqVo) {
+			@RequestBody ModifyEmailRequestVO modifyEmailRequestVo) {
 
-		ModifyEmailDTO modifyEmailDTO = modelMapper.map(modifyEmailReqVo, ModifyEmailDTO.class);
+		ModifyEmailDTO modifyEmailDTO = modelMapper.map(modifyEmailRequestVo, ModifyEmailDTO.class);
 		return new BaseResponse<>(
 				memberService.modifyEmail(jwtUtil.getUuidByAuthorization(accessToken), modifyEmailDTO));
 	}
@@ -74,17 +74,11 @@ public class MemberController {
 	@PutMapping("/modify/phone")
 	@Operation(summary = "전화번호 변경")
 	public BaseResponse<Boolean> userModifyPhone(@RequestHeader("Authorization") String accessToken,
-			@RequestBody ModifyPhoneReqVO modifyPhoneReqVo) {
+			@RequestBody ModifyPhoneRequestVO modifyPhoneRequestVo) {
 
-		ModifyPhoneDTO modifyPhoneDTO = modelMapper.map(modifyPhoneReqVo, ModifyPhoneDTO.class);
+		ModifyPhoneDTO modifyPhoneDTO = modelMapper.map(modifyPhoneRequestVo, ModifyPhoneDTO.class);
 
 		return new BaseResponse<>(
 				memberService.modifyPhone(jwtUtil.getUuidByAuthorization(accessToken), modifyPhoneDTO));
-	}
-
-	@PutMapping("resign")
-	@Operation(summary = "회원 탈퇴")
-	public BaseResponse<Boolean> userResign(@RequestHeader("Authorization") String accessToken) {
-		return new BaseResponse<>(memberService.resignMember(jwtUtil.getUuidByAuthorization(accessToken)));
 	}
 }

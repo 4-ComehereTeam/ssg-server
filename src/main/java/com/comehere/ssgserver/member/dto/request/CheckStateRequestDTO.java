@@ -1,11 +1,11 @@
-package com.comehere.ssgserver.member.dto.req;
+package com.comehere.ssgserver.member.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CheckStateReqDTO {
+public class CheckStateRequestDTO {
 
 	private String signinId;
 }

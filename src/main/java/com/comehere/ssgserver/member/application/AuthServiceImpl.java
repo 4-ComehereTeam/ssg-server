@@ -15,13 +15,13 @@ import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.member.domain.Agree;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.domain.Role;
-import com.comehere.ssgserver.member.dto.req.CheckStateReqDTO;
-import com.comehere.ssgserver.member.dto.req.SigninReqDTO;
-import com.comehere.ssgserver.member.dto.resp.CheckResignCountRespDTO;
-import com.comehere.ssgserver.member.dto.resp.SigninRespDTO;
+import com.comehere.ssgserver.member.dto.request.CheckStateRequestDTO;
+import com.comehere.ssgserver.member.dto.request.SigninRequestDTO;
+import com.comehere.ssgserver.member.dto.response.CheckResignCountResponseDTO;
+import com.comehere.ssgserver.member.dto.response.SigninResponseDTO;
 import com.comehere.ssgserver.member.infrastructure.AgreeRepository;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
-import com.comehere.ssgserver.member.vo.req.JoinReqVO;
+import com.comehere.ssgserver.member.vo.request.JoinRequestVO;
 import com.comehere.ssgserver.purchase.domain.Address;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
 
@@ -49,28 +49,28 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	@Transactional
-	public void signUp(JoinReqVO joinReqVo) {
+	public void signUp(JoinRequestVO joinRequestVo) {
 
-		validateDuplicateMember(joinReqVo);
-		Member member = this.createMember(joinReqVo);
-		Address address = this.createAddress(member, joinReqVo);
-		Agree agree = this.create(joinReqVo);
+		validateDuplicateMember(joinRequestVo);
+		Member member = this.createMember(joinRequestVo);
+		Address address = this.createAddress(member, joinRequestVo);
+		Agree agree = this.create(joinRequestVo);
 		log.info("member: {}", member);
 	}
 
 	// 로그인 처리
 	@Override
-	public SigninRespDTO signIn(SigninReqDTO signinReqDto) {
+	public SigninResponseDTO signIn(SigninRequestDTO signinRequestDto) {
 
 		// 사용자 정보 조회
-		Member member = memberRepository.findBySigninId(signinReqDto.getSigninId())
+		Member member = memberRepository.findBySigninId(signinRequestDto.getSigninId())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 		// 인증 과정 수행
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				member.getUuid(), signinReqDto.getPassword()));
+				member.getUuid(), signinRequestDto.getPassword()));
 
 		// 인증 성공 응답 생성
-		return SigninRespDTO.builder()
+		return SigninResponseDTO.builder()
 				.uuid(member.getUuid())
 				.name(member.getName())
 				.email(member.getEmail())
@@ -79,54 +79,54 @@ public class AuthServiceImpl implements AuthService {
 				.build();
 	}
 
-	private Member createMember(JoinReqVO joinReqVo) {
+	private Member createMember(JoinRequestVO joinRequestVo) {
 
 		return memberRepository.save(Member
 				.builder()
-				.signinId(joinReqVo.getSigninId())
-				.password(bCryptPasswordEncoder.encode(joinReqVo.getPassword()))
-				.name(joinReqVo.getName())
-				.phone(joinReqVo.getPhone())
-				.email(joinReqVo.getEmail())
-				.gender(joinReqVo.getGender())
+				.signinId(joinRequestVo.getSigninId())
+				.password(bCryptPasswordEncoder.encode(joinRequestVo.getPassword()))
+				.name(joinRequestVo.getName())
+				.phone(joinRequestVo.getPhone())
+				.email(joinRequestVo.getEmail())
+				.gender(joinRequestVo.getGender())
 				.uuid(UUID.randomUUID())
 				.role(Role.valueOf("USER"))
 				.build());
 	}
 
-	private Address createAddress(Member member, JoinReqVO joinReqVo) {
+	private Address createAddress(Member member, JoinRequestVO joinRequestVo) {
 		return addressRepository.save(Address
 				.builder()
-				.name(joinReqVo.getName())
-				.phone(joinReqVo.getPhone())
-				.zipcode(joinReqVo.getAddressInfoVo().getZipcode())
-				.address(joinReqVo.getAddressInfoVo().getAddress())
-				.detailAddress(joinReqVo.getAddressInfoVo().getDetailAddress())
+				.name(joinRequestVo.getName())
+				.phone(joinRequestVo.getPhone())
+				.zipcode(joinRequestVo.getAddressInfoVo().getZipcode())
+				.address(joinRequestVo.getAddressInfoVo().getAddress())
+				.detailAddress(joinRequestVo.getAddressInfoVo().getDetailAddress())
 				.defaultAddress((boolean)true)
 				.uuid(member.getUuid())
 				.build());
 	}
 
-	private Agree create(JoinReqVO joinReqVo) {
+	private Agree create(JoinRequestVO joinRequestVo) {
 
 		return agreeRepository.save(Agree
 				.builder()
-				.email(joinReqVo.getEmail())
-				.ssgPointMktAgr1(joinReqVo.getSsgPointAgreesVo().getSsgPointMktAgr1())
-				.ssgPointMktAgr2(joinReqVo.getSsgPointAgreesVo().getSsgPointMktAgr2())
-				.ssgPointEmail(joinReqVo.getSsgPointAgreesVo().getSsgPointEmail())
-				.ssgPointSms(joinReqVo.getSsgPointAgreesVo().getSsgPointSms())
-				.ssgPointMail(joinReqVo.getSsgPointAgreesVo().getSsgPointMail())
-				.ssgPointCall(joinReqVo.getSsgPointAgreesVo().getSsgPointCall())
-				.ssgcomMktAgr1(joinReqVo.getSsgcomAgreesVo().getSsgcomMktAgr1())
-				.ssgcomEmail(joinReqVo.getSsgcomAgreesVo().getSsgcomEmail())
-				.ssgcomSms(joinReqVo.getSsgcomAgreesVo().getSsgcomSms())
+				.email(joinRequestVo.getEmail())
+				.ssgPointMktAgr1(joinRequestVo.getSsgPointAgreesVo().getSsgPointMktAgr1())
+				.ssgPointMktAgr2(joinRequestVo.getSsgPointAgreesVo().getSsgPointMktAgr2())
+				.ssgPointEmail(joinRequestVo.getSsgPointAgreesVo().getSsgPointEmail())
+				.ssgPointSms(joinRequestVo.getSsgPointAgreesVo().getSsgPointSms())
+				.ssgPointMail(joinRequestVo.getSsgPointAgreesVo().getSsgPointMail())
+				.ssgPointCall(joinRequestVo.getSsgPointAgreesVo().getSsgPointCall())
+				.ssgcomMktAgr1(joinRequestVo.getSsgcomAgreesVo().getSsgcomMktAgr1())
+				.ssgcomEmail(joinRequestVo.getSsgcomAgreesVo().getSsgcomEmail())
+				.ssgcomSms(joinRequestVo.getSsgcomAgreesVo().getSsgcomSms())
 				.build());
 	}
 
 	// 회원가입 전 중복 회원 검증
-	private void validateDuplicateMember(JoinReqVO joinReqVo) {
-		memberRepository.findBySigninId(joinReqVo.getSigninId())
+	private void validateDuplicateMember(JoinRequestVO joinRequestVo) {
+		memberRepository.findBySigninId(joinRequestVo.getSigninId())
 				.ifPresent(m -> {
 					throw new IllegalStateException("이미 존재하는 회원입니다.");
 				});
@@ -149,19 +149,19 @@ public class AuthServiceImpl implements AuthService {
 		return memberRepository.existsByEmail(email);
 	}
 
-	public CheckResignCountRespDTO checkResignCount(CheckStateReqDTO checkStateReqDTO) {
+	public CheckResignCountResponseDTO checkResignCount(CheckStateRequestDTO checkStateRequestDTO) {
 
-		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
+		Member member = memberRepository.findBySigninId(checkStateRequestDTO.getSigninId())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
-		CheckResignCountRespDTO checkResignCountRespDTO = new CheckResignCountRespDTO();
-		checkResignCountRespDTO.setResignCount(member.getResignCount());
+		CheckResignCountResponseDTO checkResignCountResponseDTO = new CheckResignCountResponseDTO();
+		checkResignCountResponseDTO.setResignCount(member.getResignCount());
 
-		return checkResignCountRespDTO;
+		return checkResignCountResponseDTO;
 	}
 
-	public boolean checkDormancy(CheckStateReqDTO checkStateReqDTO) {
-		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
+	public boolean checkDormancy(CheckStateRequestDTO checkStateRequestDTO) {
+		Member member = memberRepository.findBySigninId(checkStateRequestDTO.getSigninId())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
 		if (member.getStatus() == 0) {
@@ -171,8 +171,8 @@ public class AuthServiceImpl implements AuthService {
 		}
 	}
 
-	public boolean checkResign(CheckStateReqDTO checkStateReqDTO) {
-		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
+	public boolean checkResign(CheckStateRequestDTO checkStateRequestDTO) {
+		Member member = memberRepository.findBySigninId(checkStateRequestDTO.getSigninId())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
 		if (member.getStatus() == -1) {
