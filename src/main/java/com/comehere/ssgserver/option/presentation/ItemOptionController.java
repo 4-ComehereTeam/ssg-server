@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.option.application.ItemOptionService;
-import com.comehere.ssgserver.option.dto.resp.ColorRespDTO;
 import com.comehere.ssgserver.option.dto.resp.EtcRespDTO;
-import com.comehere.ssgserver.option.dto.resp.ItemOptionInfoRespDTO;
-import com.comehere.ssgserver.option.dto.resp.ItemOptionRespDTO;
-import com.comehere.ssgserver.option.dto.resp.OptionRespDTO;
-import com.comehere.ssgserver.option.dto.resp.SizeRespDTO;
+import com.comehere.ssgserver.option.vo.resp.ColorRespVO;
+import com.comehere.ssgserver.option.vo.resp.HasOptionRespVO;
 import com.comehere.ssgserver.option.vo.resp.ItemOptionIdRespVO;
 import com.comehere.ssgserver.option.vo.resp.ItemOptionInfoRespVO;
+import com.comehere.ssgserver.option.vo.resp.SizeRespVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,32 +30,27 @@ public class ItemOptionController {
 	private final ItemOptionService itemOptionService;
 	private final ModelMapper modelMapper;
 
-	// @GetMapping("/items/options/{id}")
-	public ItemOptionRespDTO itemOption(@PathVariable("id") Long itemId) {
-		return itemOptionService.findByItemId(itemId);
-	}
-
 	@GetMapping("/items/options/{itemId}")
 	@Operation(summary = "옵션 여부 API", description = "특정 상품의 옵션 여부 조회")
-	public BaseResponse<OptionRespDTO> hasOptions(@PathVariable("itemId") Long itemId) {
+	public BaseResponse<HasOptionRespVO> hasOptions(@PathVariable("itemId") Long itemId) {
 		log.info("옵션 여부 조회 : itemId={}", itemId);
-		return new BaseResponse<>(itemOptionService.hasOptions(itemId));
+		return new BaseResponse<>(modelMapper.map(itemOptionService.hasOptions(itemId), HasOptionRespVO.class));
 	}
 
 	@GetMapping("/option/color/{itemId}")
 	@Operation(summary = "색상 옵션 목록 조회 API", description = "특정 상품의 색상 목록 조회")
-	public BaseResponse<ColorRespDTO> getColors(@PathVariable("itemId") Long id) {
-		log.info("색상 옵션 목록 조회 : itemId={}", id);
-		return new BaseResponse<>(itemOptionService.getColors(id));
+	public BaseResponse<ColorRespVO> getColors(@PathVariable("itemId") Long itemId) {
+		log.info("색상 옵션 목록 조회 : itemId={}", itemId);
+		return new BaseResponse<>(modelMapper.map(itemOptionService.getColors(itemId), ColorRespVO.class));
 	}
 
 	@GetMapping("/option/size/{itemId}")
 	@Operation(summary = "사이즈 옵션 목록 조회 API", description = "특정 상품의 사이즈 목록 조회 (상위 옵션 고려)")
-	public BaseResponse<SizeRespDTO> getSizes(
+	public BaseResponse<SizeRespVO> getSizes(
 			@PathVariable("itemId") Long itemId,
 			@RequestParam(required = false) Long colorId) {
 		log.info("사이즈 옵션 목록 조회 : itemId={}, colorId={}", itemId, colorId);
-		return new BaseResponse<>(itemOptionService.getSizes(itemId, colorId));
+		return new BaseResponse<>(modelMapper.map(itemOptionService.getSizes(itemId, colorId), SizeRespVO.class));
 	}
 
 	@GetMapping("/option/etc/{itemId}")

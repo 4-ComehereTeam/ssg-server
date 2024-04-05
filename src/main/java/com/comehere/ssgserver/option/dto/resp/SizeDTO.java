@@ -1,10 +1,11 @@
 package com.comehere.ssgserver.option.dto.resp;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
+@AllArgsConstructor
 public class SizeDTO {
 	private Long optionId;
 
