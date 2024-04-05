@@ -17,4 +17,6 @@ public interface MemberRepository extends JpaRepository<Member, Long>, CustomMem
 
 	Optional<Member> findByUuid(UUID uuid);
 
+	Member findByEmail(String email);
+
 }

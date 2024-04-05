@@ -1,8 +1,11 @@
 package com.comehere.ssgserver.member.infrastructure;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
+import com.comehere.ssgserver.member.domain.QAgree;
 import com.comehere.ssgserver.member.domain.QMember;
+import com.comehere.ssgserver.purchase.domain.QAddress;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -25,5 +28,21 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 				.execute();
 
 		return result;
+	}
+
+	@Override
+	public Long deleteAddress(UUID uuid) {
+
+		return query.delete(QAddress.address1)
+				.where(QAddress.address1.uuid.eq(uuid))
+				.execute();
+	}
+
+	@Override
+	public Long deleteAgree(String email) {
+
+		return query.delete(QAgree.agree)
+				.where(QAgree.agree.email.eq(email))
+				.execute();
 	}
 }

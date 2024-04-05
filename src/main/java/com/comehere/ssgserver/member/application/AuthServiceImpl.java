@@ -54,10 +54,21 @@ public class AuthServiceImpl implements AuthService {
 	@Transactional
 	public void signUp(JoinReqVO joinReqVo) {
 
-		Member member = this.createMember(joinReqVo);
-		Address address = this.createAddress(member, joinReqVo);
-		Agree agree = this.create(joinReqVo);
-		log.info("member: {}", member);
+		Member newMember = new Member();
+		if (memberRepository.existsByEmail(joinReqVo.getEmail())) {
+			Member member = memberRepository.findByEmail(joinReqVo.getEmail());
+			log.info(member.getEmail());
+			if (member.getStatus() == -1) {
+				newMember = this.recreateMember(member, joinReqVo);
+			} else {
+				throw new BaseException(DUPLICATED_MEMBERS);
+			}
+		} else {
+			newMember = this.createMember(joinReqVo);
+		}
+
+		createAddress(newMember, joinReqVo);
+		createAgree(newMember, joinReqVo);
 	}
 
 	// 로그인 처리
@@ -86,6 +97,24 @@ public class AuthServiceImpl implements AuthService {
 				.build();
 	}
 
+	private Member recreateMember(Member member, JoinReqVO joinReqVo) {
+
+		return memberRepository.save(Member
+				.builder()
+				.id(member.getId())
+				.signinId(joinReqVo.getSigninId())
+				.password(bCryptPasswordEncoder.encode(joinReqVo.getPassword()))
+				.name(joinReqVo.getName())
+				.phone(joinReqVo.getPhone())
+				.email(member.getEmail())
+				.gender(joinReqVo.getGender())
+				.status((short)1)
+				.resignCount(member.getResignCount())
+				.uuid(UUID.randomUUID())
+				.role(Role.valueOf("USER"))
+				.build());
+	}
+
 	private Member createMember(JoinReqVO joinReqVo) {
 
 		return memberRepository.save(Member
@@ -96,13 +125,15 @@ public class AuthServiceImpl implements AuthService {
 				.phone(joinReqVo.getPhone())
 				.email(joinReqVo.getEmail())
 				.gender(joinReqVo.getGender())
+				.status((short)1)
+				.resignCount(0)
 				.uuid(UUID.randomUUID())
 				.role(Role.valueOf("USER"))
 				.build());
 	}
 
-	private Address createAddress(Member member, JoinReqVO joinReqVo) {
-		return addressRepository.save(Address
+	private void createAddress(Member member, JoinReqVO joinReqVo) {
+		addressRepository.save(Address
 				.builder()
 				.name(joinReqVo.getName())
 				.phone(joinReqVo.getPhone())
@@ -114,9 +145,9 @@ public class AuthServiceImpl implements AuthService {
 				.build());
 	}
 
-	private Agree create(JoinReqVO joinReqVo) {
+	private void createAgree(Member member, JoinReqVO joinReqVo) {
 
-		return agreeRepository.save(Agree
+		agreeRepository.save(Agree
 				.builder()
 				.email(joinReqVo.getEmail())
 				.ssgPointMktAgr1(joinReqVo.getSsgPointAgreesVo().getSsgPointMktAgr1())
