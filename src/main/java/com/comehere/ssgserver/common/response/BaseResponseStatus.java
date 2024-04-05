@@ -58,6 +58,7 @@ public enum BaseResponseStatus {
 	PASSWORD_SAME_FAILED(HttpStatus.BAD_REQUEST, false, 2108, "현재 사용중인 비밀번호 입니다."),
 	PASSWORD_CONTAIN_NUM_FAILED(HttpStatus.BAD_REQUEST, false, 2109, "휴대폰 번호를 포함한 비밀번호 입니다."),
 	PASSWORD_CONTAIN_EMAIL_FAILED(HttpStatus.BAD_REQUEST, false, 2110, "이메일이 포함된 비밀번호 입니다."),
+	DORMANCY_MEMBERS(HttpStatus.FORBIDDEN, false, 2111, "휴면 회원입니다."),
 
 	// Address
 	NO_EXIST_ADDRESS(HttpStatus.NOT_FOUND, false, 2300, "존재하지 않는 주소입니다."),
@@ -97,7 +98,6 @@ public enum BaseResponseStatus {
 	 */
 	CLIP_ITEM_ALREADY_ADDED(HttpStatus.BAD_REQUEST, false, 10001, "이미 좋아요한 상품입니다."),
 	CLIP_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, false, 10002, "좋아요한 상품이 아닙니다.");
-
 
 	private final HttpStatusCode httpStatusCode;
 	private final boolean isSuccess;
