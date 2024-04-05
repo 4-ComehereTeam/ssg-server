@@ -1,11 +1,11 @@
-package com.comehere.ssgserver.member.dto.response;
+package com.comehere.ssgserver.member.dto.resp;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CheckResignCountResponseDTO {
+public class CheckResignCountRespDTO {
 
 	private Integer resignCount;
 }

@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.member.vo.response;
+package com.comehere.ssgserver.member.vo.resp;
 
 import java.util.UUID;
 
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SigninResponseVO {
+public class SigninRespVO {
 
 	private String accessToken;
 	private String email;

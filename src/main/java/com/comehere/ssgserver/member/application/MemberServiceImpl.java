@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.dto.FindSigninIdDTO;
@@ -33,6 +34,9 @@ public class MemberServiceImpl implements MemberService {
 				.phone(member.getPhone())
 				.email(member.getEmail())
 				.password(passwordEncoder.encode(modifyPwdDTO.getNewPassword()))
+				.resignCount(member.getResignCount())
+				.status(member.getStatus())
+				.resignTime(member.getResignTime())
 				.build());
 
 		return true;
@@ -58,6 +62,9 @@ public class MemberServiceImpl implements MemberService {
 				.phone(member.getPhone())
 				.email(modifyEmailDTO.getNewEmail())
 				.password(member.getPassword())
+				.resignCount(member.getResignCount())
+				.status(member.getStatus())
+				.resignTime(member.getResignTime())
 				.build());
 
 		return true;
@@ -73,8 +80,20 @@ public class MemberServiceImpl implements MemberService {
 				.phone(modifyPhoneDTO.getNewPhone())
 				.email(member.getEmail())
 				.password(member.getPassword())
+				.resignCount(member.getResignCount())
+				.status(member.getStatus())
+				.resignTime(member.getResignTime())
 				.build());
 
+		return true;
+	}
+
+	@Override
+	@Transactional
+	public Boolean resignMember(UUID userUuid) {
+
+		Member member = getMemberByUuid(userUuid);
+		memberRepository.ResignMember(member.getSigninId());
 		return true;
 	}
 

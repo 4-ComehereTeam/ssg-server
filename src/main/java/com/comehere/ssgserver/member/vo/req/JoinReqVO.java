@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.member.vo.request;
+package com.comehere.ssgserver.member.vo.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class JoinRequestVO {
+public class JoinReqVO {
 
 	private String signinId;
 

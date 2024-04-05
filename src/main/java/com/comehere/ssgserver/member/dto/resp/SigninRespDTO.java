@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.member.dto.response;
+package com.comehere.ssgserver.member.dto.resp;
 
 import java.util.UUID;
 
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
-public class SigninResponseDTO {
+public class SigninRespDTO {
 
 	private String accessToken;
 	private String email;

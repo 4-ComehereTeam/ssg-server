@@ -1,23 +1,23 @@
 package com.comehere.ssgserver.member.application;
 
-import com.comehere.ssgserver.member.dto.request.CheckStateRequestDTO;
-import com.comehere.ssgserver.member.dto.request.SigninRequestDTO;
-import com.comehere.ssgserver.member.dto.response.CheckResignCountResponseDTO;
-import com.comehere.ssgserver.member.dto.response.SigninResponseDTO;
-import com.comehere.ssgserver.member.vo.request.JoinRequestVO;
+import com.comehere.ssgserver.member.dto.req.CheckStateReqDTO;
+import com.comehere.ssgserver.member.dto.req.SigninReqDTO;
+import com.comehere.ssgserver.member.dto.resp.CheckResignCountRespDTO;
+import com.comehere.ssgserver.member.dto.resp.SigninRespDTO;
+import com.comehere.ssgserver.member.vo.req.JoinReqVO;
 
 public interface AuthService {
-	void signUp(JoinRequestVO joinRequestVo);
+	void signUp(JoinReqVO joinReqVo);
 
-	SigninResponseDTO signIn(SigninRequestDTO signinRequestDto);
+	SigninRespDTO signIn(SigninReqDTO signinReqDto);
 
 	boolean checkUserEmailDuplication(String email);
 
 	boolean checkUserSignInIdDuplication(String signInId);
 
-	boolean checkDormancy(CheckStateRequestDTO checkStateRequestDto);
+	boolean checkDormancy(CheckStateReqDTO checkStateReqDto);
 
-	boolean checkResign(CheckStateRequestDTO checkStateRequestDto);
+	boolean checkResign(CheckStateReqDTO checkStateReqDto);
 
-	CheckResignCountResponseDTO checkResignCount(CheckStateRequestDTO checkStateRequestDto);
+	CheckResignCountRespDTO checkResignCount(CheckStateReqDTO checkStateReqDto);
 }
