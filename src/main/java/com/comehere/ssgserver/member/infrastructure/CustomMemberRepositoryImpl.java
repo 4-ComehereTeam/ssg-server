@@ -19,6 +19,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 				.set(QMember.member.resignCount, QMember.member.resignCount.add(1))
 				.set(QMember.member.status, (short)-1)
 				.set(QMember.member.resignTime, LocalDateTime.now())
+				.set(QMember.member.signinId, " ")
 				.where(QMember.member.signinId.eq(signinId),
 						QMember.member.status.eq((short)1))
 				.execute();

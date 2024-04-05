@@ -1,5 +1,7 @@
 package com.comehere.ssgserver.member.application;
 
+import static com.comehere.ssgserver.common.response.BaseResponseStatus.*;
+
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.comehere.ssgserver.common.exception.BaseException;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.member.domain.Agree;
 import com.comehere.ssgserver.member.domain.Member;
@@ -65,6 +68,10 @@ public class AuthServiceImpl implements AuthService {
 		// 사용자 정보 조회
 		Member member = memberRepository.findBySigninId(signinReqDto.getSigninId())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+		if (member.getStatus() == -1) {
+			throw new BaseException(WITHDRAWAL_MEMBERS);
+		}
 		// 인증 과정 수행
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				member.getUuid(), signinReqDto.getPassword()));
