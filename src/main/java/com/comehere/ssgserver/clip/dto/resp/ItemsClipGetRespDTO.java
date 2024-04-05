@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.clip.dto.req;
+package com.comehere.ssgserver.clip.dto.resp;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,7 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.clip.domain.ItemClip;
 import com.comehere.ssgserver.clip.dto.req.ItemsClipDeleteReqDTO;
-import com.comehere.ssgserver.clip.dto.req.ItemsClipGetRespDTO;
+import com.comehere.ssgserver.clip.dto.resp.ItemClipGetRespDTO;
+import com.comehere.ssgserver.clip.dto.resp.ItemsClipGetRespDTO;
 import com.comehere.ssgserver.clip.infrastructure.ItemClipRepository;
 import com.comehere.ssgserver.common.exception.BaseException;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
@@ -55,6 +56,13 @@ public class ItemClipServiceImp implements ItemClipService {
 				.itemIds(itemclips.stream()
 						.map(ItemClip::getItemId)
 						.collect(Collectors.toList()))
+				.build();
+	}
+
+	@Override
+	public ItemClipGetRespDTO getItemClip(Long itemId, UUID uuid) {
+		return ItemClipGetRespDTO.builder()
+				.isCliped(itemClipRepository.existsByUuidAndItemId(uuid, itemId))
 				.build();
 	}
 }
