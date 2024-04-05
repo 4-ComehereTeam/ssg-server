@@ -50,6 +50,7 @@ public class AuthServiceImpl implements AuthService {
 
 	private final JWTUtil jwtUtil;
 
+	//회원 가입 처리
 	@Override
 	@Transactional
 	public void signUp(JoinReqVO joinReqVo) {
@@ -57,7 +58,6 @@ public class AuthServiceImpl implements AuthService {
 		Member newMember = new Member();
 		if (memberRepository.existsByEmail(joinReqVo.getEmail())) {
 			Member member = memberRepository.findByEmail(joinReqVo.getEmail());
-			log.info(member.getEmail());
 			if (member.getStatus() == -1) {
 				newMember = this.recreateMember(member, joinReqVo);
 			} else {
@@ -72,7 +72,6 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	// 로그인 처리
-	@SuppressWarnings("checkstyle:RegexpMultiline")
 	@Override
 	public SigninRespDTO signIn(SigninReqDTO signinReqDto) {
 
@@ -97,6 +96,58 @@ public class AuthServiceImpl implements AuthService {
 				.build();
 	}
 
+	// 회원가입 전 중복 로그인 아이디 검증
+	@Transactional(readOnly = true)
+	@Override
+	public boolean checkUserSignInIdDuplication(String signInId) {
+		return memberRepository.existsBySigninId(signInId);
+	}
+
+	// 회원가입 전 중복 이메일 검증
+	@Transactional(readOnly = true)
+	@Override
+	public boolean checkUserEmailDuplication(String email) {
+
+		return memberRepository.existsByEmail(email);
+	}
+
+	// 회원의 탈퇴횟수 조회
+	public CheckResignCountRespDTO checkResignCount(CheckStateReqDTO checkStateReqDTO) {
+
+		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
+				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+		CheckResignCountRespDTO checkResignCountRespDTO = new CheckResignCountRespDTO();
+		checkResignCountRespDTO.setResignCount(member.getResignCount());
+
+		return checkResignCountRespDTO;
+	}
+
+	// 휴면계정 여부 확인
+	public boolean checkDormancy(CheckStateReqDTO checkStateReqDTO) {
+		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
+				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+		if (member.getStatus() == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// 탈퇴회원 여부 확인
+	public boolean checkResign(CheckStateReqDTO checkStateReqDTO) {
+		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
+				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+		if (member.getStatus() == -1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// 탈퇴 회원 재가입
 	private Member recreateMember(Member member, JoinReqVO joinReqVo) {
 
 		return memberRepository.save(Member
@@ -115,6 +166,7 @@ public class AuthServiceImpl implements AuthService {
 				.build());
 	}
 
+	// 신규 회원 가입
 	private Member createMember(JoinReqVO joinReqVo) {
 
 		return memberRepository.save(Member
@@ -132,6 +184,7 @@ public class AuthServiceImpl implements AuthService {
 				.build());
 	}
 
+	// 회원 주소 등록
 	private void createAddress(Member member, JoinReqVO joinReqVo) {
 		addressRepository.save(Address
 				.builder()
@@ -145,6 +198,7 @@ public class AuthServiceImpl implements AuthService {
 				.build());
 	}
 
+	// 회원 동의사항 등록
 	private void createAgree(Member member, JoinReqVO joinReqVo) {
 
 		agreeRepository.save(Agree
@@ -160,63 +214,5 @@ public class AuthServiceImpl implements AuthService {
 				.ssgcomEmail(joinReqVo.getSsgcomAgreesVo().getSsgcomEmail())
 				.ssgcomSms(joinReqVo.getSsgcomAgreesVo().getSsgcomSms())
 				.build());
-	}
-
-	// 회원가입 전 중복 회원 검증
-	private void validateDuplicateMember(JoinReqVO joinReqVo) {
-		memberRepository.findBySigninId(joinReqVo.getSigninId())
-				.ifPresent(m -> {
-					throw new IllegalStateException("이미 존재하는 회원입니다.");
-				});
-	}
-
-	// 회원가입 전 중복 로그인 아이디 검증
-	@Transactional(readOnly = true)
-	@Override
-	public boolean checkUserSignInIdDuplication(String signInId) {
-		return memberRepository.existsBySigninId(signInId);
-	}
-
-	// 회원가입 전 중복 이메일 검증
-	@Transactional(readOnly = true)
-	@Override
-	public boolean checkUserEmailDuplication(String email) {
-
-		boolean test = memberRepository.existsByEmail(email);
-		log.info(test + "");
-		return memberRepository.existsByEmail(email);
-	}
-
-	public CheckResignCountRespDTO checkResignCount(CheckStateReqDTO checkStateReqDTO) {
-
-		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
-				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-
-		CheckResignCountRespDTO checkResignCountRespDTO = new CheckResignCountRespDTO();
-		checkResignCountRespDTO.setResignCount(member.getResignCount());
-
-		return checkResignCountRespDTO;
-	}
-
-	public boolean checkDormancy(CheckStateReqDTO checkStateReqDTO) {
-		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
-				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-
-		if (member.getStatus() == 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public boolean checkResign(CheckStateReqDTO checkStateReqDTO) {
-		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
-				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-
-		if (member.getStatus() == -1) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 }

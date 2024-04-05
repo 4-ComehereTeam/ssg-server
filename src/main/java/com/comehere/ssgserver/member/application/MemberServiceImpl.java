@@ -2,7 +2,7 @@ package com.comehere.ssgserver.member.application;
 
 import java.util.UUID;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,28 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
-	private final PasswordEncoder passwordEncoder;
-
-	// 비밀번호 변경
-	@Override
-	public Boolean modifyPassword(UUID userUuid, ModifyPwdDTO modifyPwdDTO) {
-
-		Member member = getMemberByUuid(userUuid);
-
-		memberRepository.save(Member.builder()
-				.id(member.getId())
-				.signinId(member.getSigninId())
-				.uuid(member.getUuid())
-				.phone(member.getPhone())
-				.email(member.getEmail())
-				.password(passwordEncoder.encode(modifyPwdDTO.getNewPassword()))
-				.resignCount(member.getResignCount())
-				.status(member.getStatus())
-				.resignTime(member.getResignTime())
-				.build());
-
-		return true;
-	}
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	// 로그인 아이디 찾기
 	@Override
@@ -55,49 +34,36 @@ public class MemberServiceImpl implements MemberService {
 				.signinId(member.getSigninId())
 				.build();
 	}
+	
+	// 비밀번호 변경
+	@Override
+	@Transactional
+	public Boolean modifyPassword(UUID userUuid, ModifyPwdDTO modifyPwdDTO) {
+
+		Member member = getMemberByUuid(userUuid);
+		return memberRepository.updatePassword(member.getUuid(),
+				bCryptPasswordEncoder.encode(modifyPwdDTO.getNewPassword())) > 0;
+	}
 
 	// 이메일 변경
 	@Override
+	@Transactional
 	public Boolean modifyEmail(UUID userUuid, ModifyEmailDTO modifyEmailDTO) {
 
 		Member member = getMemberByUuid(userUuid);
-
-		memberRepository.save(Member.builder()
-				.id(member.getId())
-				.signinId(member.getSigninId())
-				.uuid(member.getUuid())
-				.phone(member.getPhone())
-				.email(modifyEmailDTO.getNewEmail())
-				.password(member.getPassword())
-				.resignCount(member.getResignCount())
-				.status(member.getStatus())
-				.resignTime(member.getResignTime())
-				.build());
-
-		return true;
+		return memberRepository.updateEmail(member.getUuid(), modifyEmailDTO.getNewEmail()) > 0;
 	}
 
 	// 전화번호 변경
 	@Override
+	@Transactional
 	public Boolean modifyPhone(UUID userUuid, ModifyPhoneDTO modifyPhoneDTO) {
 
 		Member member = getMemberByUuid(userUuid);
-
-		memberRepository.save(Member.builder()
-				.id(member.getId())
-				.signinId(member.getSigninId())
-				.uuid(member.getUuid())
-				.phone(modifyPhoneDTO.getNewPhone())
-				.email(member.getEmail())
-				.password(member.getPassword())
-				.resignCount(member.getResignCount())
-				.status(member.getStatus())
-				.resignTime(member.getResignTime())
-				.build());
-
-		return true;
+		return memberRepository.updatePhone(member.getUuid(), modifyPhoneDTO.getNewPhone()) > 0;
 	}
 
+	// 회원 탈퇴
 	@Override
 	@Transactional
 	public Boolean resignMember(UUID userUuid) {
@@ -109,6 +75,7 @@ public class MemberServiceImpl implements MemberService {
 		return true;
 	}
 
+	// 회원 정보 조회
 	private Member getMemberByUuid(UUID userUuid) {
 		return memberRepository.findByUuid(userUuid)
 				.orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
