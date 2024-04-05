@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.member.vo.request;
+package com.comehere.ssgserver.member.vo.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

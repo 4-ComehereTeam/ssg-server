@@ -47,13 +47,11 @@ public class Member extends BaseEntity {
 	@Column(columnDefinition = "DATETIME", updatable = false)
 	private LocalDateTime resignTime;
 
-	@Column(updatable = false)
 	private Integer resignCount = 0;
 
 	// 1 : 계정 활성화
 	// -1 : 탈퇴상태
 	// 0 : 휴면상태
-	@Column(updatable = false)
 	private Short status = 1;
 
 	@Column(updatable = false)
@@ -62,7 +60,7 @@ public class Member extends BaseEntity {
 
 	@Builder
 	public Member(Long id, UUID uuid, String signinId, String name, String password, Short gender,
-			String phone,
+			String phone, Short status, Integer resignCount, LocalDateTime resignTime,
 			String email, Role role) {
 		this.id = id;
 		this.uuid = uuid;
@@ -73,6 +71,9 @@ public class Member extends BaseEntity {
 		this.phone = phone;
 		this.email = email;
 		this.role = role;
+		this.status = status;
+		this.resignCount = resignCount;
+		this.resignTime = resignTime;
 	}
 
 }
