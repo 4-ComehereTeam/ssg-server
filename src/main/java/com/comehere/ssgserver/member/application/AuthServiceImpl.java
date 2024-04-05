@@ -54,7 +54,6 @@ public class AuthServiceImpl implements AuthService {
 	@Transactional
 	public void signUp(JoinReqVO joinReqVo) {
 
-		validateDuplicateMember(joinReqVo);
 		Member member = this.createMember(joinReqVo);
 		Address address = this.createAddress(member, joinReqVo);
 		Agree agree = this.create(joinReqVo);
@@ -62,6 +61,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	// 로그인 처리
+	@SuppressWarnings("checkstyle:RegexpMultiline")
 	@Override
 	public SigninRespDTO signIn(SigninReqDTO signinReqDto) {
 
