@@ -1,8 +1,11 @@
-package com.comehere.ssgserver.common.security;
+package com.comehere.ssgserver.common.security.social;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+
+import com.comehere.ssgserver.common.security.CustomUserDetails;
+import com.comehere.ssgserver.common.security.CustomUserDetailsService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

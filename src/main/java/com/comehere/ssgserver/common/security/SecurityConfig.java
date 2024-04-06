@@ -14,6 +14,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.comehere.ssgserver.common.security.jwt.JWTFilter;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
+import com.comehere.ssgserver.common.security.social.SocialAuthenticationProvider;
 
 import lombok.RequiredArgsConstructor;
 

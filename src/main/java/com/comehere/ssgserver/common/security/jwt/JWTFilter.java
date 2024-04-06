@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.comehere.ssgserver.common.security.CustomUserDetails;
-import com.comehere.ssgserver.common.security.SocialAuthenticationToken;
+import com.comehere.ssgserver.common.security.social.SocialAuthenticationToken;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.domain.Role;
 

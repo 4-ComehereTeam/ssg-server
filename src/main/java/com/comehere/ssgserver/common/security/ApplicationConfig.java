@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.comehere.ssgserver.common.security.social.SocialAuthenticationProvider;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 
 import lombok.RequiredArgsConstructor;

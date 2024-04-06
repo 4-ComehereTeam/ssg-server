@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.common.security;
+package com.comehere.ssgserver.common.security.social;
 
 import java.util.Collection;
 
