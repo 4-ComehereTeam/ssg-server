@@ -11,8 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.comehere.ssgserver.common.exception.BaseException;
-import com.comehere.ssgserver.common.security.SocialAuthenticationToken;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
+import com.comehere.ssgserver.common.security.social.SocialAuthenticationToken;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.domain.Role;
 import com.comehere.ssgserver.member.dto.req.OAuthSigninReqDTO;
@@ -50,7 +50,6 @@ public class OAuthServiceImpl implements OAuthService {
 		Member member = memberRepository.findBySigninId(oAuthSigninReqDTO.getSigninId())
 				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
-		log.info("\n========================\nmember: {}", member.getName());
 		authenticationManager.authenticate(new SocialAuthenticationToken(member.getUuid(), null));
 
 		// 생성된 JWT 토큰을 포함하여 응답 객체 반환
