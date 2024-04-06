@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OAuthServiceImpl implements OAuthService {
 
 	private final MemberRepository memberRepository;
-	private final AuthenticationManager authenticathionManager;
+	private final AuthenticationManager authenticationManager;
 	private final JWTUtil jwtUtil;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -51,16 +50,12 @@ public class OAuthServiceImpl implements OAuthService {
 		Member member = memberRepository.findBySigninId(oAuthSigninReqDTO.getSigninId())
 				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
-		Authentication authentication = authenticathionManager.authenticate(
-				new SocialAuthenticationToken(oAuthSigninReqDTO.getSigninId(), null)
-		);
-
-		// JWT 토큰 생성
-		String token = jwtUtil.createJwt(member.getUuid(), member.getRole().toString());
+		log.info("\n========================\nmember: {}", member.getName());
+		authenticationManager.authenticate(new SocialAuthenticationToken(member.getUuid(), null));
 
 		// 생성된 JWT 토큰을 포함하여 응답 객체 반환
 		return OAuthSigninRespDTO.builder()
-				.accessToken(token)
+				.accessToken(jwtUtil.createJwt(member.getUuid(), member.getRole().toString()))
 				.build();
 	}
 
@@ -74,7 +69,7 @@ public class OAuthServiceImpl implements OAuthService {
 				.email(oAuthSignupReqDto.getEmail())
 				.name(oAuthSignupReqDto.getName())
 				.status((short)1)
-				.role(Role.valueOf("USER"))
+				.role(Role.valueOf("SOCIAL"))
 				.gender(oAuthSignupReqDto.getGender())
 				.phone(oAuthSignupReqDto.getPhone())
 				.uuid(UUID.randomUUID())

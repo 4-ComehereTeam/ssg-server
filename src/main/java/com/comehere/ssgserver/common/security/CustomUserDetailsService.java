@@ -2,7 +2,6 @@ package com.comehere.ssgserver.common.security;
 
 import java.util.UUID;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	//이 부분을 어디로..?
 	// UUid 가져오기
 	@Override
-	public UserDetails loadUserByUsername(String uuid) throws UsernameNotFoundException {
+	public CustomUserDetails loadUserByUsername(String uuid) throws UsernameNotFoundException {
 
 		UUID userUuid = UUID.fromString(uuid);
 

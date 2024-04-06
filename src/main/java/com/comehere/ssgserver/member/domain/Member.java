@@ -55,7 +55,7 @@ public class Member extends BaseEntity {
 
 	@Column(updatable = false)
 	@Enumerated(EnumType.STRING)
-	private Role role = Role.USER;
+	private Role role;
 
 	@Builder
 	public Member(Long id, UUID uuid, String signinId, String name, String password, Short gender,
