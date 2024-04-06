@@ -27,7 +27,12 @@ public class ApplicationConfig {
 		return authenticationProvider;
 	}
 
-	// 인증을 처리하는 클래스
+	@Bean
+	public SocialAuthenticationProvider socialAuthenticationProvider() {
+		return new SocialAuthenticationProvider(memberRepository);
+	}
+
+	//인증을 처리하는 클래스
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 
@@ -40,5 +45,4 @@ public class ApplicationConfig {
 
 		return new BCryptPasswordEncoder();
 	}
-
 }

@@ -22,7 +22,6 @@ public class CustomUserDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-
 		return null;
 	}
 

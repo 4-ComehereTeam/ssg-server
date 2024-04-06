@@ -19,12 +19,12 @@ import com.comehere.ssgserver.member.domain.Agree;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.domain.Role;
 import com.comehere.ssgserver.member.dto.req.CheckStateReqDTO;
+import com.comehere.ssgserver.member.dto.req.JoinReqDTO;
 import com.comehere.ssgserver.member.dto.req.SigninReqDTO;
 import com.comehere.ssgserver.member.dto.resp.CheckResignCountRespDTO;
 import com.comehere.ssgserver.member.dto.resp.SigninRespDTO;
 import com.comehere.ssgserver.member.infrastructure.AgreeRepository;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
-import com.comehere.ssgserver.member.vo.req.JoinReqVO;
 import com.comehere.ssgserver.purchase.domain.Address;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
 
@@ -53,22 +53,22 @@ public class AuthServiceImpl implements AuthService {
 	//회원 가입 처리
 	@Override
 	@Transactional
-	public void signUp(JoinReqVO joinReqVo) {
+	public void signUp(JoinReqDTO joinReqDTO) {
 
 		Member newMember = new Member();
-		if (memberRepository.existsByEmail(joinReqVo.getEmail())) {
-			Member member = memberRepository.findByEmail(joinReqVo.getEmail());
+		if (memberRepository.existsByEmail(joinReqDTO.getEmail())) {
+			Member member = memberRepository.findByEmail(joinReqDTO.getEmail());
 			if (member.getStatus() == -1) {
-				newMember = this.recreateMember(member, joinReqVo);
+				newMember = this.recreateMember(member, joinReqDTO);
 			} else {
 				throw new BaseException(DUPLICATED_MEMBERS);
 			}
 		} else {
-			newMember = this.createMember(joinReqVo);
+			newMember = this.createMember(joinReqDTO);
 		}
 
-		createAddress(newMember, joinReqVo);
-		createAgree(newMember, joinReqVo);
+		createAddress(newMember, joinReqDTO);
+		createAgree(newMember, joinReqDTO);
 	}
 
 	// 로그인 처리
@@ -148,17 +148,17 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	// 탈퇴 회원 재가입
-	private Member recreateMember(Member member, JoinReqVO joinReqVo) {
+	private Member recreateMember(Member member, JoinReqDTO joinReqDTO) {
 
 		return memberRepository.save(Member
 				.builder()
 				.id(member.getId())
-				.signinId(joinReqVo.getSigninId())
-				.password(bCryptPasswordEncoder.encode(joinReqVo.getPassword()))
-				.name(joinReqVo.getName())
-				.phone(joinReqVo.getPhone())
+				.signinId(joinReqDTO.getSigninId())
+				.password(bCryptPasswordEncoder.encode(joinReqDTO.getPassword()))
+				.name(joinReqDTO.getName())
+				.phone(joinReqDTO.getPhone())
 				.email(member.getEmail())
-				.gender(joinReqVo.getGender())
+				.gender(joinReqDTO.getGender())
 				.status((short)1)
 				.resignCount(member.getResignCount())
 				.uuid(UUID.randomUUID())
@@ -167,16 +167,16 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	// 신규 회원 가입
-	private Member createMember(JoinReqVO joinReqVo) {
+	private Member createMember(JoinReqDTO joinReqDTO) {
 
 		return memberRepository.save(Member
 				.builder()
-				.signinId(joinReqVo.getSigninId())
-				.password(bCryptPasswordEncoder.encode(joinReqVo.getPassword()))
-				.name(joinReqVo.getName())
-				.phone(joinReqVo.getPhone())
-				.email(joinReqVo.getEmail())
-				.gender(joinReqVo.getGender())
+				.signinId(joinReqDTO.getSigninId())
+				.password(bCryptPasswordEncoder.encode(joinReqDTO.getPassword()))
+				.name(joinReqDTO.getName())
+				.phone(joinReqDTO.getPhone())
+				.email(joinReqDTO.getEmail())
+				.gender(joinReqDTO.getGender())
 				.status((short)1)
 				.resignCount(0)
 				.uuid(UUID.randomUUID())
@@ -185,34 +185,34 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	// 회원 주소 등록
-	private void createAddress(Member member, JoinReqVO joinReqVo) {
+	private void createAddress(Member member, JoinReqDTO joinReqDTO) {
 		addressRepository.save(Address
 				.builder()
-				.name(joinReqVo.getName())
-				.phone(joinReqVo.getPhone())
-				.zipcode(joinReqVo.getAddressInfoVo().getZipcode())
-				.address(joinReqVo.getAddressInfoVo().getAddress())
-				.detailAddress(joinReqVo.getAddressInfoVo().getDetailAddress())
+				.name(joinReqDTO.getName())
+				.phone(joinReqDTO.getPhone())
+				.zipcode(joinReqDTO.getAddressInfoReqDTO().getZipcode())
+				.address(joinReqDTO.getAddressInfoReqDTO().getAddress())
+				.detailAddress(joinReqDTO.getAddressInfoReqDTO().getAddressDetail())
 				.defaultAddress((boolean)true)
 				.uuid(member.getUuid())
 				.build());
 	}
 
 	// 회원 동의사항 등록
-	private void createAgree(Member member, JoinReqVO joinReqVo) {
+	private void createAgree(Member member, JoinReqDTO joinReqDTO) {
 
 		agreeRepository.save(Agree
 				.builder()
-				.email(joinReqVo.getEmail())
-				.ssgPointMktAgr1(joinReqVo.getSsgPointAgreesVo().getSsgPointMktAgr1())
-				.ssgPointMktAgr2(joinReqVo.getSsgPointAgreesVo().getSsgPointMktAgr2())
-				.ssgPointEmail(joinReqVo.getSsgPointAgreesVo().getSsgPointEmail())
-				.ssgPointSms(joinReqVo.getSsgPointAgreesVo().getSsgPointSms())
-				.ssgPointMail(joinReqVo.getSsgPointAgreesVo().getSsgPointMail())
-				.ssgPointCall(joinReqVo.getSsgPointAgreesVo().getSsgPointCall())
-				.ssgcomMktAgr1(joinReqVo.getSsgcomAgreesVo().getSsgcomMktAgr1())
-				.ssgcomEmail(joinReqVo.getSsgcomAgreesVo().getSsgcomEmail())
-				.ssgcomSms(joinReqVo.getSsgcomAgreesVo().getSsgcomSms())
+				.email(joinReqDTO.getEmail())
+				.ssgPointMktAgr1(joinReqDTO.getSsgPointAgreesDTO().getSsgPointMktAgr1())
+				.ssgPointMktAgr2(joinReqDTO.getSsgPointAgreesDTO().getSsgPointMktAgr2())
+				.ssgPointEmail(joinReqDTO.getSsgPointAgreesDTO().getSsgPointEmail())
+				.ssgPointSms(joinReqDTO.getSsgPointAgreesDTO().getSsgPointSms())
+				.ssgPointMail(joinReqDTO.getSsgPointAgreesDTO().getSsgPointMail())
+				.ssgPointCall(joinReqDTO.getSsgPointAgreesDTO().getSsgPointCall())
+				.ssgcomMktAgr1(joinReqDTO.getSsgcomAgreesDTO().getSsgcomMktAgr1())
+				.ssgcomEmail(joinReqDTO.getSsgcomAgreesDTO().getSsgcomEmail())
+				.ssgcomSms(joinReqDTO.getSsgcomAgreesDTO().getSsgcomSms())
 				.build());
 	}
 }

@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.member.dto;
+package com.comehere.ssgserver.member.dto.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class JoinDTO {
+public class JoinReqDTO {
 
 	private String signinId;
 
@@ -23,7 +23,11 @@ public class JoinDTO {
 
 	private String email;
 
-	private AddressInfoDTO addressInfodto;
+	private Short gender;
 
-	private AgreeDTO agreedto;
+	private AddressInfoReqDTO addressInfoReqDTO;
+
+	private SsgcomAgreesDTO ssgcomAgreesDTO;
+
+	private SsgPointAgreesDTO ssgPointAgreesDTO;
 }

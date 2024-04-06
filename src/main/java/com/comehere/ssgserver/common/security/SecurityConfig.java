@@ -2,10 +2,11 @@ package com.comehere.ssgserver.common.security;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final AuthenticationConfiguration authenticationConfiguration;
 	private final JWTUtil jwtUtil;
 	private final AuthenticationProvider authenticationProvider;
 
@@ -36,6 +36,14 @@ public class SecurityConfig {
 			cors.setAllowedHeaders(List.of("*"));
 			return cors;
 		};
+	}
+
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth,
+			AuthenticationProvider authenticationProvider,
+			SocialAuthenticationProvider socialAuthenticationProvider) throws Exception {
+		auth.authenticationProvider(authenticationProvider)
+				.authenticationProvider(socialAuthenticationProvider);
 	}
 
 	@Bean

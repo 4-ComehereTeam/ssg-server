@@ -8,11 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.member.application.OAuthService;
+import com.comehere.ssgserver.member.dto.req.OAuthSigninReqDTO;
 import com.comehere.ssgserver.member.dto.req.OAuthSignupReqDTO;
+import com.comehere.ssgserver.member.dto.resp.OAuthSigninRespDTO;
+import com.comehere.ssgserver.member.vo.req.OAuthSigninReqVO;
 import com.comehere.ssgserver.member.vo.req.OAuthSignupReqVO;
+import com.comehere.ssgserver.member.vo.resp.OAuthSigninRespVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -29,5 +34,18 @@ public class OAuthController {
 	public BaseResponse<Boolean> oauthJoinProcess(@RequestBody OAuthSignupReqVO oauthSignupReqVo) {
 
 		return new BaseResponse<>(oauthService.signup(modelMapper.map(oauthSignupReqVo, OAuthSignupReqDTO.class)));
+	}
+
+	@PostMapping("/signin")
+	@Operation(summary = "OAuth 로그인")
+	public BaseResponse<OAuthSigninRespVO> oauthSignIn(@RequestBody OAuthSigninReqVO oAuthSigninReqVO,
+			HttpServletResponse response) {
+
+		OAuthSigninRespDTO oAuthSigninRespDTO = oauthService.signin(
+				modelMapper.map(oAuthSigninReqVO, OAuthSigninReqDTO.class));
+
+		response.addHeader("accessToken", "Bearer " + oAuthSigninRespDTO.getAccessToken());
+
+		return new BaseResponse<>(modelMapper.map(oAuthSigninRespDTO, OAuthSigninRespVO.class));
 	}
 }
