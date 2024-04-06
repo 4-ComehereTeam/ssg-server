@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.purchase.vo;
+package com.comehere.ssgserver.purchase.vo.req;
 
 import lombok.Getter;
 

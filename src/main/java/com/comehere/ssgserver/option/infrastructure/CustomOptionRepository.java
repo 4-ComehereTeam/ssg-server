@@ -1,6 +1,7 @@
 package com.comehere.ssgserver.option.infrastructure;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.comehere.ssgserver.option.domain.ItemOption;
 import com.comehere.ssgserver.option.dto.resp.ColorDTO;
@@ -17,4 +18,6 @@ public interface CustomOptionRepository {
 	Long findOptionId(Long reviewId);
 
 	ItemOptionInfoRespDTO getOptionInfo(Long optionId);
+
+	Optional<Long> getItemIdById(Long optionId);
 }
