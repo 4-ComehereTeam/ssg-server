@@ -15,6 +15,7 @@ import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.member.application.AuthService;
 import com.comehere.ssgserver.member.dto.req.CheckStateReqDTO;
+import com.comehere.ssgserver.member.dto.req.JoinReqDTO;
 import com.comehere.ssgserver.member.dto.req.SigninReqDTO;
 import com.comehere.ssgserver.member.dto.resp.SigninRespDTO;
 import com.comehere.ssgserver.member.vo.req.CheckStateReqVO;
@@ -36,13 +37,13 @@ public class AuthController {
 
 	private final AuthService authService;
 	private final ModelMapper modelMapper;
+	private final ModelMapper joinModelMapper;
 
 	@PostMapping("/signUp")
 	@Operation(summary = "회원가입")
 	public BaseResponse<Void> joinProcess(@RequestBody JoinReqVO joinReqVo) {
 
-		System.out.println("joinReqVo: " + joinReqVo.getSigninId());
-		authService.signUp(joinReqVo);
+		authService.signUp(joinModelMapper.map(joinReqVo, JoinReqDTO.class));
 		return new BaseResponse<>();
 	}
 

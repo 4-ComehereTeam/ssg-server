@@ -15,6 +15,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 
 	private final JPAQueryFactory query;
 
+	//비밀번호 변경
 	@Override
 	public Long updatePassword(UUID uuid, String newPassword) {
 
@@ -24,6 +25,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 				.execute();
 	}
 
+	//이메일 변경
 	@Override
 	public Long updateEmail(UUID uuid, String newEmail) {
 
@@ -33,6 +35,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 				.execute();
 	}
 
+	//휴대폰 번호 변경
 	@Override
 	public Long updatePhone(UUID uuid, String newPhone) {
 
@@ -42,6 +45,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 				.execute();
 	}
 
+	//회원 탈퇴
 	@Override
 	public Long ResignMember(String signinId) {
 
@@ -57,6 +61,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 		return result;
 	}
 
+	//주소 삭제
 	@Override
 	public Long deleteAddress(UUID uuid) {
 
@@ -65,6 +70,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 				.execute();
 	}
 
+	//약관 동의 삭제
 	@Override
 	public Long deleteAgree(String email) {
 
