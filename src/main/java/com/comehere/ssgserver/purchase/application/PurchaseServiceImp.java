@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.common.exception.BaseException;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
+import com.comehere.ssgserver.option.infrastructure.ItemOptionRepository;
 import com.comehere.ssgserver.purchase.domain.Purchase;
 import com.comehere.ssgserver.purchase.domain.PurchaseList;
 import com.comehere.ssgserver.purchase.domain.PurchaseListStatus;
@@ -19,9 +20,12 @@ import com.comehere.ssgserver.purchase.domain.PurchaseStatus;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListDeleteReqDTO;
+import com.comehere.ssgserver.purchase.dto.resp.PurchaseListGetRespDTO;
+import com.comehere.ssgserver.purchase.dto.resp.PurchaseRespDTOByIdAndUuidDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchasesGetRespDTO;
 import com.comehere.ssgserver.purchase.infrastructure.PurchaseListRepository;
 import com.comehere.ssgserver.purchase.infrastructure.PurchaseRepository;
+import com.querydsl.core.Tuple;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +35,8 @@ public class PurchaseServiceImp implements PurchaseService {
 	private final PurchaseRepository purchaseRepository;
 
 	private final PurchaseListRepository purchaseListRepository;
+
+	private final ItemOptionRepository itemOptionRepository;
 
 	@Override
 	@Transactional
@@ -125,6 +131,23 @@ public class PurchaseServiceImp implements PurchaseService {
 
 		purchaseListRepository.deleteAllPurchaseList(purchase.getId());
 		purchaseRepository.delete(purchase);
+	}
+
+	@Override
+	public PurchaseListGetRespDTO getPurchaseList(Long purchaseListId, UUID uuid) {
+		PurchaseRespDTOByIdAndUuidDTO dto = purchaseListRepository.getRespDTOByIdAndUuid(purchaseListId,
+						uuid)
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.PURCHASE_LIST_NOT_FOUND));
+
+		Long itemId = itemOptionRepository.getItemIdById(dto.getItemOptionId())
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.ITEM_OPTION_NOT_FOUND));
+
+		return PurchaseListGetRespDTO.builder()
+				.itemId(itemId)
+				.itemName(dto.getItemName())
+				.createdDate(dto.getCreatedDate())
+				.status(dto.getStatus())
+				.build();
 	}
 
 	private List<Long> getPurchaseListIds(Purchase purchase) {

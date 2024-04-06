@@ -1,10 +1,17 @@
 package com.comehere.ssgserver.purchase.infrastructure;
 
+import static com.comehere.ssgserver.purchase.domain.QPurchase.*;
 import static com.comehere.ssgserver.purchase.domain.QPurchaseList.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import com.comehere.ssgserver.purchase.domain.PurchaseListStatus;
+import com.comehere.ssgserver.purchase.dto.resp.PurchaseListGetRespDTO;
+import com.comehere.ssgserver.purchase.dto.resp.PurchaseRespDTOByIdAndUuidDTO;
+import com.comehere.ssgserver.purchase.dto.resp.QPurchaseRespDTOByIdAndUuidDTO;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -38,5 +45,20 @@ public class CustomPurchaseListRepositoryImpl implements CustomPurchaseListRepos
 				.from(purchaseList)
 				.where(purchaseList.purchaseId.eq(findPurchaseId))
 				.fetch();
+	}
+
+	@Override
+	public Optional<PurchaseRespDTOByIdAndUuidDTO> getRespDTOByIdAndUuid(Long purchaseListId, UUID uuid) {
+		return Optional.ofNullable(queryFactory.select(
+						new QPurchaseRespDTOByIdAndUuidDTO(
+								purchaseList.itemOptionId,
+								purchaseList.itemName,
+								purchaseList.createAt,
+								purchaseList.status
+						))
+				.from(purchaseList)
+				.leftJoin(purchase).on(purchaseList.purchaseId.eq(purchase.id))
+				.where(purchaseList.id.eq(purchaseListId).and(purchase.uuid.eq(uuid)))
+				.fetchOne());
 	}
 }

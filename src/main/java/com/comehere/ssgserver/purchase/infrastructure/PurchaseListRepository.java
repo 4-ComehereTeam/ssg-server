@@ -13,6 +13,4 @@ public interface PurchaseListRepository extends JpaRepository<PurchaseList, Long
 	Optional<PurchaseList> findByIdAndPurchaseId(Long purchaseListId, Long id);
 
 	List<PurchaseList> findByPurchaseId(Long id);
-
-	void deleteAllByPurchaseId(Long purchaseId);
 }

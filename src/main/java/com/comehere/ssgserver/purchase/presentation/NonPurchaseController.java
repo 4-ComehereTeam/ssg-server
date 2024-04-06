@@ -16,7 +16,7 @@ import com.comehere.ssgserver.purchase.dto.req.NonPurchaseGetReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.NonPurchaseListDeleteReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.NonPurchaseGetRespDTO;
-import com.comehere.ssgserver.purchase.vo.NonPurchaseDeleteReqVO;
+import com.comehere.ssgserver.purchase.vo.req.NonPurchaseDeleteReqVO;
 import com.comehere.ssgserver.purchase.vo.req.NonPurchaseGetReqVO;
 import com.comehere.ssgserver.purchase.vo.req.NonPurchaseListDeleteReqVO;
 import com.comehere.ssgserver.purchase.vo.req.PurchaseCreateReqVO;

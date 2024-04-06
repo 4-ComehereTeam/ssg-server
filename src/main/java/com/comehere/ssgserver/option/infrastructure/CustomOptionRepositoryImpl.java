@@ -8,6 +8,7 @@ import static com.comehere.ssgserver.purchase.domain.QPurchaseList.*;
 import static com.comehere.ssgserver.review.domain.QReview.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.comehere.ssgserver.option.domain.ItemOption;
 import com.comehere.ssgserver.option.dto.resp.ColorDTO;
@@ -29,7 +30,7 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 					itemOption.id.min().as("optionId"),
 					color.id.as("colorId"),
 					color.value.as("value"),
-					itemOption.stock.min().as("stock")
+					itemOption.stock.sum().as("stock")
 				))
 				.from(itemOption)
 				.leftJoin(itemOption.color, color)
@@ -44,7 +45,7 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 					itemOption.id.min().as("optionId"),
 					size.id.as("sizeId"),
 					size.value.as("value"),
-					itemOption.stock.min().as("stock")
+					itemOption.stock.sum    ().as("stock")
 				))
 				.from(itemOption)
 				.leftJoin(itemOption.size, size)
@@ -93,6 +94,14 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 				.leftJoin(etc).on(etc.id.eq(itemOption.etc.id))
 				.where(itemOption.id.eq(optionId))
 				.fetchOne();
+	}
+
+	@Override
+	public Optional<Long> getItemIdById(Long optionId) {
+		return Optional.ofNullable(query.select(itemOption.item.id)
+				.from(itemOption)
+				.where(itemOption.id.eq(optionId))
+				.fetchOne());
 	}
 
 	private BooleanExpression colorIdEq(Long colorId) {
