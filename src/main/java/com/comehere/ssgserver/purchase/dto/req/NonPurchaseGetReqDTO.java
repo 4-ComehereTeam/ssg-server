@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NonPurchaseGetReqDTO {
 	private String name;
+
 	private String phone;
+
 	private String purchaseCode;
 }

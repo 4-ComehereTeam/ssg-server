@@ -21,6 +21,7 @@ import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListDeleteReqDTO;
 import com.comehere.ssgserver.purchase.vo.req.PurchaseCreateReqVO;
 import com.comehere.ssgserver.purchase.vo.req.PurchaseListDeleteReqVO;
+import com.comehere.ssgserver.purchase.vo.resp.PurchaseListGetRespVO;
 import com.comehere.ssgserver.purchase.vo.resp.PurchasesGetRespVO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -82,4 +83,17 @@ public class PurchaseController {
 				.map(dto -> modelMapper.map(dto, PurchasesGetRespVO.class))
 				.collect(Collectors.toList()));
 	}
+
+	@GetMapping("/{purchaseListId}")
+	@Operation(summary = "주문 조회 (item_id, item_name, created_date, status)")
+	public BaseResponse<PurchaseListGetRespVO> getPurchaseList(
+			@PathVariable("purchaseListId") Long purchaseListId,
+			@RequestHeader("Authorization") String authorization) {
+
+		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
+
+		return new BaseResponse<>(modelMapper.map(purchaseService.getPurchaseList(purchaseListId, uuid),
+				PurchaseListGetRespVO.class));
+	}
+
 }

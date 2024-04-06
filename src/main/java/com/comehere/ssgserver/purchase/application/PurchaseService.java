@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListDeleteReqDTO;
+import com.comehere.ssgserver.purchase.dto.resp.PurchaseListGetRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchasesGetRespDTO;
 
 public interface PurchaseService {
@@ -18,4 +19,6 @@ public interface PurchaseService {
 	List<PurchasesGetRespDTO> getPurchases(UUID uuid);
 
 	void deletePurchase(String purchaseCode, UUID uuid);
+
+	PurchaseListGetRespDTO getPurchaseList(Long purchaseListId, UUID uuid);
 }

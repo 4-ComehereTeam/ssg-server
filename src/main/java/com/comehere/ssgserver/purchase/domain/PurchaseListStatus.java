@@ -1,5 +1,8 @@
 package com.comehere.ssgserver.purchase.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum PurchaseListStatus {
 	WAITING_FOR_PAYMENT("입금 대기중"),
 	ACCEPTED("주문 접수"),
@@ -11,9 +14,9 @@ public enum PurchaseListStatus {
 	RETURN_REQUESTED("반품 요청"),
 	RETURN_COMPLETED("반품 완료");
 
-	private final String status;
+	private final String description;
 
-	PurchaseListStatus(String status) {
-		this.status = status;
+	PurchaseListStatus(String description) {
+		this.description = description;
 	}
 }
