@@ -27,10 +27,10 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 	@Override
 	public List<ColorDTO> findColor(Long itemId) {
 		return query.select(Projections.constructor(ColorDTO.class,
-					itemOption.id.min().as("optionId"),
-					color.id.as("colorId"),
-					color.value.as("value"),
-					itemOption.stock.sum().as("stock")
+						itemOption.id.min().as("optionId"),
+						color.id.as("colorId"),
+						color.value.as("value"),
+						itemOption.stock.sum().as("stock")
 				))
 				.from(itemOption)
 				.leftJoin(itemOption.color, color)
@@ -42,10 +42,10 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 	@Override
 	public List<SizeDTO> findSize(Long itemId, Long colorId) {
 		return query.select(Projections.constructor(SizeDTO.class,
-					itemOption.id.min().as("optionId"),
-					size.id.as("sizeId"),
-					size.value.as("value"),
-					itemOption.stock.sum    ().as("stock")
+						itemOption.id.min().as("optionId"),
+						size.id.as("sizeId"),
+						size.value.as("value"),
+						itemOption.stock.sum().as("stock")
 				))
 				.from(itemOption)
 				.leftJoin(itemOption.size, size)
@@ -83,10 +83,10 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 	@Override
 	public ItemOptionInfoRespDTO getOptionInfo(Long optionId) {
 		return query.select(Projections.constructor(ItemOptionInfoRespDTO.class,
-					itemOption.id.as("optionId"),
-					color.value.as("color"),
-					size.value.as("size"),
-					etc.value.as("etc")
+						itemOption.id.as("optionId"),
+						color.value.as("color"),
+						size.value.as("size"),
+						etc.value.as("etc")
 				))
 				.from(itemOption)
 				.leftJoin(color).on(color.id.eq(itemOption.color.id))
@@ -102,6 +102,14 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 				.from(itemOption)
 				.where(itemOption.id.eq(optionId))
 				.fetchOne());
+	}
+
+	@Override
+	public Boolean updateStock(Long itemOptionId, Integer count) {
+		return query.update(itemOption)
+				.where(itemOption.id.eq(itemOptionId).and(itemOption.stock.subtract(count).goe(0)))
+				.set(itemOption.stock, itemOption.stock.subtract(count))
+				.execute() == 1;
 	}
 
 	private BooleanExpression colorIdEq(Long colorId) {
