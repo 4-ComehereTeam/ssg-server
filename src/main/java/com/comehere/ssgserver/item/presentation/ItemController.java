@@ -73,14 +73,17 @@ public class ItemController {
 			@RequestParam(required = false) Integer middleCategoryId,
 			@RequestParam(required = false) Integer smallCategoryId,
 			@RequestParam(required = false) Integer detailCategoryId,
+			@RequestParam(required = false) Long brandId,
+			@RequestParam(required = false) String search,
 			@PageableDefault(size = 40) Pageable page) {
 
-		log.info("카테고리 별 상품 목록 조회 : big={}, middle={}, small={}, detail={}",
-				bigCategoryId, middleCategoryId, smallCategoryId, detailCategoryId);
+		log.info("카테고리 별 상품 목록 조회 : big={}, middle={}, small={}, detail={}, brandId={}, search={}",
+				bigCategoryId, middleCategoryId, smallCategoryId, detailCategoryId, brandId, search);
 
 		return new BaseResponse<>(modelMapper.map(
 				itemService.getItemList(
-						ItemListReqDTO.toBuild(bigCategoryId, middleCategoryId, smallCategoryId, detailCategoryId),
+						ItemListReqDTO.toBuild(
+								bigCategoryId, middleCategoryId, smallCategoryId, detailCategoryId, brandId, search),
 						page), ItemListRespVO.class));
 	}
 

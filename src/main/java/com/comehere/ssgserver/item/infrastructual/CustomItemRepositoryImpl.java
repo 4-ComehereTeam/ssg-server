@@ -1,5 +1,7 @@
 package com.comehere.ssgserver.item.infrastructual;
 
+import static com.comehere.ssgserver.brand.domain.QBrandWithItem.*;
+import static com.comehere.ssgserver.item.domain.QItem.*;
 import static com.comehere.ssgserver.item.domain.QItemWithCategory.*;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.SliceImpl;
 
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -22,11 +25,15 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
 	public Slice<Long> getItemList(ItemListReqDTO dto, Pageable page) {
 		List<Long> result = query.select(itemWithCategory.item.id)
 				.from(itemWithCategory)
+				.join(brandWithItem)
+				.on(itemWithCategory.item.id.eq(brandWithItem.item.id))
 				.where(
 						bigCategoryEq(dto.getBigCategoryId()),
 						middleCategoryEq(dto.getMiddleCategoryId()),
 						smallCategoryEq(dto.getSmallCategoryId()),
-						detailCategoryEq(dto.getDetailCategoryId())
+						detailCategoryEq(dto.getDetailCategoryId()),
+						brandIdEq(dto.getBrandId()),
+						itemNameLike(dto.getSearch())
 				)
 				.offset(page.getOffset())
 				.limit(page.getPageSize() + 1)
@@ -55,5 +62,17 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
 
 	private BooleanExpression detailCategoryEq(Integer detailCategoryId) {
 		return detailCategoryId != null ? itemWithCategory.detailCategory.eq(detailCategoryId) : null;
+	}
+
+	private BooleanExpression brandIdEq(Long brandId) {
+		return brandId != null ? brandWithItem.brand.id.eq(brandId) : null;
+	}
+
+	private BooleanExpression itemNameLike(String itemName) {
+		return itemName != null ?
+				Expressions.stringTemplate(
+						"function('replace', {0}, ' ', '')", itemWithCategory.item.name.toLowerCase())
+						.like("%" + itemName + "%")
+				: null;
 	}
 }
