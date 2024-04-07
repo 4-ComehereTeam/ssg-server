@@ -78,6 +78,8 @@ public enum BaseResponseStatus {
 	BRAND_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7003, "존재하지 않는 브랜드입니다."),
 	REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7004, "존재하지 않는 리뷰입니다."),
 	ITEM_OPTION_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7005, "존재하지 않는 상품 옵션입니다."),
+	ITEM_STOCK_NOT_ENOUGH(HttpStatus.BAD_REQUEST, false, 7006, "상품 재고가 부족합니다."),
+	ITEM_STOCK_RESTORE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, false, 7007, "상품 재고 복구에 실패했습니다."),
 
 	/**
 	 * 8000 : purchase Service Error
@@ -99,7 +101,6 @@ public enum BaseResponseStatus {
 	 */
 	CLIP_ITEM_ALREADY_ADDED(HttpStatus.BAD_REQUEST, false, 10001, "이미 좋아요한 상품입니다."),
 	CLIP_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, false, 10002, "좋아요한 상품이 아닙니다.");
-
 	private final HttpStatusCode httpStatusCode;
 	private final boolean isSuccess;
 	private final int code;

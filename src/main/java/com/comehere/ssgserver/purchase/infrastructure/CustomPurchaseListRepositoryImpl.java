@@ -8,10 +8,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.comehere.ssgserver.purchase.domain.PurchaseListStatus;
-import com.comehere.ssgserver.purchase.dto.resp.PurchaseListGetRespDTO;
-import com.comehere.ssgserver.purchase.dto.resp.PurchaseRespDTOByIdAndUuidDTO;
-import com.comehere.ssgserver.purchase.dto.resp.QPurchaseRespDTOByIdAndUuidDTO;
-import com.querydsl.core.Tuple;
+import com.comehere.ssgserver.purchase.dto.resp.PurchaseListByIdAndUuidRespDTO;
+import com.comehere.ssgserver.purchase.dto.resp.QPurchaseListByIdAndUuidRespDTO;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -48,9 +46,9 @@ public class CustomPurchaseListRepositoryImpl implements CustomPurchaseListRepos
 	}
 
 	@Override
-	public Optional<PurchaseRespDTOByIdAndUuidDTO> getRespDTOByIdAndUuid(Long purchaseListId, UUID uuid) {
+	public Optional<PurchaseListByIdAndUuidRespDTO> getRespDTOByIdAndUuid(Long purchaseListId, UUID uuid) {
 		return Optional.ofNullable(queryFactory.select(
-						new QPurchaseRespDTOByIdAndUuidDTO(
+						new QPurchaseListByIdAndUuidRespDTO(
 								purchaseList.itemOptionId,
 								purchaseList.itemName,
 								purchaseList.createAt,

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.common.exception.BaseException;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
+import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.option.infrastructure.ItemOptionRepository;
 import com.comehere.ssgserver.purchase.domain.Purchase;
 import com.comehere.ssgserver.purchase.domain.PurchaseList;
@@ -20,12 +21,11 @@ import com.comehere.ssgserver.purchase.domain.PurchaseStatus;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListDeleteReqDTO;
+import com.comehere.ssgserver.purchase.dto.resp.PurchaseListByIdAndUuidRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchaseListGetRespDTO;
-import com.comehere.ssgserver.purchase.dto.resp.PurchaseRespDTOByIdAndUuidDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchasesGetRespDTO;
 import com.comehere.ssgserver.purchase.infrastructure.PurchaseListRepository;
 import com.comehere.ssgserver.purchase.infrastructure.PurchaseRepository;
-import com.querydsl.core.Tuple;
 
 import lombok.RequiredArgsConstructor;
 
@@ -69,12 +69,15 @@ public class PurchaseServiceImp implements PurchaseService {
 			throw new BaseException(BaseResponseStatus.PURCHASE_LIST_DUPLICATE);
 		}
 
+		Item item = itemOptionRepository.getItemById(dto.getItemOptionId())
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.ITEM_OPTION_NOT_FOUND));
+
 		purchaseListRepository.save(PurchaseList.builder()
 				.purchaseId(purchaseId)
 				.itemOptionId(dto.getItemOptionId())
-				.itemName(dto.getItemName())
-				.itemPrice(dto.getItemPrice())
-				.itemDiscountRate(dto.getItemDiscountRate())
+				.itemName(item.getName())
+				.itemPrice(item.getPrice())
+				.itemDiscountRate(item.getDiscountRate())
 				.count(dto.getCount())
 				.cancelReason("")
 				.detailReason("")
@@ -82,6 +85,9 @@ public class PurchaseServiceImp implements PurchaseService {
 				.wroteReview(false)
 				.deleted(false)
 				.build());
+
+		// 주문 시 itemOption 재고 감소
+		decreaseStockForPurchase(dto.getItemOptionId(), dto.getCount());
 	}
 
 	@Override
@@ -95,9 +101,12 @@ public class PurchaseServiceImp implements PurchaseService {
 				.orElseThrow(() -> new BaseException(BaseResponseStatus.PURCHASE_LIST_NOT_FOUND));
 
 		Long purchaseId = purchaseList.getPurchaseId();
+		Long itemOptionId = purchaseList.getItemOptionId();
+		Integer count = purchaseList.getCount();
 
 		purchaseListRepository.save(PurchaseList.builder()
 				.id(purchaseList.getId())
+				.itemOptionId(purchaseList.getItemOptionId())
 				.count(purchaseList.getCount())
 				.cancelReason(dto.getCancelReason())
 				.detailReason(dto.getDetailReason())
@@ -105,6 +114,9 @@ public class PurchaseServiceImp implements PurchaseService {
 				.deleted(false)
 				.status(PurchaseListStatus.CANCEL)
 				.build());
+
+		// 주문 취소 시 재고 복구
+		restoreStockForPurchase(itemOptionId, count);
 
 		// 주문 상품이 하나도 없을 경우 주문 정보 삭제
 		if (purchaseListRepository.existsPurchaseCanceled(purchaseId)) {
@@ -135,7 +147,7 @@ public class PurchaseServiceImp implements PurchaseService {
 
 	@Override
 	public PurchaseListGetRespDTO getPurchaseList(Long purchaseListId, UUID uuid) {
-		PurchaseRespDTOByIdAndUuidDTO dto = purchaseListRepository.getRespDTOByIdAndUuid(purchaseListId,
+		PurchaseListByIdAndUuidRespDTO dto = purchaseListRepository.getRespDTOByIdAndUuid(purchaseListId,
 						uuid)
 				.orElseThrow(() -> new BaseException(BaseResponseStatus.PURCHASE_LIST_NOT_FOUND));
 
@@ -148,6 +160,18 @@ public class PurchaseServiceImp implements PurchaseService {
 				.createdDate(dto.getCreatedDate())
 				.status(dto.getStatus())
 				.build();
+	}
+
+	private void restoreStockForPurchase(Long itemOptionId, Integer count) {
+		if (!itemOptionRepository.updateRestoreStock(itemOptionId, count)) {
+			throw new BaseException(BaseResponseStatus.ITEM_STOCK_RESTORE_FAIL);
+		}
+	}
+
+	private void decreaseStockForPurchase(Long itemOptionId, Integer count) {
+		if (!itemOptionRepository.updateSubtractStock(itemOptionId, count)) {
+			throw new BaseException(BaseResponseStatus.ITEM_STOCK_NOT_ENOUGH);
+		}
 	}
 
 	private List<Long> getPurchaseListIds(Purchase purchase) {

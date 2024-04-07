@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class PurchaseRespDTOByIdAndUuidDTO {
+public class PurchaseListByIdAndUuidRespDTO {
 	private Long itemOptionId;
 
 	private String itemName;
@@ -21,7 +21,7 @@ public class PurchaseRespDTOByIdAndUuidDTO {
 
 	@Builder
 	@QueryProjection
-	public PurchaseRespDTOByIdAndUuidDTO(Long itemOptionId, String itemName, LocalDateTime createdDate,
+	public PurchaseListByIdAndUuidRespDTO(Long itemOptionId, String itemName, LocalDateTime createdDate,
 			PurchaseListStatus status) {
 		this.itemOptionId = itemOptionId;
 		this.itemName = itemName;
