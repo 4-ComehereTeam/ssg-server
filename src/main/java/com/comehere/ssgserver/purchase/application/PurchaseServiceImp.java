@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.common.exception.BaseException;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
+import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.option.infrastructure.ItemOptionRepository;
 import com.comehere.ssgserver.purchase.domain.Purchase;
 import com.comehere.ssgserver.purchase.domain.PurchaseList;
@@ -68,12 +69,15 @@ public class PurchaseServiceImp implements PurchaseService {
 			throw new BaseException(BaseResponseStatus.PURCHASE_LIST_DUPLICATE);
 		}
 
+		Item item = itemOptionRepository.getItemById(dto.getItemOptionId())
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.ITEM_OPTION_NOT_FOUND));
+
 		purchaseListRepository.save(PurchaseList.builder()
 				.purchaseId(purchaseId)
 				.itemOptionId(dto.getItemOptionId())
-				.itemName(dto.getItemName())
-				.itemPrice(dto.getItemPrice())
-				.itemDiscountRate(dto.getItemDiscountRate())
+				.itemName(item.getName())
+				.itemPrice(item.getPrice())
+				.itemDiscountRate(item.getDiscountRate())
 				.count(dto.getCount())
 				.cancelReason("")
 				.detailReason("")

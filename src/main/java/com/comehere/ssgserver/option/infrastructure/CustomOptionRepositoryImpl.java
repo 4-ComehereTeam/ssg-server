@@ -10,6 +10,7 @@ import static com.comehere.ssgserver.review.domain.QReview.*;
 import java.util.List;
 import java.util.Optional;
 
+import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.option.domain.ItemOption;
 import com.comehere.ssgserver.option.dto.resp.ColorDTO;
 import com.comehere.ssgserver.option.dto.resp.ItemOptionInfoRespDTO;
@@ -99,6 +100,14 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 	@Override
 	public Optional<Long> getItemIdById(Long optionId) {
 		return Optional.ofNullable(query.select(itemOption.item.id)
+				.from(itemOption)
+				.where(itemOption.id.eq(optionId))
+				.fetchOne());
+	}
+
+	@Override
+	public Optional<Item> getItemById(Long optionId) {
+		return Optional.ofNullable(query.select(itemOption.item)
 				.from(itemOption)
 				.where(itemOption.id.eq(optionId))
 				.fetchOne());

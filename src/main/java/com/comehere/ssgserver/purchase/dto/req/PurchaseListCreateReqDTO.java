@@ -8,12 +8,6 @@ import lombok.NoArgsConstructor;
 public class PurchaseListCreateReqDTO {
 	private Long itemOptionId;
 
-	private String itemName;
-
-	private Long itemPrice;
-
-	private Integer itemDiscountRate;
-
 	private Integer count;
 
 }
