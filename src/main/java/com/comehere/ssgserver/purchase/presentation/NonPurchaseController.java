@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.common.response.BaseResponse;
@@ -17,7 +18,6 @@ import com.comehere.ssgserver.purchase.dto.req.NonPurchaseListDeleteReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.NonPurchaseGetRespDTO;
 import com.comehere.ssgserver.purchase.vo.req.NonPurchaseDeleteReqVO;
-import com.comehere.ssgserver.purchase.vo.req.NonPurchaseGetReqVO;
 import com.comehere.ssgserver.purchase.vo.req.NonPurchaseListDeleteReqVO;
 import com.comehere.ssgserver.purchase.vo.req.PurchaseCreateReqVO;
 import com.comehere.ssgserver.purchase.vo.resp.NonPurchaseGetRespVO;
@@ -63,9 +63,16 @@ public class NonPurchaseController {
 
 	@GetMapping
 	@Operation(summary = "비회원 주문 조회")
-	public BaseResponse<NonPurchaseGetRespVO> getNonPurchase(@RequestBody NonPurchaseGetReqVO vo) {
-		NonPurchaseGetRespDTO respDTO = nonPurchaseService.getNonPurchase(
-				modelMapper.map(vo, NonPurchaseGetReqDTO.class));
+	public BaseResponse<NonPurchaseGetRespVO> getNonPurchase(
+			@RequestParam("name") String name,
+			@RequestParam("phone") String phone,
+			@RequestParam("purchaseCode") String purchaseCode) {
+
+		NonPurchaseGetRespDTO respDTO = nonPurchaseService.getNonPurchase(NonPurchaseGetReqDTO.builder()
+				.name(name)
+				.phone(phone)
+				.purchaseCode(purchaseCode)
+				.build());
 
 		return new BaseResponse<>(modelMapper.map(respDTO, NonPurchaseGetRespVO.class));
 	}
