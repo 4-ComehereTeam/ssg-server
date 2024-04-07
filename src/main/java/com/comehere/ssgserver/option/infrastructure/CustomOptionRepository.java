@@ -3,6 +3,7 @@ package com.comehere.ssgserver.option.infrastructure;
 import java.util.List;
 import java.util.Optional;
 
+import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.option.domain.ItemOption;
 import com.comehere.ssgserver.option.dto.resp.ColorDTO;
 import com.comehere.ssgserver.option.dto.resp.ItemOptionInfoRespDTO;
@@ -20,6 +21,8 @@ public interface CustomOptionRepository {
 	ItemOptionInfoRespDTO getOptionInfo(Long optionId);
 
 	Optional<Long> getItemIdById(Long optionId);
+
+	Optional<Item> getItemById(Long optionId);
 
 	Boolean updateSubtractStock(Long itemOptionId, Integer count);
 
