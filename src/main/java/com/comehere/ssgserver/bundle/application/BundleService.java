@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.comehere.ssgserver.bundle.domain.Bundle;
 import com.comehere.ssgserver.bundle.dto.req.CreateBundleReqDTO;
+import com.comehere.ssgserver.bundle.dto.resp.BundleItemRespDTO;
 import com.comehere.ssgserver.bundle.dto.resp.BundleListRespDTO;
 import com.comehere.ssgserver.bundle.dto.resp.BundleRespDTO;
 import com.comehere.ssgserver.bundle.vo.req.CreateBundleReqVO;
@@ -17,4 +18,6 @@ public interface BundleService {
 	Bundle updateBundleStatus(Long id);
 
 	BundleRespDTO getBundleDetail(Long id);
+
+	BundleItemRespDTO getBundleItemList(Long bundleId);
 }
