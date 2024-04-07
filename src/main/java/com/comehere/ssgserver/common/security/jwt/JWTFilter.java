@@ -9,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.comehere.ssgserver.common.security.CustomUserDetails;
-import com.comehere.ssgserver.common.security.social.SocialAuthenticationToken;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.domain.Role;
 
@@ -64,20 +63,9 @@ public class JWTFilter extends OncePerRequestFilter {
 		// UserDetails에 회원 정보 객체 담기
 		CustomUserDetails customUserDetails = new CustomUserDetails(member);
 
-		// // 스프링 시큐리티 인증 토큰 생성
-		// Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null,
-		// 		customUserDetails.getAuthorities());
-
-		Authentication authToken = null;
-
-		if ("SOCIAL".equals(roleString)) {
-			authToken = new SocialAuthenticationToken(customUserDetails, null,
-					customUserDetails.getAuthorities());
-		} else {
-			// 일반 회원을 위한 인증 로직
-			authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null,
-					customUserDetails.getAuthorities());
-		}
+		// 스프링 시큐리티 인증 토큰 생성
+		Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null,
+				customUserDetails.getAuthorities());
 
 		// SecurityContext에 인증 토큰 저장
 		SecurityContextHolder.getContext().setAuthentication(authToken);

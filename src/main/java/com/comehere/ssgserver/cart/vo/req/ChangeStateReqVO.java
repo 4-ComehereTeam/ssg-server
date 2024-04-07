@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.cart.vo.request;
+package com.comehere.ssgserver.cart.vo.req;
 
 import lombok.Getter;
 

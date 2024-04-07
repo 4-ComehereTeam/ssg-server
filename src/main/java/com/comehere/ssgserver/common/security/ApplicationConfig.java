@@ -49,13 +49,6 @@ public class ApplicationConfig {
 		return authenticationManagerBuilder.build();
 	}
 
-	// //인증을 처리하는 클래스
-	// @Bean
-	// public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-	//
-	// 	return configuration.getAuthenticationManager();
-	// }
-
 	// 비밀번호 암호화
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
