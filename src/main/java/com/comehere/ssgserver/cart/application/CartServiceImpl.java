@@ -28,9 +28,14 @@ public class CartServiceImpl implements CartService {
 
 	// 장바구니에 상품 추가
 	@Override
+	@Transactional
 	public Boolean addItemToCart(UUID uuid, AddItemReqDTO addItemReqDTO) {
 
-		cartRepository.save(addItem(uuid, addItemReqDTO));
+		// 상품이 현재 장바구니에 존재하지 않는 경우에만 새로 추가
+		// 존재하는 경우 수량만 증가
+		if (cartRepository.updateItemQuantity(uuid, addItemReqDTO) == 0) {
+			cartRepository.save(addItem(uuid, addItemReqDTO));
+		}
 		return true;
 	}
 

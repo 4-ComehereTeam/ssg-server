@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.comehere.ssgserver.cart.domain.QCart;
 import com.comehere.ssgserver.cart.dto.ItemCountDTO;
+import com.comehere.ssgserver.cart.dto.req.AddItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
@@ -31,6 +32,16 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 				.from(QCart.cart)
 				.where(QCart.cart.uuid.eq(uuid))
 				.fetch();
+	}
+
+	@Override
+	public Long updateItemQuantity(UUID uuid, AddItemReqDTO addItemReqDTO) {
+		return query
+				.update(QCart.cart)
+				.set(QCart.cart.itemCount, QCart.cart.itemCount.add(addItemReqDTO.getItemCount()))
+				.where(QCart.cart.uuid.eq(uuid),
+						QCart.cart.itemOptionId.eq(addItemReqDTO.getItemOptionId()))
+				.execute();
 	}
 
 	@Override
