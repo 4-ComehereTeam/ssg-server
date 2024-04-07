@@ -105,10 +105,18 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 	}
 
 	@Override
-	public Boolean updateStock(Long itemOptionId, Integer count) {
+	public Boolean updateSubtractStock(Long itemOptionId, Integer count) {
 		return query.update(itemOption)
 				.where(itemOption.id.eq(itemOptionId).and(itemOption.stock.subtract(count).goe(0)))
 				.set(itemOption.stock, itemOption.stock.subtract(count))
+				.execute() == 1;
+	}
+
+	@Override
+	public Boolean updateRestoreStock(Long itemOptionId, Integer count) {
+		return query.update(itemOption)
+				.where(itemOption.id.eq(itemOptionId))
+				.set(itemOption.stock, itemOption.stock.add(count))
 				.execute() == 1;
 	}
 
