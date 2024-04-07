@@ -11,6 +11,7 @@ import com.comehere.ssgserver.brand.infrastructure.BrandRepository;
 import com.comehere.ssgserver.bundle.domain.Bundle;
 import com.comehere.ssgserver.bundle.domain.BundleWithItem;
 import com.comehere.ssgserver.bundle.dto.req.CreateBundleReqDTO;
+import com.comehere.ssgserver.bundle.dto.resp.BundleItemRespDTO;
 import com.comehere.ssgserver.bundle.dto.resp.BundleListRespDTO;
 import com.comehere.ssgserver.bundle.dto.resp.BundleRespDTO;
 import com.comehere.ssgserver.bundle.infrastructure.BundleRepository;
@@ -77,6 +78,14 @@ public class BundleServiceImpl implements BundleService {
 				.finishDate(dto.getFinishDate())
 				.status(true)
 				.build());
+	}
+
+	@Override
+	public BundleItemRespDTO getBundleItemList(Long bundleId) {
+		return BundleItemRespDTO.builder()
+				.bundleId(bundleId)
+				.items(bundleWithItemRepository.findByBundleId(bundleId))
+				.build();
 	}
 
 	private void saveBundleList(CreateBundleReqDTO dto, Bundle bundle) {
