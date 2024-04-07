@@ -9,7 +9,9 @@ import com.comehere.ssgserver.cart.domain.Cart;
 import com.comehere.ssgserver.cart.dto.req.AddItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
+import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
 import com.comehere.ssgserver.cart.dto.resp.GetCartListRespDTO;
+import com.comehere.ssgserver.cart.dto.resp.ItemQuantityModifyRespDTO;
 import com.comehere.ssgserver.cart.infrastructure.CartRepository;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
 
@@ -59,6 +61,27 @@ public class CartServiceImpl implements CartService {
 		return cartRepository.updatePinState(uuid, changeStateReqDTO) > 0;
 	}
 
+	// 상품 수량 감소
+	@Override
+	@Transactional
+	public ItemQuantityModifyRespDTO minusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO) {
+		cartRepository.minusItemQuantity(uuid, itemQuantityModifyReqDTO);
+		return ItemQuantityModifyRespDTO.builder()
+				.itemCount(cartRepository.findByItemOptionIdAndUuid(itemQuantityModifyReqDTO.getItemOptionId(), uuid))
+				.build();
+	}
+
+	// 상품 수량 증가
+	@Override
+	@Transactional
+	public ItemQuantityModifyRespDTO plusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO) {
+		cartRepository.plusItemQuantity(uuid, itemQuantityModifyReqDTO);
+		return ItemQuantityModifyRespDTO.builder()
+				.itemCount(cartRepository.findByItemOptionIdAndUuid(itemQuantityModifyReqDTO.getItemOptionId(), uuid))
+				.build();
+	}
+
+	// 장바구니에서 상품 삭제
 	@Override
 	@Transactional
 	public Boolean deleteItemFromCart(UUID uuid, DeleteItemReqDTO deleteItemReqDTO) {

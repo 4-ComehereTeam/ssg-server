@@ -6,11 +6,16 @@ import java.util.UUID;
 import com.comehere.ssgserver.cart.dto.ItemCountDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
+import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
 
 public interface CustomCartRepository {
 
 	//장바구니에 담긴 상품 리스트 조회
 	List<ItemCountDTO> getCartId(UUID uuid);
+
+	Long minusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO);
+
+	Long plusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO);
 
 	//상품 체크 상태 변경
 	Long updateCheckState(UUID uuid, ChangeStateReqDTO changeStateReqDTO);
