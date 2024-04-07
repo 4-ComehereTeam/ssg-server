@@ -21,5 +21,7 @@ public interface CustomOptionRepository {
 
 	Optional<Long> getItemIdById(Long optionId);
 
-	Boolean updateStock(Long itemOptionId, Integer count);
+	Boolean updateSubtractStock(Long itemOptionId, Integer count);
+
+	Boolean updateRestoreStock(Long itemOptionId, Integer count);
 }
