@@ -20,4 +20,6 @@ public interface CustomOptionRepository {
 	ItemOptionInfoRespDTO getOptionInfo(Long optionId);
 
 	Optional<Long> getItemIdById(Long optionId);
+
+	Boolean updateStock(Long itemOptionId, Integer count);
 }

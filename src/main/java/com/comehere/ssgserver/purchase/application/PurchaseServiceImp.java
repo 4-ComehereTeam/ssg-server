@@ -21,11 +21,10 @@ import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListDeleteReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchaseListGetRespDTO;
-import com.comehere.ssgserver.purchase.dto.resp.PurchaseRespDTOByIdAndUuidDTO;
+import com.comehere.ssgserver.purchase.dto.resp.PurchaseListByIdAndUuidRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchasesGetRespDTO;
 import com.comehere.ssgserver.purchase.infrastructure.PurchaseListRepository;
 import com.comehere.ssgserver.purchase.infrastructure.PurchaseRepository;
-import com.querydsl.core.Tuple;
 
 import lombok.RequiredArgsConstructor;
 
@@ -82,6 +81,9 @@ public class PurchaseServiceImp implements PurchaseService {
 				.wroteReview(false)
 				.deleted(false)
 				.build());
+
+		// 주문 시 itemOption 재고 감소
+		updateStockBySubtracting(dto);
 	}
 
 	@Override
@@ -135,7 +137,7 @@ public class PurchaseServiceImp implements PurchaseService {
 
 	@Override
 	public PurchaseListGetRespDTO getPurchaseList(Long purchaseListId, UUID uuid) {
-		PurchaseRespDTOByIdAndUuidDTO dto = purchaseListRepository.getRespDTOByIdAndUuid(purchaseListId,
+		PurchaseListByIdAndUuidRespDTO dto = purchaseListRepository.getRespDTOByIdAndUuid(purchaseListId,
 						uuid)
 				.orElseThrow(() -> new BaseException(BaseResponseStatus.PURCHASE_LIST_NOT_FOUND));
 
@@ -148,6 +150,15 @@ public class PurchaseServiceImp implements PurchaseService {
 				.createdDate(dto.getCreatedDate())
 				.status(dto.getStatus())
 				.build();
+	}
+
+	private void updateStockBySubtracting(PurchaseListCreateReqDTO dto) {
+		itemOptionRepository.findById(dto.getItemOptionId())
+				.orElseThrow(() -> new BaseException(BaseResponseStatus.ITEM_OPTION_NOT_FOUND));
+
+		if (!itemOptionRepository.updateStock(dto.getItemOptionId(), dto.getCount())) {
+			throw new BaseException(BaseResponseStatus.ITEM_STOCK_NOT_ENOUGH);
+		}
 	}
 
 	private List<Long> getPurchaseListIds(Purchase purchase) {
