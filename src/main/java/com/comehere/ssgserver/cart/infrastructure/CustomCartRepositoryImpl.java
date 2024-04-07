@@ -7,6 +7,7 @@ import com.comehere.ssgserver.cart.domain.QCart;
 import com.comehere.ssgserver.cart.dto.ItemCountDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
+import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -30,6 +31,28 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 				.from(QCart.cart)
 				.where(QCart.cart.uuid.eq(uuid))
 				.fetch();
+	}
+
+	@Override
+	public Long minusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO) {
+
+		return query
+				.update(QCart.cart)
+				.set(QCart.cart.itemCount, QCart.cart.itemCount.subtract(1))
+				.where(QCart.cart.uuid.eq(uuid),
+						QCart.cart.itemOptionId.eq(itemQuantityModifyReqDTO.getItemOptionId()))
+				.execute();
+	}
+
+	@Override
+	public Long plusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO) {
+
+		return query
+				.update(QCart.cart)
+				.set(QCart.cart.itemCount, QCart.cart.itemCount.add(1))
+				.where(QCart.cart.uuid.eq(uuid),
+						QCart.cart.itemOptionId.eq(itemQuantityModifyReqDTO.getItemOptionId()))
+				.execute();
 	}
 
 	// 상품 체크 상태 변경

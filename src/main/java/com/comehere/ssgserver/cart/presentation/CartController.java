@@ -14,11 +14,14 @@ import com.comehere.ssgserver.cart.application.CartService;
 import com.comehere.ssgserver.cart.dto.req.AddItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
+import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
 import com.comehere.ssgserver.cart.dto.resp.GetCartListRespDTO;
 import com.comehere.ssgserver.cart.vo.req.AddItemReqVO;
 import com.comehere.ssgserver.cart.vo.req.ChangeStateReqVO;
 import com.comehere.ssgserver.cart.vo.req.DeleteItemReqVO;
+import com.comehere.ssgserver.cart.vo.req.ItemQuantityModifyReqVO;
 import com.comehere.ssgserver.cart.vo.resp.GetCartListRespVO;
+import com.comehere.ssgserver.cart.vo.resp.ItemQuantityModifyRespVO;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 
@@ -46,8 +49,31 @@ public class CartController {
 						modelMapper.map(addItemReqVO, AddItemReqDTO.class)));
 	}
 
+	@PutMapping("/minus")
+	@Operation(summary = "장바구니 상품 수량 감소")
+	public BaseResponse<ItemQuantityModifyRespVO> minusItemQuantity(@RequestHeader("Authorization") String accessToken,
+			@RequestBody ItemQuantityModifyReqVO itemQuantityModifyReqVO) {
+
+		return new BaseResponse<>(
+				modelMapper.map(cartService.minusItemQuantity(jwtUtil.getUuidByAuthorization(accessToken),
+								modelMapper.map(itemQuantityModifyReqVO, ItemQuantityModifyReqDTO.class)),
+						ItemQuantityModifyRespVO.class));
+	}
+
+	@PutMapping("/plus")
+	@Operation(summary = "장바구니 상품 수량 증가")
+	public BaseResponse<ItemQuantityModifyRespVO> plustItemQuantity(@RequestHeader("Authorization") String accessToken,
+			@RequestBody ItemQuantityModifyReqVO itemQuantityModifyReqVO) {
+
+		return new BaseResponse<>(
+				modelMapper.map(cartService.plusItemQuantity(jwtUtil.getUuidByAuthorization(accessToken),
+								modelMapper.map(itemQuantityModifyReqVO, ItemQuantityModifyReqDTO.class)),
+						ItemQuantityModifyRespVO.class));
+	}
+
 	@DeleteMapping("/delete")
 	@Operation(summary = "장바구니 상품 삭제")
+
 	public BaseResponse<Boolean> deleteItemFromCart(@RequestHeader("Authorization") String accessToken,
 			@RequestBody DeleteItemReqVO deleteItemReqVO) {
 		return new BaseResponse<>(cartService.deleteItemFromCart(jwtUtil.getUuidByAuthorization(accessToken),

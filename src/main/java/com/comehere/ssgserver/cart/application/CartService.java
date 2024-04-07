@@ -5,7 +5,9 @@ import java.util.UUID;
 import com.comehere.ssgserver.cart.dto.req.AddItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
+import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
 import com.comehere.ssgserver.cart.dto.resp.GetCartListRespDTO;
+import com.comehere.ssgserver.cart.dto.resp.ItemQuantityModifyRespDTO;
 
 public interface CartService {
 
@@ -20,6 +22,12 @@ public interface CartService {
 
 	// 장바구니에 담긴 상품 리스트 조회
 	GetCartListRespDTO getCartList(UUID uuid);
+
+	// 장바구니에 담긴 상품 수량 감소
+	ItemQuantityModifyRespDTO minusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO);
+
+	// 장바구니에 담긴 상품 수량 증가
+	ItemQuantityModifyRespDTO plusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO);
 
 	// 장바구니에서 상품 삭제
 	Boolean deleteItemFromCart(UUID uuid, DeleteItemReqDTO deleteItemReqDTO);
