@@ -1,9 +1,9 @@
-package com.comehere.ssgserver.cart.vo.request;
+package com.comehere.ssgserver.cart.vo.req;
 
 import lombok.Getter;
 
 @Getter
-public class AddProductReqVO {
+public class AddItemReqVO {
 
 	private Long itemOptionId;
 	private Integer itemCount;

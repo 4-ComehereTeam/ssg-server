@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.cart.dto.request;
+package com.comehere.ssgserver.cart.dto.req;
 
 import lombok.Getter;
 import lombok.Setter;
