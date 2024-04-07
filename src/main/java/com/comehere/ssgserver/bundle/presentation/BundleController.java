@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comehere.ssgserver.bundle.application.BundleService;
 import com.comehere.ssgserver.bundle.domain.Bundle;
 import com.comehere.ssgserver.bundle.dto.req.CreateBundleReqDTO;
+import com.comehere.ssgserver.bundle.dto.resp.BundleItemRespDTO;
 import com.comehere.ssgserver.bundle.dto.resp.BundleRespDTO;
 import com.comehere.ssgserver.bundle.vo.req.CreateBundleReqVO;
+import com.comehere.ssgserver.bundle.vo.resp.BundleItemRespVO;
 import com.comehere.ssgserver.bundle.vo.resp.BundleListRespVO;
 import com.comehere.ssgserver.common.response.BaseResponse;
 
@@ -34,7 +36,7 @@ public class BundleController {
 
 	@PostMapping
 	@Operation(summary = "묶음(특가) 상품 등록 API", description = "묶음(특가) 상품 등록")
-	public BaseResponse<?> createBundle(@RequestBody CreateBundleReqVO vo) {
+	public BaseResponse<Void> createBundle(@RequestBody CreateBundleReqVO vo) {
 		bundleService.createBundle(modelMapper.map(vo, CreateBundleReqDTO.class));
 		return new BaseResponse<>();
 	}
@@ -48,9 +50,9 @@ public class BundleController {
 		return null;
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/{bundleId}")
 	@Operation(summary = "묶음(특가) 상품 상태 변경 API", description = "묶음(특가) 상품 목록 조회")
-	public BaseResponse<Bundle> updateBundleStatus(@PathVariable("id") Long id) {
+	public BaseResponse<Bundle> updateBundleStatus(@PathVariable("bundleId") Long id) {
 		return new BaseResponse<>(bundleService.updateBundleStatus(id));
 	}
 
@@ -59,5 +61,13 @@ public class BundleController {
 	public BaseResponse<BundleRespDTO> getBundleDetail(@PathVariable("bundleId") Long id) {
 		log.info("묶음 상품 기본 정보 조회 : bundleId={}", id);
 		return new BaseResponse<>(bundleService.getBundleDetail(id));
+	}
+
+	@GetMapping("/item/{bundleId}")
+	@Operation(summary = "특정 묶음 내 상품 정보 조회 API", description = "묶음 내의 상품 리스트 조회")
+	public BaseResponse<BundleItemRespVO> getBundleItemList(@PathVariable("bundleId") Long bundleId) {
+		log.info("묶음 내 상품 목록 조회 : bundleId={}", bundleId);
+		return new BaseResponse<>(modelMapper.map(
+				bundleService.getBundleItemList(bundleId), BundleItemRespVO.class));
 	}
 }
