@@ -2,24 +2,20 @@ package com.comehere.ssgserver.bundle.application;
 
 import static com.comehere.ssgserver.common.response.BaseResponseStatus.*;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.comehere.ssgserver.brand.domain.Brand;
 import com.comehere.ssgserver.brand.infrastructure.BrandRepository;
 import com.comehere.ssgserver.bundle.domain.Bundle;
 import com.comehere.ssgserver.bundle.domain.BundleWithItem;
 import com.comehere.ssgserver.bundle.dto.req.CreateBundleReqDTO;
 import com.comehere.ssgserver.bundle.dto.resp.BundleItemRespDTO;
 import com.comehere.ssgserver.bundle.dto.resp.BundleListRespDTO;
-import com.comehere.ssgserver.bundle.dto.resp.BundleRespDTO;
+import com.comehere.ssgserver.bundle.dto.resp.BundleInfoRespDTO;
 import com.comehere.ssgserver.bundle.infrastructure.BundleRepository;
 import com.comehere.ssgserver.bundle.infrastructure.BundleWithItemRepository;
 import com.comehere.ssgserver.common.exception.BaseException;
-import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.item.infrastructual.ItemRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -55,15 +51,11 @@ public class BundleServiceImpl implements BundleService {
 	}
 
 	@Override
-	public BundleRespDTO getBundleDetail(Long id) {
+	public BundleInfoRespDTO getBundleDetail(Long id) {
 		Bundle bundle = bundleRepository.findById(id)
 				.orElseThrow(() -> new BaseException(BUNDLE_NOT_FOUND));
 
-		return BundleRespDTO.builder()
-				.bundleId(id)
-				.name(bundle.getName())
-				.minPrice(bundle.getMinPrice())
-				.build();
+		return BundleInfoRespDTO.toBuild(bundle);
 	}
 
 	@Override

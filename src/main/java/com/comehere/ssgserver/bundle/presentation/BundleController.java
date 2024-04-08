@@ -13,14 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.bundle.application.BundleService;
-import com.comehere.ssgserver.bundle.domain.Bundle;
 import com.comehere.ssgserver.bundle.dto.req.CreateBundleReqDTO;
-import com.comehere.ssgserver.bundle.dto.resp.BundleItemRespDTO;
-import com.comehere.ssgserver.bundle.dto.resp.BundleRespDTO;
 import com.comehere.ssgserver.bundle.vo.req.CreateBundleReqVO;
 import com.comehere.ssgserver.bundle.vo.resp.BundleItemRespVO;
 import com.comehere.ssgserver.bundle.vo.resp.BundleListRespVO;
-import com.comehere.ssgserver.bundle.vo.resp.BundleRespVO;
+import com.comehere.ssgserver.bundle.vo.resp.BundleInfoRespVO;
 import com.comehere.ssgserver.common.response.BaseResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -61,10 +58,10 @@ public class BundleController {
 
 	@GetMapping("/{bundleId}")
 	@Operation(summary = "특정 묶음 기본 정보 조회 API", description = "묶음(특가) 정보 조회")
-	public BaseResponse<BundleRespVO> getBundleDetail(@PathVariable("bundleId") Long bundleId) {
+	public BaseResponse<BundleInfoRespVO> getBundleDetail(@PathVariable("bundleId") Long bundleId) {
 		log.info("묶음 상품 기본 정보 조회 : bundleId={}", bundleId);
 		return new BaseResponse<>(modelMapper.map(
-				bundleService.getBundleDetail(bundleId), BundleRespVO.class));
+				bundleService.getBundleDetail(bundleId), BundleInfoRespVO.class));
 	}
 
 	@GetMapping("/item/{bundleId}")
