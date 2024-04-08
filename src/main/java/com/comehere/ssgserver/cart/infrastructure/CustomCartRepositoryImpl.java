@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import com.comehere.ssgserver.cart.domain.QCart;
 import com.comehere.ssgserver.cart.dto.ItemCountDTO;
-import com.comehere.ssgserver.cart.dto.req.AddItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
@@ -34,33 +33,24 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 				.fetch();
 	}
 
+	// 상품 수량 변경
 	@Override
-	public Long updateItemQuantity(UUID uuid, AddItemReqDTO addItemReqDTO) {
+	public Long updateItemQuantity(UUID uuid, Long ItemOptionId, int count) {
 		return query
 				.update(QCart.cart)
-				.set(QCart.cart.itemCount, QCart.cart.itemCount.add(addItemReqDTO.getItemCount()))
+				.set(QCart.cart.itemCount, QCart.cart.itemCount.add(count))
 				.where(QCart.cart.uuid.eq(uuid),
-						QCart.cart.itemOptionId.eq(addItemReqDTO.getItemOptionId()))
+						QCart.cart.itemOptionId.eq(ItemOptionId))
 				.execute();
 	}
 
+	// 상품 수량 감소
 	@Override
 	public Long minusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO) {
 
 		return query
 				.update(QCart.cart)
 				.set(QCart.cart.itemCount, QCart.cart.itemCount.subtract(1))
-				.where(QCart.cart.uuid.eq(uuid),
-						QCart.cart.itemOptionId.eq(itemQuantityModifyReqDTO.getItemOptionId()))
-				.execute();
-	}
-
-	@Override
-	public Long plusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO) {
-
-		return query
-				.update(QCart.cart)
-				.set(QCart.cart.itemCount, QCart.cart.itemCount.add(1))
 				.where(QCart.cart.uuid.eq(uuid),
 						QCart.cart.itemOptionId.eq(itemQuantityModifyReqDTO.getItemOptionId()))
 				.execute();

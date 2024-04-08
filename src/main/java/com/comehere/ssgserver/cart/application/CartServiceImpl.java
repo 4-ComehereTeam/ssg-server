@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.cart.domain.Cart;
 import com.comehere.ssgserver.cart.dto.req.AddItemReqDTO;
+import com.comehere.ssgserver.cart.dto.req.ChangeItemOptionReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
@@ -33,8 +34,9 @@ public class CartServiceImpl implements CartService {
 
 		// 상품이 현재 장바구니에 존재하지 않는 경우에만 새로 추가
 		// 존재하는 경우 수량만 증가
-		if (cartRepository.updateItemQuantity(uuid, addItemReqDTO) == 0) {
-			cartRepository.save(addItem(uuid, addItemReqDTO));
+		if (cartRepository.updateItemQuantity(uuid, addItemReqDTO.getItemOptionId(),
+				addItemReqDTO.getItemCount()) == 0) {
+			cartRepository.save(addItem(uuid, addItemReqDTO.getItemOptionId(), addItemReqDTO.getItemCount()));
 		}
 		return true;
 	}
@@ -66,6 +68,15 @@ public class CartServiceImpl implements CartService {
 		return cartRepository.updatePinState(uuid, changeStateReqDTO) > 0;
 	}
 
+	// 상품 옵션 변경
+	@Override
+	public Boolean changeItemOption(UUID uuid, ChangeItemOptionReqDTO changeItemOptionReqDTO) {
+		cartRepository.deleteByItemOptionIdAndUuid(changeItemOptionReqDTO.getItemOptionId(), uuid);
+		cartRepository.save(
+				addItem(uuid, changeItemOptionReqDTO.getNewItemOptionId(), changeItemOptionReqDTO.getItemCount()));
+		return true;
+	}
+
 	// 상품 수량 감소
 	@Override
 	@Transactional
@@ -80,7 +91,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	@Transactional
 	public ItemQuantityModifyRespDTO plusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO) {
-		cartRepository.plusItemQuantity(uuid, itemQuantityModifyReqDTO);
+		cartRepository.updateItemQuantity(uuid, itemQuantityModifyReqDTO.getItemOptionId(), 1);
 		return ItemQuantityModifyRespDTO.builder()
 				.itemCount(cartRepository.findByItemOptionIdAndUuid(itemQuantityModifyReqDTO.getItemOptionId(), uuid))
 				.build();
@@ -94,12 +105,12 @@ public class CartServiceImpl implements CartService {
 	}
 
 	// 상품 생성
-	private Cart addItem(UUID uuid, AddItemReqDTO addItemReqDTO) {
+	private Cart addItem(UUID uuid, Long itemOptionId, Integer itemCount) {
 
 		return Cart.builder()
 				.uuid(uuid)
-				.itemOptionId(addItemReqDTO.getItemOptionId())
-				.itemCount(addItemReqDTO.getItemCount())
+				.itemOptionId(itemOptionId)
+				.itemCount(itemCount)
 				.itemCheck(false)
 				.memberAddressId(addressRepository.getDefaultAddress(uuid))
 				.pinStatus(false)
