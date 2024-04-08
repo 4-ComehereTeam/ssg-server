@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class NonPurchaseDeleteReqVO {
-	private String name;
+	private String senderName;
 
-	private String phone;
+	private String senderPhone;
 
 	private String purchaseCode;
 }

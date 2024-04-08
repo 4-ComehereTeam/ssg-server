@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class NonPurchaseDeleteReqDTO {
-	private String name;
+	private String senderName;
 
-	private String phone;
+	private String senderPhone;
 
 	private String purchaseCode;
 }
