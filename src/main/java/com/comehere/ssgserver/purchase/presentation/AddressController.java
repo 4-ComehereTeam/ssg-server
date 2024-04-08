@@ -1,6 +1,7 @@
 package com.comehere.ssgserver.purchase.presentation;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,9 +14,9 @@ import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.purchase.application.AddressService;
 import com.comehere.ssgserver.purchase.dto.req.AddressAddReqDTO;
-import com.comehere.ssgserver.purchase.dto.req.DefaultChangeReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.AddressReqDTO;
 import com.comehere.ssgserver.purchase.vo.req.AddressAddReqVO;
-import com.comehere.ssgserver.purchase.vo.req.DefaultChangeReqVO;
+import com.comehere.ssgserver.purchase.vo.req.AddressReqVO;
 import com.comehere.ssgserver.purchase.vo.resp.AddressListRespVO;
 import com.comehere.ssgserver.purchase.vo.resp.DefaultCheckRespVO;
 
@@ -46,15 +47,15 @@ public class AddressController {
 	@PutMapping("/default/change")
 	@Operation(summary = "기본 배송지 변경")
 	public BaseResponse<Boolean> userDefaultAddressChange(@RequestHeader("Authorization") String accessToken,
-			@RequestBody DefaultChangeReqVO defaultChangeReqVO) {
+			@RequestBody AddressReqVO addressReqVO) {
 
 		return new BaseResponse<>(addressService.changeDefaultAddress(jwtUtil.getUuidByAuthorization(accessToken),
-				modelMapper.map(defaultChangeReqVO, DefaultChangeReqDTO.class)));
+				modelMapper.map(addressReqVO, AddressReqDTO.class)));
 	}
 
 	@PostMapping("/")
 	@Operation(summary = "배송지 추가")
-	public BaseResponse<Boolean> userAddressAdd(@RequestHeader("Authorization") String accessToken,
+	public BaseResponse<Boolean> addAddress(@RequestHeader("Authorization") String accessToken,
 			@RequestBody AddressAddReqVO addressAddReqVO) {
 
 		addressService.addAddress(jwtUtil.getUuidByAuthorization(accessToken),
@@ -70,4 +71,11 @@ public class AddressController {
 				.getAddressList(jwtUtil.getUuidByAuthorization(accessToken)), AddressListRespVO.class));
 	}
 
+	@DeleteMapping("/delete")
+	@Operation(summary = "배송지 삭제")
+	public BaseResponse<Boolean> deleteAddress(@RequestHeader("Authorization") String accessToken,
+			@RequestBody AddressReqVO addressReqVO) {
+		return new BaseResponse<>(addressService.deleteAddress(jwtUtil.getUuidByAuthorization(accessToken),
+				modelMapper.map(addressReqVO, AddressReqDTO.class)));
+	}
 }

@@ -11,7 +11,7 @@ import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 import com.comehere.ssgserver.purchase.domain.Address;
 import com.comehere.ssgserver.purchase.dto.AddressDetailDTO;
 import com.comehere.ssgserver.purchase.dto.req.AddressAddReqDTO;
-import com.comehere.ssgserver.purchase.dto.req.DefaultChangeReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.AddressReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.AddressListRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.DefaultCheckRespDTO;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
@@ -61,10 +61,17 @@ public class AddressServiceImpl implements AddressService {
 	// 해당 uuid의 회원이 가지고 있는 기본 배송지 주소 -> false로 변경 후 새로운 기본 배송지 주소 -> true로 변경
 	@Override
 	@Transactional
-	public Boolean changeDefaultAddress(UUID uuid, DefaultChangeReqDTO defaultChangeReqDTO) {
+	public Boolean changeDefaultAddress(UUID uuid, AddressReqDTO addressReqDTO) {
 
 		addressRepository.cancelDefaultAddress(uuid);
-		addressRepository.updateDefaultAddress(uuid, defaultChangeReqDTO.getAddressId());
+		addressRepository.updateDefaultAddress(uuid, addressReqDTO.getAddressId());
+		return true;
+	}
+
+	// 배송지 삭제
+	@Override
+	public Boolean deleteAddress(UUID uuid, AddressReqDTO addressReqDTO) {
+		addressRepository.deleteAddressById(addressReqDTO.getAddressId(), uuid);
 		return true;
 	}
 
