@@ -9,9 +9,11 @@ import lombok.Getter;
 public class CreateBundleReqVO {
 	private String name;
 
-	private Long brandId;
-
 	private List<Long> items;
 
 	private LocalDate finishDate;
+
+	private String image;
+
+	private String alt;
 }

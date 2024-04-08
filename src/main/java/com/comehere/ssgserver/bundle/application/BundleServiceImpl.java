@@ -66,28 +66,23 @@ public class BundleServiceImpl implements BundleService {
 				.build();
 	}
 
-	private Bundle saveBundle(CreateBundleReqDTO dto) {
-		Brand brand = null;
-		if(dto.getBrandId() != null) {
-			brand = brandRepository.findById(dto.getBrandId()).orElseThrow(
-					() -> new BaseException(BaseResponseStatus.BRAND_NOT_FOUND));
-		}
-
-		return bundleRepository.save(Bundle.builder()
-				.name(dto.getName())
-				.brand(brand)
-				.minPrice(itemRepository.findMinPrice(dto.getItems()))
-				.finishDate(dto.getFinishDate())
-				.status(true)
-				.build());
-	}
-
 	@Override
 	public BundleItemRespDTO getBundleItemList(Long bundleId) {
 		return BundleItemRespDTO.builder()
 				.bundleId(bundleId)
 				.items(bundleWithItemRepository.findByBundleId(bundleId))
 				.build();
+	}
+
+	private Bundle saveBundle(CreateBundleReqDTO dto) {
+		return bundleRepository.save(Bundle.builder()
+				.name(dto.getName())
+				.minPrice(itemRepository.findMinPrice(dto.getItems()))
+				.finishDate(dto.getFinishDate())
+				.imageUrl(dto.getImage())
+				.alt(dto.getAlt())
+				.status(true)
+				.build());
 	}
 
 	private void saveBundleList(CreateBundleReqDTO dto, Bundle bundle) {

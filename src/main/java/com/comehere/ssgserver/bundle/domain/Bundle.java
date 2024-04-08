@@ -25,12 +25,7 @@ public class Bundle {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
 	private Integer categoryId;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "brand_id")
-	private Brand brand;
 
 	@Column(nullable = false, length = 100)
 	private String name;
@@ -39,19 +34,27 @@ public class Bundle {
 	private Long minPrice;
 
 	@Column(nullable = false)
+	private String imageUrl;
+
+	@Column(nullable = false, length = 50)
+	private String alt;
+
+	@Column(nullable = false)
 	private LocalDate finishDate;
 
 	@Column(columnDefinition = "TINYINT")
 	private Boolean status;
 
 	@Builder
-	public Bundle(Integer categoryId, Brand brand, String name, Long minPrice, LocalDate finishDate, Boolean status) {
+	public Bundle(Integer categoryId, String name, Long minPrice, LocalDate finishDate,
+			Boolean status, String imageUrl, String alt) {
 		this.categoryId = categoryId;
-		this.brand = brand;
 		this.name = name;
 		this.minPrice = minPrice;
 		this.finishDate = finishDate;
 		this.status = status;
+		this.imageUrl = imageUrl;
+		this.alt = alt;
 	}
 
 	public static void closeBundle(Bundle bundle) {
