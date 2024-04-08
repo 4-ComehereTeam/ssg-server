@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.cart.application.CartService;
 import com.comehere.ssgserver.cart.dto.req.AddItemReqDTO;
+import com.comehere.ssgserver.cart.dto.req.ChangeItemOptionReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
 import com.comehere.ssgserver.cart.dto.resp.GetCartListRespDTO;
 import com.comehere.ssgserver.cart.vo.req.AddItemReqVO;
+import com.comehere.ssgserver.cart.vo.req.ChangeItemOptionReqVO;
 import com.comehere.ssgserver.cart.vo.req.ChangeStateReqVO;
 import com.comehere.ssgserver.cart.vo.req.DeleteItemReqVO;
 import com.comehere.ssgserver.cart.vo.req.ItemQuantityModifyReqVO;
@@ -103,5 +105,14 @@ public class CartController {
 
 		return new BaseResponse<>(cartService.changeItemPinState(jwtUtil.getUuidByAuthorization(accessToken),
 				modelMapper.map(changeStateReqVO, ChangeStateReqDTO.class)));
+	}
+
+	@PutMapping("/option")
+	@Operation(summary = "장바구니 상품 옵션 변경")
+	public BaseResponse<Boolean> changeItemOption(@RequestHeader("Authorization") String accessToken,
+			@RequestBody ChangeItemOptionReqVO changeItemOptionReqVO) {
+
+		return new BaseResponse<>(cartService.changeItemOption(jwtUtil.getUuidByAuthorization(accessToken),
+				modelMapper.map(changeItemOptionReqVO, ChangeItemOptionReqDTO.class)));
 	}
 }

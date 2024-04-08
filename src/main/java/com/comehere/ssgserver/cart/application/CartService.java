@@ -3,6 +3,7 @@ package com.comehere.ssgserver.cart.application;
 import java.util.UUID;
 
 import com.comehere.ssgserver.cart.dto.req.AddItemReqDTO;
+import com.comehere.ssgserver.cart.dto.req.ChangeItemOptionReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
@@ -19,6 +20,9 @@ public interface CartService {
 
 	// 상품 핀 상태 변경
 	Boolean changeItemPinState(UUID uuid, ChangeStateReqDTO changeStateReqDTO);
+
+	// 상품 옵션 변경
+	Boolean changeItemOption(UUID uuid, ChangeItemOptionReqDTO changeItemOptionReqDTO);
 
 	// 장바구니에 담긴 상품 리스트 조회
 	GetCartListRespDTO getCartList(UUID uuid);
