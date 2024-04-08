@@ -51,9 +51,9 @@ public class Address extends BaseEntity {
 	private Boolean defaultAddress;
 
 	@Builder
-	public Address(String name, String nickname, String phone, String tel, String zipcode,
+	public Address(Long id, String name, String nickname, String phone, String tel, String zipcode,
 			String address, String detailAddress, String requestMessage, Boolean defaultAddress, UUID uuid) {
-
+		this.id = id;
 		this.name = name;
 		this.nickname = nickname;
 		this.phone = phone;

@@ -12,6 +12,7 @@ import com.comehere.ssgserver.purchase.domain.Address;
 import com.comehere.ssgserver.purchase.dto.AddressDetailDTO;
 import com.comehere.ssgserver.purchase.dto.req.AddressAddReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.AddressReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.ModifyAddressReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.AddressListRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.DefaultCheckRespDTO;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
@@ -68,6 +69,28 @@ public class AddressServiceImpl implements AddressService {
 		return true;
 	}
 
+	// 배송지 수정
+	@Override
+	public void updateAddressInfo(UUID uuid, ModifyAddressReqDTO modifyAddressReqDTO) {
+
+		Address address = addressRepository.findById(modifyAddressReqDTO.getAddressId())
+				.orElseThrow(() -> new IllegalArgumentException("해당 배송지가 존재하지 않습니다."));
+
+		addressRepository.save(address.builder()
+				.id(address.getId())
+				.uuid(address.getUuid())
+				.requestMessage(address.getRequestMessage())
+				.defaultAddress(address.getDefaultAddress())
+				.name(modifyAddressReqDTO.getName())
+				.nickname(modifyAddressReqDTO.getNickName())
+				.phone(modifyAddressReqDTO.getPhone())
+				.tel(modifyAddressReqDTO.getTel())
+				.zipcode(modifyAddressReqDTO.getZipcode())
+				.address(modifyAddressReqDTO.getAddress())
+				.detailAddress(modifyAddressReqDTO.getDetailAddress())
+				.build());
+	}
+
 	// 배송지 삭제
 	@Override
 	public Boolean deleteAddress(UUID uuid, AddressReqDTO addressReqDTO) {
@@ -75,6 +98,7 @@ public class AddressServiceImpl implements AddressService {
 		return true;
 	}
 
+	// 배송지 추가
 	private Address createAddress(Member member, AddressAddReqDTO addressAddReqDTO) {
 
 		return addressRepository.save(Address.builder()
@@ -89,6 +113,7 @@ public class AddressServiceImpl implements AddressService {
 				.build());
 	}
 
+	// 해당 uuid의 회원을 찾아 반환
 	private Member findMember(UUID uuid) {
 		return memberRepository.findByUuid(uuid)
 				.orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
