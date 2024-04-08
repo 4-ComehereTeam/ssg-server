@@ -163,6 +163,9 @@ public class AuthServiceImpl implements AuthService {
 				.resignCount(member.getResignCount())
 				.uuid(UUID.randomUUID())
 				.role(Role.valueOf("USER"))
+				.zipcode(joinReqDTO.getAddressInfoReqDTO().getZipcode())
+				.address(joinReqDTO.getAddressInfoReqDTO().getAddress())
+				.detailAddress(joinReqDTO.getAddressInfoReqDTO().getAddressDetail())
 				.build());
 	}
 
@@ -181,6 +184,9 @@ public class AuthServiceImpl implements AuthService {
 				.resignCount(0)
 				.uuid(UUID.randomUUID())
 				.role(Role.valueOf("USER"))
+				.zipcode(joinReqDTO.getAddressInfoReqDTO().getZipcode())
+				.address(joinReqDTO.getAddressInfoReqDTO().getAddress())
+				.detailAddress(joinReqDTO.getAddressInfoReqDTO().getAddressDetail())
 				.build());
 	}
 
