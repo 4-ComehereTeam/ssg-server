@@ -11,4 +11,6 @@ public class ItemOptionInfoRespVO {
 	private String size;
 
 	private String etc;
+
+	private Integer stock;
 }
