@@ -1,5 +1,7 @@
 package com.comehere.ssgserver.bundle.application;
 
+import static com.comehere.ssgserver.common.response.BaseResponseStatus.*;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -40,13 +42,13 @@ public class BundleServiceImpl implements BundleService {
 	@Override
 	@Transactional(readOnly = true)
 	public BundleListRespDTO getBundleList(Integer categoryId, Pageable page) {
-		return null;
+		return BundleListRespDTO.toBuild(bundleRepository.getBundleList(categoryId, page));
 	}
 
 	@Override
 	public Bundle updateBundleStatus(Long id) {
 		Bundle bundle = bundleRepository.findById(id)
-				.orElseThrow(() -> new IllegalStateException("존재하지 않는 묶음입니다."));
+				.orElseThrow(() -> new BaseException(BUNDLE_NOT_FOUND));
 
 		Bundle.closeBundle(bundle);
 		return bundle;
@@ -55,7 +57,7 @@ public class BundleServiceImpl implements BundleService {
 	@Override
 	public BundleRespDTO getBundleDetail(Long id) {
 		Bundle bundle = bundleRepository.findById(id)
-				.orElseThrow(() -> new IllegalStateException("존재하지 않는 묶음입니다."));
+				.orElseThrow(() -> new BaseException(BUNDLE_NOT_FOUND));
 
 		return BundleRespDTO.builder()
 				.bundleId(id)

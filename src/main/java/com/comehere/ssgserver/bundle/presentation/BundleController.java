@@ -20,6 +20,7 @@ import com.comehere.ssgserver.bundle.dto.resp.BundleRespDTO;
 import com.comehere.ssgserver.bundle.vo.req.CreateBundleReqVO;
 import com.comehere.ssgserver.bundle.vo.resp.BundleItemRespVO;
 import com.comehere.ssgserver.bundle.vo.resp.BundleListRespVO;
+import com.comehere.ssgserver.bundle.vo.resp.BundleRespVO;
 import com.comehere.ssgserver.common.response.BaseResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,20 +48,23 @@ public class BundleController {
 			@RequestParam(required = false) Integer categoryId,
 			@PageableDefault(size = 20) Pageable page) {
 		log.info("묶음 상품 목록 조회 : categoryId={}", categoryId);
-		return null;
+		return new BaseResponse<>(modelMapper.map(
+				bundleService.getBundleList(categoryId, page), BundleListRespVO.class));
 	}
 
 	@PutMapping("/{bundleId}")
 	@Operation(summary = "묶음(특가) 상품 상태 변경 API", description = "묶음(특가) 상품 목록 조회")
-	public BaseResponse<Bundle> updateBundleStatus(@PathVariable("bundleId") Long id) {
-		return new BaseResponse<>(bundleService.updateBundleStatus(id));
+	public BaseResponse<Void> updateBundleStatus(@PathVariable("bundleId") Long id) {
+		bundleService.updateBundleStatus(id);
+		return new BaseResponse<>();
 	}
 
 	@GetMapping("/{bundleId}")
 	@Operation(summary = "특정 묶음 기본 정보 조회 API", description = "묶음(특가) 정보 조회")
-	public BaseResponse<BundleRespDTO> getBundleDetail(@PathVariable("bundleId") Long id) {
-		log.info("묶음 상품 기본 정보 조회 : bundleId={}", id);
-		return new BaseResponse<>(bundleService.getBundleDetail(id));
+	public BaseResponse<BundleRespVO> getBundleDetail(@PathVariable("bundleId") Long bundleId) {
+		log.info("묶음 상품 기본 정보 조회 : bundleId={}", bundleId);
+		return new BaseResponse<>(modelMapper.map(
+				bundleService.getBundleDetail(bundleId), BundleRespVO.class));
 	}
 
 	@GetMapping("/item/{bundleId}")
