@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.comehere.ssgserver.bundle.domain.Bundle;
 
-public interface BundleRepository extends JpaRepository<Bundle, Long> {
+public interface BundleRepository extends JpaRepository<Bundle, Long>, CustomBundleRepository {
 	@Query("select b from Bundle b where b.status = true")
 	Page<Bundle> getBundleList(Pageable page);
 }

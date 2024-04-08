@@ -80,6 +80,7 @@ public enum BaseResponseStatus {
 	ITEM_OPTION_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7005, "존재하지 않는 상품 옵션입니다."),
 	ITEM_STOCK_NOT_ENOUGH(HttpStatus.BAD_REQUEST, false, 7006, "상품 재고가 부족합니다."),
 	ITEM_STOCK_RESTORE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, false, 7007, "상품 재고 복구에 실패했습니다."),
+	BUNDLE_NOT_FOUND(HttpStatus.NOT_FOUND, false, 7008, "존재하지 않는 묶음입니다."),
 
 	/**
 	 * 8000 : purchase Service Error
