@@ -12,5 +12,7 @@ public class ReviewImageListRespVO {
 
 	private List<ReviewImageListDTO> images;
 
+	private Integer currentPage;
+
 	private Boolean hasNext;
 }

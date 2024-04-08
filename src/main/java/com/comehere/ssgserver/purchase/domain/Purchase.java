@@ -1,7 +1,5 @@
 package com.comehere.ssgserver.purchase.domain;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.*;
-
 import java.util.UUID;
 
 import org.hibernate.annotations.SQLDelete;
@@ -37,13 +35,22 @@ public class Purchase extends BaseEntity {
 	private UUID uuid;
 
 	@Column(nullable = false)
-	private String name;
+	private String senderName;
 
 	@Column(nullable = false)
-	private String phone;
+	private String senderPhone;
 
 	@Column(nullable = false)
-	private String email;
+	private String senderEmail;
+
+	@Column(nullable = false)
+	private String recipientName;
+
+	@Column(nullable = false)
+	private String recipientPhone;
+
+	@Column(nullable = false)
+	private String recipientEmail;
 
 	@Column(nullable = false)
 	private String addressNickname;
@@ -67,16 +74,18 @@ public class Purchase extends BaseEntity {
 	private Boolean deleted;
 
 	@Builder
-
-	public Purchase(Long id, String purchaseCode, UUID uuid, String name, String phone, String email,
-			String addressNickname, String address, String detailAddress, String zipcode, String requestMessage,
-			PurchaseStatus status, Boolean deleted) {
+	public Purchase(Long id, String purchaseCode, UUID uuid, String senderName, String senderPhone, String senderEmail,
+			String recipientName, String recipientPhone, String recipientEmail, String addressNickname, String address,
+			String detailAddress, String zipcode, String requestMessage, PurchaseStatus status, Boolean deleted) {
 		this.id = id;
 		this.purchaseCode = purchaseCode;
 		this.uuid = uuid;
-		this.name = name;
-		this.phone = phone;
-		this.email = email;
+		this.senderName = senderName;
+		this.senderPhone = senderPhone;
+		this.senderEmail = senderEmail;
+		this.recipientName = recipientName;
+		this.recipientPhone = recipientPhone;
+		this.recipientEmail = recipientEmail;
 		this.addressNickname = addressNickname;
 		this.address = address;
 		this.detailAddress = detailAddress;

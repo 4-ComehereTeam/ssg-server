@@ -7,16 +7,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class NonPurchaseGetReqDTO {
-	private String name;
+	private String senderName;
 
-	private String phone;
+	private String senderPhone;
 
 	private String purchaseCode;
 
 	@Builder
-	public NonPurchaseGetReqDTO(String name, String phone, String purchaseCode) {
-		this.name = name;
-		this.phone = phone;
+	public NonPurchaseGetReqDTO(String senderName, String senderPhone, String purchaseCode) {
+		this.senderName = senderName;
+		this.senderPhone = senderPhone;
 		this.purchaseCode = purchaseCode;
 	}
 }

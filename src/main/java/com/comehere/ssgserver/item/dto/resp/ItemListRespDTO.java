@@ -11,13 +11,16 @@ import lombok.Setter;
 @Getter
 @Builder
 public class ItemListRespDTO {
-	List<Long> itemIds;
+	private List<Long> itemIds;
 
-	Boolean hasNext;
+	private Integer currentPage;
+
+	private  Boolean hasNext;
 
 	public static ItemListRespDTO toBuild(Slice<Long> slice) {
 		return ItemListRespDTO.builder()
 				.itemIds(slice.getContent())
+				.currentPage(slice.getNumber())
 				.hasNext(slice.hasNext())
 				.build();
 	}

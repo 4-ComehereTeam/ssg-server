@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.comehere.ssgserver.common.exception.BaseException;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.item.domain.Item;
+import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 import com.comehere.ssgserver.option.infrastructure.ItemOptionRepository;
 import com.comehere.ssgserver.purchase.domain.Purchase;
 import com.comehere.ssgserver.purchase.domain.PurchaseList;
@@ -21,6 +22,7 @@ import com.comehere.ssgserver.purchase.domain.PurchaseStatus;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListDeleteReqDTO;
+import com.comehere.ssgserver.purchase.dto.resp.PurchaseCreateRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchaseListByIdAndUuidRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchaseListGetRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchasesGetRespDTO;
@@ -40,13 +42,16 @@ public class PurchaseServiceImp implements PurchaseService {
 
 	@Override
 	@Transactional
-	public void createPurchase(PurchaseCreateReqDTO dto, UUID uuid) {
+	public PurchaseCreateRespDTO createPurchase(PurchaseCreateReqDTO dto, UUID uuid) {
 		Purchase purchase = Purchase.builder()
 				.purchaseCode(makePurchaseCode())
 				.uuid(uuid)
-				.name(dto.getName())
-				.email(dto.getEmail())
-				.phone(dto.getPhone())
+				.senderName(dto.getSenderName())
+				.senderPhone(dto.getSenderPhone())
+				.senderEmail(dto.getSenderEmail())
+				.recipientName(dto.getRecipientName())
+				.recipientPhone(dto.getRecipientPhone())
+				.recipientEmail(dto.getRecipientEmail())
 				.addressNickname(dto.getAddressNickname())
 				.address(dto.getAddress())
 				.detailAddress(dto.getDetailAddress())
@@ -60,6 +65,10 @@ public class PurchaseServiceImp implements PurchaseService {
 
 		dto.getPurchases()
 				.forEach(purchaseListCreateReqDTO -> createPurchaseList(purchaseListCreateReqDTO, purchase.getId()));
+
+		return PurchaseCreateRespDTO.builder()
+				.purchaseCode(purchase.getPurchaseCode())
+				.build();
 	}
 
 	@Override

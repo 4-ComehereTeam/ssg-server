@@ -25,12 +25,12 @@ public class CustomPurchaseRepositoryImpl implements CustomPurchaseRepository {
 	}
 
 	@Override
-	public Optional<Long> findPurchaseIdByNameAndPhoneAndPurchaseCode(NonPurchaseGetReqDTO dto) {
+	public Optional<Long> findIdPurchaseIdBySenderNameAndSenderPhoneAndPurchaseCode(NonPurchaseGetReqDTO dto) {
 		return Optional.ofNullable(queryFactory
 				.select(purchase.id)
 				.from(purchase)
-				.where(purchase.name.eq(dto.getName())
-						.and(purchase.phone.eq(dto.getPhone()))
+				.where(purchase.senderName.eq(dto.getSenderName())
+						.and(purchase.senderPhone.eq(dto.getSenderPhone()))
 						.and(purchase.purchaseCode.eq(dto.getPurchaseCode())))
 				.fetchOne());
 	}

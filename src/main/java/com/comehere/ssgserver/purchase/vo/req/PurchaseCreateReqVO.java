@@ -6,11 +6,17 @@ import lombok.Getter;
 
 @Getter
 public class PurchaseCreateReqVO {
-	private String name;
+	private String senderName;
 
-	private String phone;
+	private String senderPhone;
 
-	private String email;
+	private String senderEmail;
+
+	private String recipientName;
+
+	private String recipientPhone;
+
+	private String recipientEmail;
 
 	private String addressNickname;
 

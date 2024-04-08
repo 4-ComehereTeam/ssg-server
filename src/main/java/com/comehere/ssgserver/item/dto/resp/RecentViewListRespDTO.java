@@ -10,6 +10,8 @@ import lombok.Getter;
 public class RecentViewListRespDTO {
 	private List<RecentViewDTO> recentItems;
 
+	private Integer currentPage;
+
 	private Boolean hasNext;
 
 }

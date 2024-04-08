@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemListRespVO {
-	List<Long> itemIds;
+	private List<Long> itemIds;
 
-	Boolean hasNext;
+	private Integer currentPage;
+
+	private Boolean hasNext;
 }
