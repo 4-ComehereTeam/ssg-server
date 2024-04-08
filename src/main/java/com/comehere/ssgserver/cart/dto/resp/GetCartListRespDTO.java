@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.cart.dto.response;
+package com.comehere.ssgserver.cart.dto.resp;
 
 import java.util.List;
 
@@ -11,5 +11,5 @@ import lombok.Setter;
 @Setter
 public class GetCartListRespDTO {
 
-	List<ItemCountDTO> itemOptions;
+	private List<ItemCountDTO> itemOptions;
 }

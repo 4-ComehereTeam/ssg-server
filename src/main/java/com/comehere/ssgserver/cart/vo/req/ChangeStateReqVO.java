@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.cart.vo.request;
+package com.comehere.ssgserver.cart.vo.req;
 
 import lombok.Getter;
 
@@ -6,5 +6,6 @@ import lombok.Getter;
 public class ChangeStateReqVO {
 
 	private Long cartId;
+
 	private Long itemOptionId;
 }

@@ -1,6 +1,7 @@
 package com.comehere.ssgserver.cart.presentation;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -10,12 +11,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.cart.application.CartService;
-import com.comehere.ssgserver.cart.dto.request.AddProductReqDTO;
-import com.comehere.ssgserver.cart.dto.request.ChangeStateReqDTO;
-import com.comehere.ssgserver.cart.dto.response.GetCartListRespDTO;
-import com.comehere.ssgserver.cart.vo.request.AddProductReqVO;
-import com.comehere.ssgserver.cart.vo.request.ChangeStateReqVO;
-import com.comehere.ssgserver.cart.vo.response.GetCartListRespVO;
+import com.comehere.ssgserver.cart.dto.req.AddItemReqDTO;
+import com.comehere.ssgserver.cart.dto.req.ChangeItemOptionReqDTO;
+import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
+import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
+import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
+import com.comehere.ssgserver.cart.dto.resp.GetCartListRespDTO;
+import com.comehere.ssgserver.cart.vo.req.AddItemReqVO;
+import com.comehere.ssgserver.cart.vo.req.ChangeItemOptionReqVO;
+import com.comehere.ssgserver.cart.vo.req.ChangeStateReqVO;
+import com.comehere.ssgserver.cart.vo.req.DeleteItemReqVO;
+import com.comehere.ssgserver.cart.vo.req.ItemQuantityModifyReqVO;
+import com.comehere.ssgserver.cart.vo.resp.GetCartListRespVO;
+import com.comehere.ssgserver.cart.vo.resp.ItemQuantityModifyRespVO;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 
@@ -35,13 +43,43 @@ public class CartController {
 
 	@PostMapping("/")
 	@Operation(summary = "상품 장바구니에 추가")
-	public BaseResponse<Boolean> addProductToCart(@RequestHeader("Authorization") String accessToken,
-			@RequestBody AddProductReqVO addProductReqVO) {
-
-		AddProductReqDTO addProductReqDTO = modelMapper.map(addProductReqVO, AddProductReqDTO.class);
+	public BaseResponse<Boolean> addItemToCart(@RequestHeader("Authorization") String accessToken,
+			@RequestBody AddItemReqVO addItemReqVO) {
 
 		return new BaseResponse<>(
-				cartService.addProductToCart(jwtUtil.getUuidByAuthorization(accessToken), addProductReqDTO));
+				cartService.addItemToCart(jwtUtil.getUuidByAuthorization(accessToken),
+						modelMapper.map(addItemReqVO, AddItemReqDTO.class)));
+	}
+
+	@PutMapping("/minus")
+	@Operation(summary = "장바구니 상품 수량 감소")
+	public BaseResponse<ItemQuantityModifyRespVO> minusItemQuantity(@RequestHeader("Authorization") String accessToken,
+			@RequestBody ItemQuantityModifyReqVO itemQuantityModifyReqVO) {
+
+		return new BaseResponse<>(
+				modelMapper.map(cartService.minusItemQuantity(jwtUtil.getUuidByAuthorization(accessToken),
+								modelMapper.map(itemQuantityModifyReqVO, ItemQuantityModifyReqDTO.class)),
+						ItemQuantityModifyRespVO.class));
+	}
+
+	@PutMapping("/plus")
+	@Operation(summary = "장바구니 상품 수량 증가")
+	public BaseResponse<ItemQuantityModifyRespVO> plustItemQuantity(@RequestHeader("Authorization") String accessToken,
+			@RequestBody ItemQuantityModifyReqVO itemQuantityModifyReqVO) {
+
+		return new BaseResponse<>(
+				modelMapper.map(cartService.plusItemQuantity(jwtUtil.getUuidByAuthorization(accessToken),
+								modelMapper.map(itemQuantityModifyReqVO, ItemQuantityModifyReqDTO.class)),
+						ItemQuantityModifyRespVO.class));
+	}
+
+	@DeleteMapping("/delete")
+	@Operation(summary = "장바구니 상품 삭제")
+
+	public BaseResponse<Boolean> deleteItemFromCart(@RequestHeader("Authorization") String accessToken,
+			@RequestBody DeleteItemReqVO deleteItemReqVO) {
+		return new BaseResponse<>(cartService.deleteItemFromCart(jwtUtil.getUuidByAuthorization(accessToken),
+				modelMapper.map(deleteItemReqVO, DeleteItemReqDTO.class)));
 	}
 
 	@GetMapping("/list")
@@ -56,19 +94,25 @@ public class CartController {
 	@Operation(summary = "장바구니 상품 체크 상태 변경")
 	public BaseResponse<Boolean> changeProductCheckState(@RequestHeader("Authorization") String accessToken,
 			@RequestBody ChangeStateReqVO changeStateReqVO) {
-		ChangeStateReqDTO changeStateReqDTO = modelMapper.map(changeStateReqVO,
-				ChangeStateReqDTO.class);
-		return new BaseResponse<>(cartService.changeProductChangeState(jwtUtil.getUuidByAuthorization(accessToken),
-				changeStateReqDTO));
+		return new BaseResponse<>(cartService.changeItemChangeState(jwtUtil.getUuidByAuthorization(accessToken),
+				modelMapper.map(changeStateReqVO, ChangeStateReqDTO.class)));
 	}
 
 	@PutMapping("/pin-state/change")
 	@Operation(summary = "장바구니 상품 핀 상태 변경")
 	public BaseResponse<Boolean> changeProductPinState(@RequestHeader("Authorization") String accessToken,
 			@RequestBody ChangeStateReqVO changeStateReqVO) {
-		ChangeStateReqDTO changeStateReqDTO = modelMapper.map(changeStateReqVO,
-				ChangeStateReqDTO.class);
-		return new BaseResponse<>(cartService.changeProductPinState(jwtUtil.getUuidByAuthorization(accessToken),
-				changeStateReqDTO));
+
+		return new BaseResponse<>(cartService.changeItemPinState(jwtUtil.getUuidByAuthorization(accessToken),
+				modelMapper.map(changeStateReqVO, ChangeStateReqDTO.class)));
+	}
+
+	@PutMapping("/option")
+	@Operation(summary = "장바구니 상품 옵션 변경")
+	public BaseResponse<Boolean> changeItemOption(@RequestHeader("Authorization") String accessToken,
+			@RequestBody ChangeItemOptionReqVO changeItemOptionReqVO) {
+
+		return new BaseResponse<>(cartService.changeItemOption(jwtUtil.getUuidByAuthorization(accessToken),
+				modelMapper.map(changeItemOptionReqVO, ChangeItemOptionReqDTO.class)));
 	}
 }
