@@ -15,8 +15,10 @@ import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.purchase.application.AddressService;
 import com.comehere.ssgserver.purchase.dto.req.AddressAddReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.AddressReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.ModifyAddressReqDTO;
 import com.comehere.ssgserver.purchase.vo.req.AddressAddReqVO;
 import com.comehere.ssgserver.purchase.vo.req.AddressReqVO;
+import com.comehere.ssgserver.purchase.vo.req.ModifyAddressReqVO;
 import com.comehere.ssgserver.purchase.vo.resp.AddressListRespVO;
 import com.comehere.ssgserver.purchase.vo.resp.DefaultCheckRespVO;
 
@@ -77,5 +79,14 @@ public class AddressController {
 			@RequestBody AddressReqVO addressReqVO) {
 		return new BaseResponse<>(addressService.deleteAddress(jwtUtil.getUuidByAuthorization(accessToken),
 				modelMapper.map(addressReqVO, AddressReqDTO.class)));
+	}
+
+	@PutMapping("/modify")
+	@Operation(summary = "배송지 정보 수정")
+	public BaseResponse<Void> modifyUserAddress(@RequestHeader("Authorization") String accessToken,
+			@RequestBody ModifyAddressReqVO modifyAddressReqVO) {
+		addressService.updateAddressInfo(jwtUtil.getUuidByAuthorization(accessToken),
+				modelMapper.map(modifyAddressReqVO, ModifyAddressReqDTO.class));
+		return new BaseResponse<>();
 	}
 }
