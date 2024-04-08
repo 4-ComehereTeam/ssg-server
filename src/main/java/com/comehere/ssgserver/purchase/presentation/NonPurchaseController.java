@@ -71,8 +71,8 @@ public class NonPurchaseController {
 			@RequestParam("purchaseCode") String purchaseCode) {
 
 		NonPurchaseGetRespDTO respDTO = nonPurchaseService.getNonPurchase(NonPurchaseGetReqDTO.builder()
-				.name(name)
-				.phone(phone)
+				.senderName(name)
+				.senderPhone(phone)
 				.purchaseCode(purchaseCode)
 				.build());
 

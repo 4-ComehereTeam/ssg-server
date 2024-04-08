@@ -30,10 +30,10 @@ public class NonPurchaseServiceImp implements NonPurchaseService {
 	@Override
 	@Transactional
 	public void deleteNonPurchaseList(NonPurchaseListDeleteReqDTO dto) {
-		Purchase purchase = purchaseRepository.findByPurchaseCodeAndNameAndPhone(dto.getPurchaseCode(), dto.getName(),
-						dto.getPhone())
+		Purchase purchase = purchaseRepository.findByPurchaseCodeAndSenderNameAndSenderPhone(dto.getPurchaseCode(),
+						dto.getSenderName(),
+						dto.getSenderPhone())
 				.orElseThrow(() -> new BaseException(BaseResponseStatus.PURCHASE_NOT_FOUND));
-
 
 		PurchaseList purchaseList = purchaseListRepository.findByIdAndPurchaseId(dto.getPurchaseListId(),
 						purchase.getId())
@@ -56,7 +56,6 @@ public class NonPurchaseServiceImp implements NonPurchaseService {
 		// 주문 취소 시 재고 복구
 		restoreStockForPurchase(itemOptionId, count);
 
-
 		if (purchaseListRepository.existsPurchaseCanceled(purchaseId)) {
 			purchaseRepository.updatePurchaseStatusToCancel(purchaseId);
 		}
@@ -65,8 +64,9 @@ public class NonPurchaseServiceImp implements NonPurchaseService {
 	@Override
 	@Transactional
 	public void deleteNonPurchase(NonPurchaseDeleteReqDTO dto) {
-		Purchase purchase = purchaseRepository.findByPurchaseCodeAndNameAndPhone(dto.getPurchaseCode(), dto.getName(),
-						dto.getPhone())
+		Purchase purchase = purchaseRepository.findByPurchaseCodeAndSenderNameAndSenderPhone(dto.getPurchaseCode(),
+						dto.getSenderName(),
+						dto.getSenderPhone())
 				.orElseThrow(() -> new BaseException(BaseResponseStatus.PURCHASE_NOT_FOUND));
 
 		purchaseListRepository.deleteAllPurchaseList(purchase.getId());
@@ -75,7 +75,7 @@ public class NonPurchaseServiceImp implements NonPurchaseService {
 
 	@Override
 	public NonPurchaseGetRespDTO getNonPurchase(NonPurchaseGetReqDTO dto) {
-		Long findPurchaseId = purchaseRepository.findPurchaseIdByNameAndPhoneAndPurchaseCode(dto)
+		Long findPurchaseId = purchaseRepository.findIdPurchaseIdBySenderNameAndSenderPhoneAndPurchaseCode(dto)
 				.orElseThrow(() -> new BaseException(BaseResponseStatus.PURCHASE_NOT_FOUND));
 
 		return NonPurchaseGetRespDTO.builder()

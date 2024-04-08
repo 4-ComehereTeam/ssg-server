@@ -13,5 +13,6 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long>, Custo
 
 	List<Purchase> findByUuid(UUID uuid);
 
-	Optional<Purchase> findByPurchaseCodeAndNameAndPhone(String purchaseCode, String name, String phone);
+	Optional<Purchase> findByPurchaseCodeAndSenderNameAndSenderPhone(String purchaseCode, String senderName,
+			String senderPhone);
 }
