@@ -57,10 +57,16 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
+	private String zipcode;
+
+	private String address;
+
+	private String detailAddress;
+
 	@Builder
 	public Member(Long id, UUID uuid, String signinId, String name, String password, Short gender,
 			String phone, Short status, Integer resignCount, LocalDateTime resignTime,
-			String email, Role role) {
+			String email, Role role, String zipcode, String address, String detailAddress) {
 		this.id = id;
 		this.uuid = uuid;
 		this.signinId = signinId;
@@ -73,6 +79,9 @@ public class Member extends BaseEntity {
 		this.status = status;
 		this.resignCount = resignCount;
 		this.resignTime = resignTime;
+		this.zipcode = zipcode;
+		this.address = address;
+		this.detailAddress = detailAddress;
 	}
 
 }
