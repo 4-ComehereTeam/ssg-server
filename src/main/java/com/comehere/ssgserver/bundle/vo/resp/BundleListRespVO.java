@@ -7,4 +7,8 @@ import lombok.Getter;
 @Getter
 public class BundleListRespVO {
 	private List<Long> bundles;
+
+	private Long currentPage;
+
+	private Boolean hasNext;
 }
