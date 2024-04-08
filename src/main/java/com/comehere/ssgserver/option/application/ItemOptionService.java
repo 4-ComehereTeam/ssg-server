@@ -6,6 +6,7 @@ import com.comehere.ssgserver.option.dto.resp.ItemOptionIdRespDTO;
 import com.comehere.ssgserver.option.dto.resp.ItemOptionInfoRespDTO;
 import com.comehere.ssgserver.option.dto.resp.ItemOptionRespDTO;
 import com.comehere.ssgserver.option.dto.resp.HasOptionRespDTO;
+import com.comehere.ssgserver.option.dto.resp.ItemStockRespDTO;
 import com.comehere.ssgserver.option.dto.resp.SizeRespDTO;
 
 public interface ItemOptionService {
@@ -21,4 +22,6 @@ public interface ItemOptionService {
 	ItemOptionIdRespDTO getOptionId(Long reviewId);
 
 	ItemOptionInfoRespDTO getOptionInfo(Long itemId);
+
+	ItemStockRespDTO getStock(Long itemId);
 }

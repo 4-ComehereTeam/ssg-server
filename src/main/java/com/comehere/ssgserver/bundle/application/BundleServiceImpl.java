@@ -2,24 +2,20 @@ package com.comehere.ssgserver.bundle.application;
 
 import static com.comehere.ssgserver.common.response.BaseResponseStatus.*;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.comehere.ssgserver.brand.domain.Brand;
 import com.comehere.ssgserver.brand.infrastructure.BrandRepository;
 import com.comehere.ssgserver.bundle.domain.Bundle;
 import com.comehere.ssgserver.bundle.domain.BundleWithItem;
 import com.comehere.ssgserver.bundle.dto.req.CreateBundleReqDTO;
 import com.comehere.ssgserver.bundle.dto.resp.BundleItemRespDTO;
 import com.comehere.ssgserver.bundle.dto.resp.BundleListRespDTO;
-import com.comehere.ssgserver.bundle.dto.resp.BundleRespDTO;
+import com.comehere.ssgserver.bundle.dto.resp.BundleInfoRespDTO;
 import com.comehere.ssgserver.bundle.infrastructure.BundleRepository;
 import com.comehere.ssgserver.bundle.infrastructure.BundleWithItemRepository;
 import com.comehere.ssgserver.common.exception.BaseException;
-import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.item.infrastructual.ItemRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -55,31 +51,11 @@ public class BundleServiceImpl implements BundleService {
 	}
 
 	@Override
-	public BundleRespDTO getBundleDetail(Long id) {
+	public BundleInfoRespDTO getBundleDetail(Long id) {
 		Bundle bundle = bundleRepository.findById(id)
 				.orElseThrow(() -> new BaseException(BUNDLE_NOT_FOUND));
 
-		return BundleRespDTO.builder()
-				.bundleId(id)
-				.name(bundle.getName())
-				.minPrice(bundle.getMinPrice())
-				.build();
-	}
-
-	private Bundle saveBundle(CreateBundleReqDTO dto) {
-		Brand brand = null;
-		if(dto.getBrandId() != null) {
-			brand = brandRepository.findById(dto.getBrandId()).orElseThrow(
-					() -> new BaseException(BaseResponseStatus.BRAND_NOT_FOUND));
-		}
-
-		return bundleRepository.save(Bundle.builder()
-				.name(dto.getName())
-				.brand(brand)
-				.minPrice(itemRepository.findMinPrice(dto.getItems()))
-				.finishDate(dto.getFinishDate())
-				.status(true)
-				.build());
+		return BundleInfoRespDTO.toBuild(bundle);
 	}
 
 	@Override
@@ -88,6 +64,17 @@ public class BundleServiceImpl implements BundleService {
 				.bundleId(bundleId)
 				.items(bundleWithItemRepository.findByBundleId(bundleId))
 				.build();
+	}
+
+	private Bundle saveBundle(CreateBundleReqDTO dto) {
+		return bundleRepository.save(Bundle.builder()
+				.name(dto.getName())
+				.minPrice(itemRepository.findMinPrice(dto.getItems()))
+				.finishDate(dto.getFinishDate())
+				.imageUrl(dto.getImage())
+				.alt(dto.getAlt())
+				.status(true)
+				.build());
 	}
 
 	private void saveBundleList(CreateBundleReqDTO dto, Bundle bundle) {
