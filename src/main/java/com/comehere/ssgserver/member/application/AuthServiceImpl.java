@@ -2,6 +2,7 @@ package com.comehere.ssgserver.member.application;
 
 import static com.comehere.ssgserver.common.response.BaseResponseStatus.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -55,18 +56,7 @@ public class AuthServiceImpl implements AuthService {
 	@Transactional
 	public void signUp(JoinReqDTO joinReqDTO) {
 
-		Member newMember = new Member();
-		if (memberRepository.existsByEmail(joinReqDTO.getEmail())) {
-			Member member = memberRepository.findByEmail(joinReqDTO.getEmail());
-			if (member.getStatus() == -1) {
-				newMember = this.recreateMember(member, joinReqDTO);
-			} else {
-				throw new BaseException(DUPLICATED_MEMBERS);
-			}
-		} else {
-			newMember = this.createMember(joinReqDTO);
-		}
-
+		Member newMember = checkMemberStatusAndRejoin(joinReqDTO);
 		createAddress(newMember, joinReqDTO);
 		createAgree(newMember, joinReqDTO);
 	}
@@ -77,11 +67,12 @@ public class AuthServiceImpl implements AuthService {
 
 		// 사용자 정보 조회
 		Member member = memberRepository.findBySigninId(signinReqDto.getSigninId())
-				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+				.map(m -> {
+					if (m.getStatus() == -1)
+						throw new BaseException(WITHDRAWAL_MEMBERS);
+					return m;
+				}).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
-		if (member.getStatus() == -1) {
-			throw new BaseException(WITHDRAWAL_MEMBERS);
-		}
 		// 인증 과정 수행
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				member.getUuid(), signinReqDto.getPassword()));
@@ -112,39 +103,48 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	// 회원의 탈퇴횟수 조회
+	@Transactional(readOnly = true)
+	@Override
 	public CheckResignCountRespDTO checkResignCount(CheckStateReqDTO checkStateReqDTO) {
 
 		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
-		CheckResignCountRespDTO checkResignCountRespDTO = new CheckResignCountRespDTO();
-		checkResignCountRespDTO.setResignCount(member.getResignCount());
-
-		return checkResignCountRespDTO;
+		return new CheckResignCountRespDTO(member.getResignCount());
 	}
 
 	// 휴면계정 여부 확인
+	@Transactional(readOnly = true)
+	@Override
 	public boolean checkDormancy(CheckStateReqDTO checkStateReqDTO) {
 		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
-		if (member.getStatus() == 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return member.getStatus() == 0;
 	}
 
 	// 탈퇴회원 여부 확인
+	@Transactional(readOnly = true)
+	@Override
 	public boolean checkResign(CheckStateReqDTO checkStateReqDTO) {
 		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
-		if (member.getStatus() == -1) {
-			return true;
-		} else {
-			return false;
-		}
+		return member.getStatus() == -1;
+	}
+
+	// 회원 상태 확인 및 email 중복 검사 후 재가입 처리
+	private Member checkMemberStatusAndRejoin(JoinReqDTO joinReqDTO) {
+		Optional<Member> existingMemberOpt = memberRepository.findByEmail(joinReqDTO.getEmail(), Member.class);
+
+		return existingMemberOpt
+				.filter(member -> member.getStatus() == -1)
+				.map(member -> this.recreateMember(member, joinReqDTO))
+				.orElseGet(() -> {
+					if (memberRepository.existsByEmail(joinReqDTO.getEmail()))
+						throw new BaseException(DUPLICATE_EMAIL);
+					return this.createMember(joinReqDTO);
+				});
 	}
 
 	// 탈퇴 회원 재가입

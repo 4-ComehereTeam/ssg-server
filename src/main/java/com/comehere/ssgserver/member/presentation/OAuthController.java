@@ -18,6 +18,7 @@ import com.comehere.ssgserver.member.vo.resp.OAuthSigninRespVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -31,7 +32,7 @@ public class OAuthController {
 
 	@PostMapping("/signup")
 	@Operation(summary = "OAuth 회원가입")
-	public BaseResponse<Boolean> oauthJoinProcess(@RequestBody OAuthSignupReqVO oauthSignupReqVo) {
+	public BaseResponse<Boolean> oauthJoinProcess(@RequestBody @Valid OAuthSignupReqVO oauthSignupReqVo) {
 
 		return new BaseResponse<>(oauthService.signup(modelMapper.map(oauthSignupReqVo, OAuthSignupReqDTO.class)));
 	}
