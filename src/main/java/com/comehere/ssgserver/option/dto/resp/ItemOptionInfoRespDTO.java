@@ -14,4 +14,6 @@ public class ItemOptionInfoRespDTO {
 	private String size;
 
 	private String etc;
+
+	private Integer stock;
 }

@@ -87,7 +87,8 @@ public class CustomOptionRepositoryImpl implements CustomOptionRepository {
 						itemOption.id.as("optionId"),
 						color.value.as("color"),
 						size.value.as("size"),
-						etc.value.as("etc")
+						etc.value.as("etc"),
+						itemOption.stock.as("stock")
 				))
 				.from(itemOption)
 				.leftJoin(color).on(color.id.eq(itemOption.color.id))
