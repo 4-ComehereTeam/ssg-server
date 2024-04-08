@@ -27,6 +27,7 @@ import com.comehere.ssgserver.member.vo.resp.SigninRespVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -41,7 +42,7 @@ public class AuthController {
 
 	@PostMapping("/signUp")
 	@Operation(summary = "회원가입")
-	public BaseResponse<Void> joinProcess(@RequestBody JoinReqVO joinReqVo) {
+	public BaseResponse<Void> joinProcess(@RequestBody @Valid JoinReqVO joinReqVo) {
 
 		authService.signUp(joinModelMapper.map(joinReqVo, JoinReqDTO.class));
 		return new BaseResponse<>();
