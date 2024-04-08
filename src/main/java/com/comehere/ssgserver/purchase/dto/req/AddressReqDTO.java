@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DefaultChangeReqDTO {
+public class AddressReqDTO {
 
 	private Long addressId;
 }

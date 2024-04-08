@@ -3,7 +3,7 @@ package com.comehere.ssgserver.purchase.application;
 import java.util.UUID;
 
 import com.comehere.ssgserver.purchase.dto.req.AddressAddReqDTO;
-import com.comehere.ssgserver.purchase.dto.req.DefaultChangeReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.AddressReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.AddressListRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.DefaultCheckRespDTO;
 
@@ -19,5 +19,7 @@ public interface AddressService {
 	AddressListRespDTO getAddressList(UUID uuid);
 
 	//기본 배송지 변경
-	Boolean changeDefaultAddress(UUID uuid, DefaultChangeReqDTO defaultChangeReqDTO);
+	Boolean changeDefaultAddress(UUID uuid, AddressReqDTO addressReqDTO);
+
+	Boolean deleteAddress(UUID uuid, AddressReqDTO addressReqDTO);
 }
