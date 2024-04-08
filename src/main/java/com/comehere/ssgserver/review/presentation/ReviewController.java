@@ -169,7 +169,7 @@ public class ReviewController {
 	@Operation(summary = "상품 별 전체 리뷰 이미지 조회")
 	public BaseResponse<ReviewImageListRespVO> getReviewImageList(
 			@PathVariable("itemCode") String itemCode,
-			@PageableDefault(size = 5) Pageable page) {
+			@PageableDefault(size = 20) Pageable page) {
 		log.info("상품 리뷰 이미지 전체 조회 : itemCode={}", itemCode);
 		return new BaseResponse<>(modelMapper.map(
 				reviewImageService.getReviewImageList(itemCode, page),

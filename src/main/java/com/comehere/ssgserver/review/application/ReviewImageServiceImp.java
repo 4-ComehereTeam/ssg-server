@@ -112,6 +112,7 @@ public class ReviewImageServiceImp implements ReviewImageService {
 		return ReviewImageListRespDTO.builder()
 				.itemCode(itemCode)
 				.images(reviews.getContent())
+				.currentPage(reviews.getNumber())
 				.hasNext(reviews.hasNext())
 				.build();
 	}

@@ -130,6 +130,7 @@ public class ItemServiceImpl implements ItemService {
 				.recentItems(items.stream()
 						.map(RecentViewDTO::new)
 						.toList())
+				.currentPage(items.getNumber())
 				.hasNext(items.hasNext())
 				.build();
 	}

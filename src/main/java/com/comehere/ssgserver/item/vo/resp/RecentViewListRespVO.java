@@ -6,7 +6,9 @@ import lombok.Getter;
 
 @Getter
 public class RecentViewListRespVO {
-	List<RecentViewVO> recentItems;
+	private List<RecentViewVO> recentItems;
+
+	private Integer currentPage;
 
 	private Boolean hasNext;
 }
