@@ -14,6 +14,7 @@ import com.comehere.ssgserver.option.vo.resp.ColorRespVO;
 import com.comehere.ssgserver.option.vo.resp.HasOptionRespVO;
 import com.comehere.ssgserver.option.vo.resp.ItemOptionIdRespVO;
 import com.comehere.ssgserver.option.vo.resp.ItemOptionInfoRespVO;
+import com.comehere.ssgserver.option.vo.resp.ItemStockRespVO;
 import com.comehere.ssgserver.option.vo.resp.SizeRespVO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,6 +65,7 @@ public class ItemOptionController {
 	}
 
 	@GetMapping("/option/review/{reviewId}")
+	@Operation(summary = "리뷰 별 상품 옵션 조회 API", description = "사용자가 리뷰를 작성한 상품의 옵션에 대한 정보 조회")
 	public BaseResponse<ItemOptionIdRespVO> getItemOptions(@PathVariable("reviewId") Long reviewId) {
 		log.info("리뷰 옵션 조회 : reviewId={}", reviewId);
 		return new BaseResponse<>(modelMapper.map(
@@ -71,9 +73,18 @@ public class ItemOptionController {
 	}
 
 	@GetMapping("/option/{optionId}")
+	@Operation(summary = "상품 옵션 정보 조회 API", description = "상품의 특정 옵션에 대한 값 조회")
 	public BaseResponse<ItemOptionInfoRespVO> getOptionInfo(@PathVariable("optionId") Long optionId) {
 		log.info("옵션 값 조회 : optionId={}", optionId);
 		return new BaseResponse<>(modelMapper.map(
 				itemOptionService.getOptionInfo(optionId), ItemOptionInfoRespVO.class));
+	}
+
+	@GetMapping("/option/item/{itemId}")
+	@Operation(summary = "옵션이 없는 상품 재고 조회 API", description = "옵션이 없는 상품의 재고를 상품 id를 통해 조회")
+	public BaseResponse<ItemStockRespVO> getItemStock(@PathVariable("itemId") Long itemId) {
+		log.info("옵션이 없는 상품의 재고 조회 : itemId={}", itemId);
+		return new BaseResponse<>(modelMapper.map(
+				itemOptionService.getStock(itemId), ItemStockRespVO.class));
 	}
 }
