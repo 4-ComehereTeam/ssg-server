@@ -9,7 +9,7 @@ import com.comehere.ssgserver.purchase.dto.req.NonPurchaseGetReqDTO;
 public interface CustomPurchaseRepository {
 	void updatePurchaseStatusToCancel(Long purchaseId);
 
-	Optional<Long> findPurchaseIdByNameAndPhoneAndPurchaseCode(NonPurchaseGetReqDTO dto);
+	Optional<Long> findIdPurchaseIdBySenderNameAndSenderPhoneAndPurchaseCode(NonPurchaseGetReqDTO dto);
 
 	List<Long> findPurchaseIdByUuid(UUID uuid);
 }

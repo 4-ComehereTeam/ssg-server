@@ -19,8 +19,10 @@ import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.purchase.application.PurchaseService;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListDeleteReqDTO;
+import com.comehere.ssgserver.purchase.dto.resp.PurchaseCreateRespDTO;
 import com.comehere.ssgserver.purchase.vo.req.PurchaseCreateReqVO;
 import com.comehere.ssgserver.purchase.vo.req.PurchaseListDeleteReqVO;
+import com.comehere.ssgserver.purchase.vo.resp.PurchaseCreateRespVO;
 import com.comehere.ssgserver.purchase.vo.resp.PurchaseListGetRespVO;
 import com.comehere.ssgserver.purchase.vo.resp.PurchasesGetRespVO;
 
@@ -41,14 +43,15 @@ public class PurchaseController {
 
 	@PostMapping
 	@Operation(summary = "주문 등록")
-	public BaseResponse<Void> createPurchase(
+	public BaseResponse<PurchaseCreateRespVO> createPurchase(
 			@RequestBody PurchaseCreateReqVO vo,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
-		purchaseService.createPurchase(modelMapper.map(vo, PurchaseCreateReqDTO.class), uuid);
+		PurchaseCreateRespDTO dto = purchaseService.createPurchase(modelMapper.map(vo, PurchaseCreateReqDTO.class),
+				uuid);
 
-		return new BaseResponse<>();
+		return new BaseResponse<>(modelMapper.map(dto, PurchaseCreateRespVO.class));
 	}
 
 	@DeleteMapping("/list")
