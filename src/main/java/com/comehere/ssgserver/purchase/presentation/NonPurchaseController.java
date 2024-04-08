@@ -17,6 +17,7 @@ import com.comehere.ssgserver.purchase.dto.req.NonPurchaseGetReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.NonPurchaseListDeleteReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.NonPurchaseGetRespDTO;
+import com.comehere.ssgserver.purchase.dto.resp.PurchaseCreateRespDTO;
 import com.comehere.ssgserver.purchase.vo.req.NonPurchaseDeleteReqVO;
 import com.comehere.ssgserver.purchase.vo.req.NonPurchaseListDeleteReqVO;
 import com.comehere.ssgserver.purchase.vo.req.PurchaseCreateReqVO;
@@ -39,10 +40,11 @@ public class NonPurchaseController {
 
 	@PostMapping
 	@Operation(summary = "비회원 주문 등록")
-	public BaseResponse<Void> createNonPurchase(@RequestBody PurchaseCreateReqVO vo) {
-		purchaseService.createPurchase(modelMapper.map(vo, PurchaseCreateReqDTO.class), null);
+	public BaseResponse<PurchaseCreateRespDTO> createNonPurchase(@RequestBody PurchaseCreateReqVO vo) {
+		PurchaseCreateRespDTO dto = purchaseService.createPurchase(modelMapper.map(vo, PurchaseCreateReqDTO.class),
+				null);
 
-		return new BaseResponse<>();
+		return new BaseResponse<>(modelMapper.map(dto, PurchaseCreateRespDTO.class));
 	}
 
 	@DeleteMapping("/list")
