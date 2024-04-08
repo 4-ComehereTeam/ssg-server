@@ -11,6 +11,8 @@ public interface MemberRepository extends JpaRepository<Member, Long>, CustomMem
 
 	Boolean existsBySigninId(String signInId);
 
+	<T> Optional<T> findByEmail(String email, Class<T> type);
+
 	Boolean existsByEmail(String email);
 
 	Optional<Member> findBySigninId(String signInId);

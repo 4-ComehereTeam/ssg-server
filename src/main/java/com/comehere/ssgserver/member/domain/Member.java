@@ -29,7 +29,7 @@ public class Member extends BaseEntity {
 
 	private String signinId;
 
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false, updatable = false, length = 20)
 	private String name;
 
 	@Column(updatable = false)
@@ -38,6 +38,7 @@ public class Member extends BaseEntity {
 	@Column(columnDefinition = "TINYINT", length = 1, nullable = true, updatable = false)
 	private Short gender;
 
+	@Column(length = 20)
 	private String phone;
 
 	@Column(nullable = false)

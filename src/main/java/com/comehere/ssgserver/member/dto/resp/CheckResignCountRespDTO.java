@@ -8,4 +8,8 @@ import lombok.Setter;
 public class CheckResignCountRespDTO {
 
 	private Integer resignCount;
+
+	public CheckResignCountRespDTO(Integer resignCount) {
+		this.resignCount = resignCount;
+	}
 }
