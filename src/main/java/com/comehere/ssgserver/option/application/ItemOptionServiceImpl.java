@@ -12,6 +12,7 @@ import com.comehere.ssgserver.option.dto.resp.EtcRespDTO;
 import com.comehere.ssgserver.option.dto.resp.HasOptionRespDTO;
 import com.comehere.ssgserver.option.dto.resp.ItemOptionIdRespDTO;
 import com.comehere.ssgserver.option.dto.resp.ItemOptionInfoRespDTO;
+import com.comehere.ssgserver.option.dto.resp.ItemStockRespDTO;
 import com.comehere.ssgserver.option.dto.resp.SizeDTO;
 import com.comehere.ssgserver.option.dto.resp.SizeRespDTO;
 import com.comehere.ssgserver.option.infrastructure.ItemOptionRepository;
@@ -76,6 +77,11 @@ public class ItemOptionServiceImpl implements ItemOptionService {
 	@Override
 	public ItemOptionInfoRespDTO getOptionInfo(Long itemId) {
 		return itemOptionRepository.getOptionInfo(itemId);
+	}
+
+	@Override
+	public ItemStockRespDTO getStock(Long itemId) {
+		return ItemStockRespDTO.toBuild(itemOptionRepository.findFirstByItemId(itemId));
 	}
 
 	private static EtcDTO createEtc(ItemOption io) {
