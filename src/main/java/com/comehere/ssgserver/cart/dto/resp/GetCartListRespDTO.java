@@ -12,4 +12,8 @@ import lombok.Setter;
 public class GetCartListRespDTO {
 
 	private List<ItemCountDTO> itemOptions;
+
+	public GetCartListRespDTO(List<ItemCountDTO> itemOptions) {
+		this.itemOptions = itemOptions;
+	}
 }

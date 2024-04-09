@@ -2,6 +2,9 @@ package com.comehere.ssgserver.cart.application;
 
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.comehere.ssgserver.cart.dto.req.AddItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeItemOptionReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
@@ -25,7 +28,7 @@ public interface CartService {
 	Boolean changeItemOption(UUID uuid, ChangeItemOptionReqDTO changeItemOptionReqDTO);
 
 	// 장바구니에 담긴 상품 리스트 조회
-	GetCartListRespDTO getCartList(UUID uuid);
+	Page<GetCartListRespDTO> getCartList(UUID uuid, Pageable pageable);
 
 	// 장바구니에 담긴 상품 수량 감소
 	ItemQuantityModifyRespDTO minusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO);

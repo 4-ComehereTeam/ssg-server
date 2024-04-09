@@ -1,11 +1,17 @@
 package com.comehere.ssgserver.cart.application;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.cart.domain.Cart;
+import com.comehere.ssgserver.cart.dto.ItemCountDTO;
 import com.comehere.ssgserver.cart.dto.req.AddItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeItemOptionReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
@@ -43,13 +49,14 @@ public class CartServiceImpl implements CartService {
 
 	// 장바구니에 담긴 상품 리스트 조회
 	@Override
-	public GetCartListRespDTO getCartList(UUID uuid) {
+	public Page<GetCartListRespDTO> getCartList(UUID uuid, Pageable pageable) {
+		Page<ItemCountDTO> itemCountPage = cartRepository.getCartId(uuid, pageable);
 
-		// setter를 사용할 떄 메서드 명에 명식적으로 적어서 사용하는 것이 좋다.
-		GetCartListRespDTO getCartListRespDTO = new GetCartListRespDTO();
-		getCartListRespDTO.setItemOptions(cartRepository.getCartId(uuid));
+		List<GetCartListRespDTO> dtos = Collections.singletonList(
+				new GetCartListRespDTO(cartRepository.getCartId(uuid, pageable).getContent())
+		);
 
-		return getCartListRespDTO;
+		return new PageImpl<>(dtos, pageable, itemCountPage.getTotalElements());
 	}
 
 	// 상품 체크 상태 변경
