@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class CheckStateReqDTO {
 
-	private String signinId;
+	private String email;
 }

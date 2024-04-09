@@ -32,9 +32,10 @@ public class OAuthController {
 
 	@PostMapping("/signup")
 	@Operation(summary = "OAuth 회원가입")
-	public BaseResponse<Boolean> oauthJoinProcess(@RequestBody @Valid OAuthSignupReqVO oauthSignupReqVo) {
+	public BaseResponse<Void> oauthJoinProcess(@RequestBody @Valid OAuthSignupReqVO oauthSignupReqVo) {
 
-		return new BaseResponse<>(oauthService.signup(modelMapper.map(oauthSignupReqVo, OAuthSignupReqDTO.class)));
+		oauthService.signup(modelMapper.map(oauthSignupReqVo, OAuthSignupReqDTO.class));
+		return new BaseResponse<>();
 	}
 
 	@PostMapping("/signin")

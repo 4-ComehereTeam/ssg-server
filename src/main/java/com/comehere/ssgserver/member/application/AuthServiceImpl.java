@@ -5,8 +5,6 @@ import static com.comehere.ssgserver.common.response.BaseResponseStatus.*;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,8 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-	private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
-
 	private final MemberRepository memberRepository;
 
 	private final AddressRepository addressRepository;
@@ -67,12 +63,8 @@ public class AuthServiceImpl implements AuthService {
 
 		// 사용자 정보 조회
 		Member member = memberRepository.findBySigninId(signinReqDto.getSigninId())
-				.map(m -> {
-					if (m.getStatus() == -1)
-						throw new BaseException(WITHDRAWAL_MEMBERS);
-					return m;
-				}).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-
+				.filter(m -> m.getStatus() == 1)
+				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 		// 인증 과정 수행
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				member.getUuid(), signinReqDto.getPassword()));
@@ -107,7 +99,7 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public CheckResignCountRespDTO checkResignCount(CheckStateReqDTO checkStateReqDTO) {
 
-		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
+		Member member = memberRepository.findBySigninId(checkStateReqDTO.getEmail())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
 		return new CheckResignCountRespDTO(member.getResignCount());
@@ -117,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
 	@Transactional(readOnly = true)
 	@Override
 	public boolean checkDormancy(CheckStateReqDTO checkStateReqDTO) {
-		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
+		Member member = memberRepository.findBySigninId(checkStateReqDTO.getEmail())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
 		return member.getStatus() == 0;
@@ -127,7 +119,7 @@ public class AuthServiceImpl implements AuthService {
 	@Transactional(readOnly = true)
 	@Override
 	public boolean checkResign(CheckStateReqDTO checkStateReqDTO) {
-		Member member = memberRepository.findBySigninId(checkStateReqDTO.getSigninId())
+		Member member = memberRepository.findBySigninId(checkStateReqDTO.getEmail())
 				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
 		return member.getStatus() == -1;
@@ -142,7 +134,7 @@ public class AuthServiceImpl implements AuthService {
 				.map(member -> this.recreateMember(member, joinReqDTO))
 				.orElseGet(() -> {
 					if (memberRepository.existsByEmail(joinReqDTO.getEmail()))
-						throw new BaseException(DUPLICATE_EMAIL);
+						throw new BaseException(DUPLICATED_MEMBERS);
 					return this.createMember(joinReqDTO);
 				});
 	}
@@ -161,6 +153,7 @@ public class AuthServiceImpl implements AuthService {
 				.gender(joinReqDTO.getGender())
 				.status((short)1)
 				.resignCount(member.getResignCount())
+				.resignTime(member.getResignTime())
 				.uuid(UUID.randomUUID())
 				.role(Role.valueOf("USER"))
 				.zipcode(joinReqDTO.getAddressInfoReqDTO().getZipcode())
