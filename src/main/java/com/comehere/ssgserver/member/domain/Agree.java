@@ -26,7 +26,7 @@ public class Agree {
 	private Boolean ssgPointMktAgr1;
 
 	@Column(nullable = false)
-	private Boolean getSsgPointMktAgr2;
+	private Boolean ssgPointMktAgr2;
 
 	@Column(nullable = false)
 	private Boolean ssgPointEmail;
@@ -56,7 +56,7 @@ public class Agree {
 			Boolean ssgcomSms) {
 		this.email = email;
 		this.ssgPointMktAgr1 = ssgPointMktAgr1;
-		this.getSsgPointMktAgr2 = ssgPointMktAgr2;
+		this.ssgPointMktAgr2 = ssgPointMktAgr2;
 		this.ssgPointEmail = ssgPointEmail;
 		this.ssgPointSms = ssgPointSms;
 		this.ssgPointMail = ssgPointMail;
@@ -65,5 +65,4 @@ public class Agree {
 		this.ssgcomEmail = ssgcomEmail;
 		this.ssgcomSms = ssgcomSms;
 	}
-
 }

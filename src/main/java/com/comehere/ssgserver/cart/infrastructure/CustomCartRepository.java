@@ -1,7 +1,9 @@
 package com.comehere.ssgserver.cart.infrastructure;
 
-import java.util.List;
 import java.util.UUID;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.comehere.ssgserver.cart.dto.ItemCountDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
@@ -11,7 +13,7 @@ import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
 public interface CustomCartRepository {
 
 	//장바구니에 담긴 상품 리스트 조회
-	List<ItemCountDTO> getCartId(UUID uuid);
+	Page<ItemCountDTO> getCartId(UUID uuid, Pageable pageable);
 
 	//상품 수량 변경
 	Long updateItemQuantity(UUID uuid, Long ItemOptionId, int count);
