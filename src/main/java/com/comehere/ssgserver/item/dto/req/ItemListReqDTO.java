@@ -1,5 +1,7 @@
 package com.comehere.ssgserver.item.dto.req;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,7 +18,7 @@ public class ItemListReqDTO {
 
 	private Long brandId;
 
-	private String search;
+	private String[] search;
 
 	public static ItemListReqDTO toBuild(
 			Integer bigCategoryId,
@@ -32,7 +34,7 @@ public class ItemListReqDTO {
 				.smallCategoryId(smallCategoryId)
 				.detailCategoryId(detailCategoryId)
 				.brandId(brandId)
-				.search(search)
+				.search(search != null ? search.split(" ") : null)
 				.build();
 	}
 }
