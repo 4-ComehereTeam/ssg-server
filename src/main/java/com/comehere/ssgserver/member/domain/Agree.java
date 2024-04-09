@@ -41,7 +41,6 @@ public class Agree {
 	private Boolean ssgPointCall;
 
 	@Column(nullable = false)
-	//ssgcom 동의 여부
 	private Boolean ssgcomMktAgr1;
 
 	@Column(nullable = false)
