@@ -33,22 +33,25 @@ public class OAuthServiceImpl implements OAuthService {
 	private final JWTUtil jwtUtil;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	// 회원가입
 	@Override
-	public Boolean signup(OAuthSignupReqDTO oAuthSignupReqDto) {
+	public void signup(OAuthSignupReqDTO oAuthSignupReqDto) {
 
 		if (memberRepository.existsByEmail(oAuthSignupReqDto.getEmail())) {
 			throw new BaseException(DUPLICATED_MEMBERS);
 		}
 
-		Member member = createMember(oAuthSignupReqDto);
-		return true;
+		// 사용자 생성 로직 (사용자 생성 후 사용하지 않으므로 반환값 불필요)
+		createMember(oAuthSignupReqDto);
 	}
 
+	// 로그인
 	@Override
 	public OAuthSigninRespDTO signin(OAuthSigninReqDTO oAuthSigninReqDTO) {
 
 		Member member = memberRepository.findBySigninId(oAuthSigninReqDTO.getSigninId())
-				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+				.filter(m -> m.getStatus() == 1)
+				.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
 		authenticationManager.authenticate(new SocialAuthenticationToken(member.getUuid(), null));
 
@@ -58,6 +61,7 @@ public class OAuthServiceImpl implements OAuthService {
 				.build();
 	}
 
+	// 멤버생성
 	private Member createMember(OAuthSignupReqDTO oAuthSignupReqDto) {
 
 		String password = bCryptPasswordEncoder.encode(RandomStringUtils.randomAlphanumeric(20));

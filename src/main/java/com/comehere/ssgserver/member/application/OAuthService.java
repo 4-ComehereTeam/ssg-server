@@ -7,7 +7,7 @@ import com.comehere.ssgserver.member.dto.resp.OAuthSigninRespDTO;
 public interface OAuthService {
 
 	// OAuth 회원가입
-	Boolean signup(OAuthSignupReqDTO oAuthSignupReqDto);
+	void signup(OAuthSignupReqDTO oAuthSignupReqDto);
 
 	OAuthSigninRespDTO signin(OAuthSigninReqDTO oAuthSigninReqDto);
 }

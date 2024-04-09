@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public class CheckStateReqVO {
 
-	private String signinId;
+	private String email;
 }
