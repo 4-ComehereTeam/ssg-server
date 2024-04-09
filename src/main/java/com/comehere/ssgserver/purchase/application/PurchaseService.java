@@ -3,7 +3,10 @@ package com.comehere.ssgserver.purchase.application;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
+
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.PurchaseGetReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListDeleteReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchaseCreateRespDTO;
@@ -17,7 +20,7 @@ public interface PurchaseService {
 
 	void deletePurchaseList(PurchaseListDeleteReqDTO dto, UUID uuid);
 
-	List<PurchasesGetRespDTO> getPurchases(UUID uuid);
+	List<PurchasesGetRespDTO> getPurchases(UUID uuid, PurchaseGetReqDTO dto, Pageable page);
 
 	void deletePurchase(String purchaseCode, UUID uuid);
 

@@ -59,4 +59,12 @@ public class CustomPurchaseListRepositoryImpl implements CustomPurchaseListRepos
 				.where(purchaseList.id.eq(purchaseListId).and(purchase.uuid.eq(uuid)))
 				.fetchOne());
 	}
+
+	@Override
+	public List<Long> findIdsByPurchaseId(Long purchaseId) {
+		return queryFactory.select(purchaseList.id)
+				.from(purchaseList)
+				.where(purchaseList.purchaseId.eq(purchaseId))
+				.fetch();
+	}
 }

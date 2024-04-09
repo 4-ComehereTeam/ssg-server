@@ -14,4 +14,6 @@ public interface CustomPurchaseListRepository {
 	List<Long> findPurchaseListByPurchaseId(Long findPurchaseId);
 
 	Optional<PurchaseListByIdAndUuidRespDTO> getRespDTOByIdAndUuid(Long purchaseListId, UUID uuid);
+
+	List<Long> findIdsByPurchaseId(Long purchaseId);
 }
