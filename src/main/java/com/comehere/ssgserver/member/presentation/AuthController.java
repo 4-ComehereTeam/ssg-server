@@ -40,7 +40,7 @@ public class AuthController {
 	private final ModelMapper modelMapper;
 	private final ModelMapper joinModelMapper;
 
-	@PostMapping("/signUp")
+	@PostMapping("/signup")
 	@Operation(summary = "회원가입")
 	public BaseResponse<Void> joinProcess(@RequestBody @Valid JoinReqVO joinReqVo) {
 
@@ -48,7 +48,7 @@ public class AuthController {
 		return new BaseResponse<>();
 	}
 
-	@PostMapping("/signIn")
+	@PostMapping("/signin")
 	@Operation(summary = "로그인", description = "로그인 성공 시 JWT 토큰 발급.")
 	public BaseResponse<SigninRespVO> signIn(@RequestBody SigninReqVO signinReqVo,
 			HttpServletResponse response) {

@@ -19,5 +19,5 @@ public class AddressAddReqDTO {
 
 	private String address;
 
-	private String defaultAddress;
+	private String detailAddress;
 }

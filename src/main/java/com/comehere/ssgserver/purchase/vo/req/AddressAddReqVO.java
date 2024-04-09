@@ -17,6 +17,6 @@ public class AddressAddReqVO {
 
 	private String address;
 
-	private String defaultAddress;
+	private String detailAddress;
 }
 

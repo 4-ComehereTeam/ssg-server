@@ -1,8 +1,6 @@
 package com.comehere.ssgserver.cart.presentation;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +16,6 @@ import com.comehere.ssgserver.cart.dto.req.ChangeItemOptionReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
-import com.comehere.ssgserver.cart.dto.resp.GetCartListRespDTO;
 import com.comehere.ssgserver.cart.vo.req.AddItemReqVO;
 import com.comehere.ssgserver.cart.vo.req.ChangeItemOptionReqVO;
 import com.comehere.ssgserver.cart.vo.req.ChangeStateReqVO;
@@ -86,12 +83,11 @@ public class CartController {
 
 	@GetMapping("/list")
 	@Operation(summary = "장바구니 조회")
-	public BaseResponse<Page<GetCartListRespVO>> getUserCartList(@RequestHeader("Authorization") String accessToken,
-			Pageable pageable) {
+	public BaseResponse<GetCartListRespVO> getUserCartList(@RequestHeader("Authorization") String accessToken) {
 
-		Page<GetCartListRespDTO> page = cartService.getCartList(
-				jwtUtil.getUuidByAuthorization(accessToken), pageable);
-		return new BaseResponse<>(page.map(dto -> modelMapper.map(dto, GetCartListRespVO.class)));
+		return new BaseResponse<>(
+				modelMapper.map(cartService.getCartList(jwtUtil.getUuidByAuthorization(accessToken)),
+						GetCartListRespVO.class));
 	}
 
 	@PutMapping("/check-state/change")
