@@ -1,7 +1,6 @@
 package com.comehere.ssgserver.clip.infrastructure;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +15,4 @@ public interface ItemClipRepository extends JpaRepository<ItemClip, Long>, Custo
 	@Modifying
 	@Query("delete from ItemClip ic where ic.uuid = :uuid and ic.itemId in :itemIds")
 	void deleteByUuidAndByIds(UUID uuid, List<Long> itemIds);
-
-	List<ItemClip> findByUuid(UUID uuid);
 }

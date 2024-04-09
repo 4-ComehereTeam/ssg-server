@@ -1,8 +1,6 @@
 package com.comehere.ssgserver.clip.application;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,12 +48,8 @@ public class ItemClipServiceImp implements ItemClipService {
 	@Override
 	@Transactional
 	public ItemsClipGetRespDTO getItemsClip(UUID uuid) {
-		List<ItemClip> itemclips = itemClipRepository.findByUuid(uuid);
-
 		return ItemsClipGetRespDTO.builder()
-				.itemIds(itemclips.stream()
-						.map(ItemClip::getItemId)
-						.collect(Collectors.toList()))
+				.itemIds(itemClipRepository.findItemIdsByUuid(uuid))
 				.build();
 	}
 
