@@ -2,9 +2,10 @@ package com.comehere.ssgserver.purchase.presentation;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,12 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.purchase.application.PurchaseService;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.PurchaseGetReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListDeleteReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchaseCreateRespDTO;
 import com.comehere.ssgserver.purchase.vo.req.PurchaseCreateReqVO;
@@ -79,12 +82,24 @@ public class PurchaseController {
 
 	@GetMapping
 	@Operation(summary = "주문 전체 조회")
-	public BaseResponse<List<PurchasesGetRespVO>> getPurchases(@RequestHeader("Authorization") String authorization) {
+	public BaseResponse<List<PurchasesGetRespVO>> getPurchases(
+			@RequestHeader("Authorization") String authorization,
+			@RequestParam(value = "startDate", required = false) String startDate,
+			@RequestParam(value = "endDate", required = false) String endDate,
+			@RequestParam(value = "acceptedStatus", required = false) Boolean acceptedStatus,
+			@PageableDefault(size = 5) Pageable page) {
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 
-		return new BaseResponse<>(purchaseService.getPurchases(uuid).stream()
-				.map(dto -> modelMapper.map(dto, PurchasesGetRespVO.class))
-				.collect(Collectors.toList()));
+		PurchaseGetReqDTO reqDTO = PurchaseGetReqDTO.builder()
+				.startDate(startDate)
+				.endDate(endDate)
+				.acceptedStatus(acceptedStatus)
+				.build();
+
+		return new BaseResponse<>(
+				purchaseService.getPurchases(uuid, reqDTO, page).stream()
+						.map(respDTO -> modelMapper.map(respDTO, PurchasesGetRespVO.class))
+						.toList());
 	}
 
 	@GetMapping("/{purchaseListId}")
