@@ -19,4 +19,6 @@ public interface AddressRepository extends JpaRepository<Address, Long>, CustomA
 	@Transactional
 	@Query("DELETE FROM Address a WHERE a.id = :id AND a.uuid = :uuid AND a.defaultAddress = false")
 	void deleteAddressById(@Param("id") Long id, @Param("uuid") UUID uuid);
+
+	int countAddressByUuid(UUID uuid);
 }

@@ -2,6 +2,8 @@ package com.comehere.ssgserver.purchase.infrastructure;
 
 import java.util.UUID;
 
+import com.comehere.ssgserver.purchase.dto.req.ModifyRequestMessageReqDTO;
+
 public interface CustomAddressRepository {
 
 	//기본 배송지 조회
@@ -12,4 +14,6 @@ public interface CustomAddressRepository {
 
 	//기본 배송지 변경
 	Long updateDefaultAddress(UUID uuid, Long addressId);
+
+	Long updateRequestMessage(UUID uuid, ModifyRequestMessageReqDTO modifyRequestMessageReqDTO);
 }

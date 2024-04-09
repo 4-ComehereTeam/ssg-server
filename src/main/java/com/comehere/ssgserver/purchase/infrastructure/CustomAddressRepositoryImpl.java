@@ -3,6 +3,7 @@ package com.comehere.ssgserver.purchase.infrastructure;
 import java.util.UUID;
 
 import com.comehere.ssgserver.purchase.domain.QAddress;
+import com.comehere.ssgserver.purchase.dto.req.ModifyRequestMessageReqDTO;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -45,6 +46,16 @@ public class CustomAddressRepositoryImpl implements CustomAddressRepository {
 								.otherwise(true))
 				.where(QAddress.address1.uuid.eq(uuid),
 						QAddress.address1.id.eq(addressId))
+				.execute();
+	}
+
+	@Override
+	public Long updateRequestMessage(UUID uuid, ModifyRequestMessageReqDTO modifyRequestMessageReqDTO) {
+
+		return query.update(QAddress.address1)
+				.set(QAddress.address1.requestMessage, modifyRequestMessageReqDTO.getNewMessage())
+				.where(QAddress.address1.uuid.eq(uuid),
+						QAddress.address1.id.eq(modifyRequestMessageReqDTO.getAddressId()))
 				.execute();
 	}
 }
