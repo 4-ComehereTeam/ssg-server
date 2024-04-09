@@ -1,9 +1,9 @@
 package com.comehere.ssgserver.item.infrastructual;
 
 import static com.comehere.ssgserver.brand.domain.QBrandWithItem.*;
-import static com.comehere.ssgserver.item.domain.QItem.*;
 import static com.comehere.ssgserver.item.domain.QItemWithCategory.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.SliceImpl;
 
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -68,11 +67,16 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
 		return brandId != null ? brandWithItem.brand.id.eq(brandId) : null;
 	}
 
-	private BooleanExpression itemNameLike(String itemName) {
-		return itemName != null ?
-				Expressions.stringTemplate(
-						"function('replace', {0}, ' ', '')", itemWithCategory.item.name.toLowerCase())
-						.like("%" + itemName + "%")
-				: null;
+	private BooleanExpression itemNameLike(String[] itemName) {
+		if(itemName == null || itemName.length == 0) {
+			return null;
+		}
+
+		System.out.println(Arrays.toString(itemName));
+
+		return Arrays.stream(itemName)
+				.map(itemWithCategory.item.name::contains)
+				.reduce(BooleanExpression::and)
+				.orElse(null);
 	}
 }
