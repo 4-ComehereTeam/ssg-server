@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.member.domain.Member;
-import com.comehere.ssgserver.member.dto.FindSigninIdDTO;
 import com.comehere.ssgserver.member.dto.ModifyEmailDTO;
 import com.comehere.ssgserver.member.dto.ModifyPhoneDTO;
 import com.comehere.ssgserver.member.dto.ModifyPwdDTO;
@@ -24,17 +23,6 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberRepository memberRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	// 로그인 아이디 찾기
-	@Override
-	public FindSigninIdDTO findSigninId(UUID userUuid) {
-
-		Member member = getMemberByUuid(userUuid);
-
-		return FindSigninIdDTO.builder()
-				.signinId(member.getSigninId())
-				.build();
-	}
-	
 	// 비밀번호 변경
 	@Override
 	@Transactional

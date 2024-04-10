@@ -17,7 +17,9 @@ import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.member.domain.Agree;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.domain.Role;
+import com.comehere.ssgserver.member.dto.FindSigninIdRespDTO;
 import com.comehere.ssgserver.member.dto.req.CheckStateReqDTO;
+import com.comehere.ssgserver.member.dto.req.FindSigninIdReqDTO;
 import com.comehere.ssgserver.member.dto.req.JoinReqDTO;
 import com.comehere.ssgserver.member.dto.req.SigninReqDTO;
 import com.comehere.ssgserver.member.dto.resp.CheckResignCountRespDTO;
@@ -77,6 +79,16 @@ public class AuthServiceImpl implements AuthService {
 				.signinId(member.getSigninId())
 				.accessToken(jwtUtil.createJwt(member.getUuid(), member.getRole().toString()))
 				.build();
+	}
+
+	// 아이디 찾기
+	@Override
+	public FindSigninIdRespDTO findSigninId(FindSigninIdReqDTO findSigninIdReqDto) {
+
+		Member member = memberRepository.findByEmailAndName(findSigninIdReqDto.getEmail(), findSigninIdReqDto.getName())
+				.orElseThrow(() -> new BaseException(NO_EXIST_MEMBERS));
+
+		return new FindSigninIdRespDTO(member.getStatus(), member.getSigninId());
 	}
 
 	// 회원가입 전 중복 로그인 아이디 검증
@@ -158,7 +170,7 @@ public class AuthServiceImpl implements AuthService {
 				.role(Role.valueOf("USER"))
 				.zipcode(joinReqDTO.getAddressInfoReqDTO().getZipcode())
 				.address(joinReqDTO.getAddressInfoReqDTO().getAddress())
-				.detailAddress(joinReqDTO.getAddressInfoReqDTO().getAddressDetail())
+				.detailAddress(joinReqDTO.getAddressInfoReqDTO().getDetailAddress())
 				.build());
 	}
 
@@ -179,7 +191,7 @@ public class AuthServiceImpl implements AuthService {
 				.role(Role.valueOf("USER"))
 				.zipcode(joinReqDTO.getAddressInfoReqDTO().getZipcode())
 				.address(joinReqDTO.getAddressInfoReqDTO().getAddress())
-				.detailAddress(joinReqDTO.getAddressInfoReqDTO().getAddressDetail())
+				.detailAddress(joinReqDTO.getAddressInfoReqDTO().getDetailAddress())
 				.build());
 	}
 
@@ -191,7 +203,7 @@ public class AuthServiceImpl implements AuthService {
 				.phone(joinReqDTO.getPhone())
 				.zipcode(joinReqDTO.getAddressInfoReqDTO().getZipcode())
 				.address(joinReqDTO.getAddressInfoReqDTO().getAddress())
-				.detailAddress(joinReqDTO.getAddressInfoReqDTO().getAddressDetail())
+				.detailAddress(joinReqDTO.getAddressInfoReqDTO().getDetailAddress())
 				.defaultAddress((boolean)true)
 				.uuid(member.getUuid())
 				.build());

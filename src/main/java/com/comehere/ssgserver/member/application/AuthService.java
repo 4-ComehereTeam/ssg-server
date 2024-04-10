@@ -1,6 +1,8 @@
 package com.comehere.ssgserver.member.application;
 
+import com.comehere.ssgserver.member.dto.FindSigninIdRespDTO;
 import com.comehere.ssgserver.member.dto.req.CheckStateReqDTO;
+import com.comehere.ssgserver.member.dto.req.FindSigninIdReqDTO;
 import com.comehere.ssgserver.member.dto.req.JoinReqDTO;
 import com.comehere.ssgserver.member.dto.req.SigninReqDTO;
 import com.comehere.ssgserver.member.dto.resp.CheckResignCountRespDTO;
@@ -13,6 +15,9 @@ public interface AuthService {
 
 	//로그인
 	SigninRespDTO signIn(SigninReqDTO signinReqDto);
+
+	// 아이디 찾기
+	FindSigninIdRespDTO findSigninId(FindSigninIdReqDTO findSigninIdReqDto);
 
 	//이메일 중복 체크
 	boolean checkUserEmailDuplication(String email);
