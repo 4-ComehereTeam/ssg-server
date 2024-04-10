@@ -3,6 +3,8 @@ package com.comehere.ssgserver.cart.infrastructure;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
+
 import com.comehere.ssgserver.cart.domain.QCart;
 import com.comehere.ssgserver.cart.dto.ItemCountDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
@@ -23,7 +25,7 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 
 	// 장바구니에 담긴 상품 리스트 조회
 	@Override
-	public List<ItemCountDTO> getCartId(UUID uuid) {
+	public List<ItemCountDTO> getCartId(UUID uuid, Pageable pageable) {
 
 		return query
 				.select(Projections.constructor(ItemCountDTO.class,
@@ -31,6 +33,8 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 						QCart.cart.itemCount))
 				.from(QCart.cart)
 				.where(QCart.cart.uuid.eq(uuid))
+				.offset(pageable.getOffset())
+				.limit(pageable.getPageSize())
 				.fetch();
 	}
 

@@ -1,6 +1,7 @@
 package com.comehere.ssgserver.cart.presentation;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,10 +84,11 @@ public class CartController {
 
 	@GetMapping("/list")
 	@Operation(summary = "장바구니 조회")
-	public BaseResponse<GetCartListRespVO> getUserCartList(@RequestHeader("Authorization") String accessToken) {
+	public BaseResponse<GetCartListRespVO> getUserCartList(@RequestHeader("Authorization") String accessToken,
+			Pageable pageable) {
 
 		return new BaseResponse<>(
-				modelMapper.map(cartService.getCartList(jwtUtil.getUuidByAuthorization(accessToken)),
+				modelMapper.map(cartService.getCartList(jwtUtil.getUuidByAuthorization(accessToken), pageable),
 						GetCartListRespVO.class));
 	}
 
