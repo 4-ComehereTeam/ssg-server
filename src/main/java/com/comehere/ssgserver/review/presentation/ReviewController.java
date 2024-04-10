@@ -25,6 +25,8 @@ import com.comehere.ssgserver.review.dto.req.ReviewCreateReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageCreateDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewImageUpdateReqDTO;
 import com.comehere.ssgserver.review.dto.req.ReviewUpdateReqDTO;
+import com.comehere.ssgserver.review.dto.resp.ReviewSummaryDTO;
+import com.comehere.ssgserver.review.infrastructure.ReviewRepository;
 import com.comehere.ssgserver.review.vo.req.ReviewCreateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewImageCreateReqVO;
 import com.comehere.ssgserver.review.vo.req.ReviewImageUpdateReqVO;
@@ -52,6 +54,8 @@ public class ReviewController {
 	private final ModelMapper modelMapper;
 
 	private final JWTUtil jwtUtil;
+
+	private final ReviewRepository reviewRepository;
 
 	@PostMapping
 	@Operation(summary = "리뷰 등록")
@@ -174,5 +178,10 @@ public class ReviewController {
 		return new BaseResponse<>(modelMapper.map(
 				reviewImageService.getReviewImageList(itemCode, page),
 				ReviewImageListRespVO.class));
+	}
+
+	@GetMapping("/test")
+	public List<ReviewSummaryDTO> test() {
+		return reviewRepository.getReviewSummary();
 	}
 }
