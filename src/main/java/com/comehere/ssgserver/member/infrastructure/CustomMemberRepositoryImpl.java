@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.comehere.ssgserver.member.domain.QAgree;
 import com.comehere.ssgserver.member.domain.QMember;
+import com.comehere.ssgserver.member.dto.req.FindPasswordReqDTO;
 import com.comehere.ssgserver.purchase.domain.QAddress;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -15,13 +16,23 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 
 	private final JPAQueryFactory query;
 
-	//비밀번호 변경
+	//로그인 상태 : 비밀번호 변경
 	@Override
-	public Long updatePassword(UUID uuid, String newPassword) {
+	public Long memberUpdatePassword(UUID uuid, String newPassword) {
 
 		return query.update(QMember.member)
 				.set(QMember.member.password, newPassword)
 				.where(QMember.member.uuid.eq(uuid))
+				.execute();
+	}
+
+	@Override
+	public Long updatePassword(FindPasswordReqDTO findPasswordReqDto) {
+
+		return query.update(QMember.member)
+				.set(QMember.member.password, findPasswordReqDto.getNewPassword())
+				.where(QMember.member.email.eq(findPasswordReqDto.getEmail()),
+						QMember.member.name.eq(findPasswordReqDto.getName()))
 				.execute();
 	}
 

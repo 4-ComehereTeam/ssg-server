@@ -1,11 +1,11 @@
-package com.comehere.ssgserver.member.dto;
+package com.comehere.ssgserver.member.dto.req;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ModifyPhoneDTO {
+public class ModifyPhoneReqDTO {
 
 	private String newPhone;
 }

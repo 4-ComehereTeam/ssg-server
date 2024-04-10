@@ -7,10 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.member.domain.Member;
-import com.comehere.ssgserver.member.dto.FindSigninIdDTO;
-import com.comehere.ssgserver.member.dto.ModifyEmailDTO;
-import com.comehere.ssgserver.member.dto.ModifyPhoneDTO;
-import com.comehere.ssgserver.member.dto.ModifyPwdDTO;
+import com.comehere.ssgserver.member.dto.req.ModifyEmailReqDTO;
+import com.comehere.ssgserver.member.dto.req.ModifyPhoneReqDTO;
+import com.comehere.ssgserver.member.dto.req.ModifyPwdReqDTO;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,43 +23,32 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberRepository memberRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	// 로그인 아이디 찾기
-	@Override
-	public FindSigninIdDTO findSigninId(UUID userUuid) {
-
-		Member member = getMemberByUuid(userUuid);
-
-		return FindSigninIdDTO.builder()
-				.signinId(member.getSigninId())
-				.build();
-	}
-	
 	// 비밀번호 변경
 	@Override
 	@Transactional
-	public Boolean modifyPassword(UUID userUuid, ModifyPwdDTO modifyPwdDTO) {
+	public Boolean modifyPassword(UUID userUuid, ModifyPwdReqDTO modifyPwdReqDTO) {
 
 		Member member = getMemberByUuid(userUuid);
-		return memberRepository.updatePassword(member.getUuid(),
-				bCryptPasswordEncoder.encode(modifyPwdDTO.getNewPassword())) > 0;
+		return memberRepository.memberUpdatePassword(member.getUuid(),
+				bCryptPasswordEncoder.encode(modifyPwdReqDTO.getNewPassword())) > 0;
 	}
 
 	// 이메일 변경
 	@Override
 	@Transactional
-	public Boolean modifyEmail(UUID userUuid, ModifyEmailDTO modifyEmailDTO) {
+	public Boolean modifyEmail(UUID userUuid, ModifyEmailReqDTO modifyEmailReqDTO) {
 
 		Member member = getMemberByUuid(userUuid);
-		return memberRepository.updateEmail(member.getUuid(), modifyEmailDTO.getNewEmail()) > 0;
+		return memberRepository.updateEmail(member.getUuid(), modifyEmailReqDTO.getNewEmail()) > 0;
 	}
 
 	// 전화번호 변경
 	@Override
 	@Transactional
-	public Boolean modifyPhone(UUID userUuid, ModifyPhoneDTO modifyPhoneDTO) {
+	public Boolean modifyPhone(UUID userUuid, ModifyPhoneReqDTO modifyPhoneReqDTO) {
 
 		Member member = getMemberByUuid(userUuid);
-		return memberRepository.updatePhone(member.getUuid(), modifyPhoneDTO.getNewPhone()) > 0;
+		return memberRepository.updatePhone(member.getUuid(), modifyPhoneReqDTO.getNewPhone()) > 0;
 	}
 
 	// 회원 탈퇴
