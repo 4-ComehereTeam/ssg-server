@@ -74,6 +74,7 @@ public class PurchaseController {
 	public BaseResponse<Void> deletePurchase(
 			@PathVariable("purchaseCode") String purchaseCode,
 			@RequestHeader("Authorization") String authorization) {
+
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 		purchaseService.deletePurchase(purchaseCode, uuid);
 
@@ -88,6 +89,7 @@ public class PurchaseController {
 			@RequestParam(value = "endDate", required = false) String endDate,
 			@RequestParam(value = "acceptedStatus", required = false) Boolean acceptedStatus,
 			@PageableDefault(size = 5) Pageable page) {
+
 		UUID uuid = jwtUtil.getUuidByAuthorization(authorization);
 
 		PurchaseGetReqDTO reqDTO = PurchaseGetReqDTO.builder()
