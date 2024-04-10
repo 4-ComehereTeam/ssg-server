@@ -1,5 +1,6 @@
 package com.comehere.ssgserver.item.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,7 @@ public class ItemCalc {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(updatable = false)
 	private Long itemId;
 
 	private Double averageStar;
@@ -23,7 +25,8 @@ public class ItemCalc {
 	private Long reviewCount;
 
 	@Builder
-	public ItemCalc(Double averageStar, Long reviewCount) {
+	public ItemCalc(Long id, Double averageStar, Long reviewCount) {
+		this.id = id;
 		this.averageStar = averageStar;
 		this.reviewCount = reviewCount;
 	}

@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.comehere.ssgserver.review.domain.Review;
 import com.comehere.ssgserver.review.domain.ReviewImage;
 
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface ReviewRepository extends JpaRepository<Review, Long>, CustomReviewRepository {
 	Boolean existsByPurchaseListId(Long purchaseListId);
 
 	Optional<Review> findByUuidAndId(UUID uuid, Long id);
