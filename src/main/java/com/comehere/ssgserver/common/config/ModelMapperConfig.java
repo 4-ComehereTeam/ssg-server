@@ -43,7 +43,7 @@ public class ModelMapperConfig {
 				return AddressInfoReqDTO.builder()
 						.zipcode(source.getZipcode())
 						.address(source.getAddress())
-						.addressDetail(source.getDetailAddress())
+						.detailAddress(source.getDetailAddress())
 						.build();
 			}
 		});

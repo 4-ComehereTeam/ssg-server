@@ -15,13 +15,16 @@ import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.member.application.AuthService;
 import com.comehere.ssgserver.member.dto.req.CheckStateReqDTO;
+import com.comehere.ssgserver.member.dto.req.FindSigninIdReqDTO;
 import com.comehere.ssgserver.member.dto.req.JoinReqDTO;
 import com.comehere.ssgserver.member.dto.req.SigninReqDTO;
 import com.comehere.ssgserver.member.dto.resp.SigninRespDTO;
 import com.comehere.ssgserver.member.vo.req.CheckStateReqVO;
+import com.comehere.ssgserver.member.vo.req.FindSigninIdReqVO;
 import com.comehere.ssgserver.member.vo.req.JoinReqVO;
 import com.comehere.ssgserver.member.vo.req.SigninReqVO;
 import com.comehere.ssgserver.member.vo.resp.CheckResignCountRespVO;
+import com.comehere.ssgserver.member.vo.resp.FindSigninIdRespVO;
 import com.comehere.ssgserver.member.vo.resp.SigninRespVO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -89,8 +92,18 @@ public class AuthController {
 		}
 	}
 
+	@PostMapping("/find/signinId")
+	@Operation(summary = "아이디 찾기")
+	public BaseResponse<FindSigninIdRespVO> userFindSigninId(@RequestBody FindSigninIdReqVO findSigninIdReqVO) {
+
+		return new BaseResponse<>(modelMapper.map(authService.findSigninId(
+						modelMapper.map(findSigninIdReqVO, FindSigninIdReqDTO.class)),
+				FindSigninIdRespVO.class));
+	}
+
 	@PostMapping("/resign/count")
 	@Operation(summary = "탈퇴 횟수 조회")
+
 	public BaseResponse<CheckResignCountRespVO> checkUserResignCount(
 			@RequestBody CheckStateReqVO checkStateReqVO) {
 

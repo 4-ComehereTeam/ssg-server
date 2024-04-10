@@ -8,5 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FindSigninIdRespVO {
 
+	private Short status;
+
 	private String signinId;
 }

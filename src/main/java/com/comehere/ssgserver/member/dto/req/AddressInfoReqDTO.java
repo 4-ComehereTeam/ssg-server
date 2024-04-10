@@ -17,6 +17,5 @@ public class AddressInfoReqDTO {
 
 	private String address;
 
-	private String addressDetail;
-
+	private String detailAddress;
 }
