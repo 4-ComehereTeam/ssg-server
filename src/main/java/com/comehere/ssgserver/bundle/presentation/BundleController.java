@@ -43,7 +43,7 @@ public class BundleController {
 	@Operation(summary = "묶음(특가) 상품 ID 조회 API", description = "묶음(특가) 상품 목록 조회")
 	public BaseResponse<BundleListRespVO> getBundleList(
 			@RequestParam(required = false) Integer categoryId,
-			@PageableDefault(size = 5) Pageable page) {
+			@PageableDefault(size = 20) Pageable page) {
 		log.info("묶음 상품 목록 조회 : categoryId={}", categoryId);
 		return new BaseResponse<>(modelMapper.map(
 				bundleService.getBundleList(categoryId, page), BundleListRespVO.class));
