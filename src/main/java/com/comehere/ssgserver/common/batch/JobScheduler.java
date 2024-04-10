@@ -18,13 +18,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-// @Configuration
+@Configuration
 @RequiredArgsConstructor
 public class JobScheduler {
 	private final JobLauncher jobLauncher;
 	private final Job job;
 
-	@Scheduled(cron = "0 0 22 * * ?")
+	@Scheduled(cron = "0 0 * * * ?")
 	public void jobSchedule() throws
 			JobInstanceAlreadyCompleteException,
 			JobExecutionAlreadyRunningException,
