@@ -15,11 +15,13 @@ import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.member.application.AuthService;
 import com.comehere.ssgserver.member.dto.req.CheckStateReqDTO;
+import com.comehere.ssgserver.member.dto.req.FindPasswordReqDTO;
 import com.comehere.ssgserver.member.dto.req.FindSigninIdReqDTO;
 import com.comehere.ssgserver.member.dto.req.JoinReqDTO;
 import com.comehere.ssgserver.member.dto.req.SigninReqDTO;
 import com.comehere.ssgserver.member.dto.resp.SigninRespDTO;
 import com.comehere.ssgserver.member.vo.req.CheckStateReqVO;
+import com.comehere.ssgserver.member.vo.req.FindPasswordReqVO;
 import com.comehere.ssgserver.member.vo.req.FindSigninIdReqVO;
 import com.comehere.ssgserver.member.vo.req.JoinReqVO;
 import com.comehere.ssgserver.member.vo.req.SigninReqVO;
@@ -99,6 +101,13 @@ public class AuthController {
 		return new BaseResponse<>(modelMapper.map(authService.findSigninId(
 						modelMapper.map(findSigninIdReqVO, FindSigninIdReqDTO.class)),
 				FindSigninIdRespVO.class));
+	}
+
+	@PostMapping("find/password")
+	@Operation(summary = "비밀번호 찾기")
+	public BaseResponse<Boolean> userFindPassword(@RequestBody FindPasswordReqVO findPasswordReqVO) {
+		return new BaseResponse<>(authService.findPassword(
+				modelMapper.map(findPasswordReqVO, FindPasswordReqDTO.class)));
 	}
 
 	@PostMapping("/resign/count")

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.member.application.MemberService;
-import com.comehere.ssgserver.member.dto.ModifyEmailDTO;
-import com.comehere.ssgserver.member.dto.ModifyPhoneDTO;
-import com.comehere.ssgserver.member.dto.ModifyPwdDTO;
+import com.comehere.ssgserver.member.dto.req.ModifyEmailReqDTO;
+import com.comehere.ssgserver.member.dto.req.ModifyPhoneReqDTO;
+import com.comehere.ssgserver.member.dto.req.ModifyPwdReqDTO;
 import com.comehere.ssgserver.member.vo.req.ModifyEmailReqVO;
 import com.comehere.ssgserver.member.vo.req.ModifyPhoneReqVO;
 import com.comehere.ssgserver.member.vo.req.ModifyPwdReqVO;
@@ -46,9 +46,9 @@ public class MemberController {
 	public BaseResponse<Boolean> userModifyPassword(@RequestHeader("Authorization") String accessToken,
 			@RequestBody ModifyPwdReqVO modifyPwdReqVo) {
 
-		ModifyPwdDTO modifyPwdDTO = modelMapper.map(modifyPwdReqVo, ModifyPwdDTO.class);
+		ModifyPwdReqDTO modifyPwdReqDTO = modelMapper.map(modifyPwdReqVo, ModifyPwdReqDTO.class);
 		return new BaseResponse<>(
-				memberService.modifyPassword(jwtUtil.getUuidByAuthorization(accessToken), modifyPwdDTO));
+				memberService.modifyPassword(jwtUtil.getUuidByAuthorization(accessToken), modifyPwdReqDTO));
 	}
 
 	@PutMapping("/modify/email")
@@ -56,9 +56,9 @@ public class MemberController {
 	public BaseResponse<Boolean> userModifyEmail(@RequestHeader("Authorization") String accessToken,
 			@RequestBody ModifyEmailReqVO modifyEmailReqVo) {
 
-		ModifyEmailDTO modifyEmailDTO = modelMapper.map(modifyEmailReqVo, ModifyEmailDTO.class);
+		ModifyEmailReqDTO modifyEmailReqDTO = modelMapper.map(modifyEmailReqVo, ModifyEmailReqDTO.class);
 		return new BaseResponse<>(
-				memberService.modifyEmail(jwtUtil.getUuidByAuthorization(accessToken), modifyEmailDTO));
+				memberService.modifyEmail(jwtUtil.getUuidByAuthorization(accessToken), modifyEmailReqDTO));
 	}
 
 	@PutMapping("/modify/phone")
@@ -66,10 +66,10 @@ public class MemberController {
 	public BaseResponse<Boolean> userModifyPhone(@RequestHeader("Authorization") String accessToken,
 			@RequestBody ModifyPhoneReqVO modifyPhoneReqVo) {
 
-		ModifyPhoneDTO modifyPhoneDTO = modelMapper.map(modifyPhoneReqVo, ModifyPhoneDTO.class);
+		ModifyPhoneReqDTO modifyPhoneReqDTO = modelMapper.map(modifyPhoneReqVo, ModifyPhoneReqDTO.class);
 
 		return new BaseResponse<>(
-				memberService.modifyPhone(jwtUtil.getUuidByAuthorization(accessToken), modifyPhoneDTO));
+				memberService.modifyPhone(jwtUtil.getUuidByAuthorization(accessToken), modifyPhoneReqDTO));
 	}
 
 	@PutMapping("resign")

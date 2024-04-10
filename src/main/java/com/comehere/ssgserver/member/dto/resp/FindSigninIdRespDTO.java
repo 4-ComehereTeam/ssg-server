@@ -1,4 +1,4 @@
-package com.comehere.ssgserver.member.dto;
+package com.comehere.ssgserver.member.dto.resp;
 
 import lombok.Getter;
 import lombok.Setter;
