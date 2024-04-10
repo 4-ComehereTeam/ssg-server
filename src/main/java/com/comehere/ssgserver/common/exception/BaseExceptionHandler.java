@@ -48,4 +48,11 @@ public class BaseExceptionHandler {
 
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<?> handleAllExceptions(BaseException e) {
+		BaseResponse<?> response = new BaseResponse<>(e.getStatus());
+		log.info("e={}", e.getStatus());
+		return new ResponseEntity<>(response, response.httpStatus());
+	}
 }
