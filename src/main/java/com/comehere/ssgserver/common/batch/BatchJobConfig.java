@@ -17,7 +17,9 @@ import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
+import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -33,12 +35,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-// @Configuration
+@Configuration
 @RequiredArgsConstructor
 @Transactional
 public class BatchJobConfig {
 	private final JobRepository jobRepository;
-	private final JPAQueryFactory query;
 	private final EntityManagerFactory emf;
 
 	@Bean
@@ -52,7 +53,7 @@ public class BatchJobConfig {
 	@JobScope
 	public Step step(PlatformTransactionManager txm) throws Exception {
 		return new StepBuilder("itemSummaryStep", jobRepository)
-				.<ReviewSummaryDTO, ItemCalc>chunk(100, txm)
+				.<ReviewSummaryDTO, ItemCalc>chunk(10, txm)
 				.reader(reader())
 				.processor(processor())
 				.writer(writer())
@@ -62,44 +63,29 @@ public class BatchJobConfig {
 
 	@Bean
 	@StepScope
-	public QuerydslPagingItemReader<ReviewSummaryDTO> reader() throws Exception {
+	public JpaPagingItemReader<ReviewSummaryDTO> reader() throws Exception {
 
-		return new QuerydslPagingItemReader<>(query, 100, query -> query
-				.select(Projections.constructor(ReviewSummaryDTO.class,
-					item.id.min().as("itemId"),
-					itemCalc.id.min().as("calcId"),
-					review.star.avg().as("averageStar"),
-					review.count().as("reviewCount")
-			))
-			.from(review)
-			.join(item).on(review.itemCode.eq(item.code))
-			.join(itemCalc).on(item.id.eq(itemCalc.itemId))
-
-			.groupBy(review.itemCode));
+		return new JpaPagingItemReaderBuilder<ReviewSummaryDTO>()
+				.pageSize(100)
+				.queryString(
+						"select new com.comehere.ssgserver.review.dto.resp.ReviewSummaryDTO("
+								+ "min(i.id), min(ic.id), round(avg(r.star), 1), count(r)) "
+								+ "from Review r "
+								+ "join Item i on r.itemCode = i.code "
+								+ "join ItemCalc ic on i.id = ic.itemId "
+								+ "group by r.itemCode"
+				)
+				.entityManagerFactory(emf)
+				.name("itemSummaryReader")
+				.build();
 	}
 
 	@Bean
 	@StepScope
 	public ItemProcessor<ReviewSummaryDTO,ItemCalc> processor() {
-		// return new ItemProcessor<ReviewSummaryDTO, ItemCalc>() {
-		// 	@Override
-		// 	public ItemCalc process(ReviewSummaryDTO dto) throws Exception {
-		// 		return ItemCalc.builder()
-		// 				.id(dto.getCalcId())
-		// 				.reviewCount(dto.getReviewCount())
-		// 				.averageStar(dto.getAverageStar())
-		// 				.build();
-		// 	}
-		// };
-
-		log.info("processor initialized");
 		return new ItemProcessor<ReviewSummaryDTO, ItemCalc>() {
-			private int processCount = 0;
-
 			@Override
 			public ItemCalc process(ReviewSummaryDTO dto) throws Exception {
-				processCount++;
-				log.info("Processing item #{}", processCount);
 				return ItemCalc.builder()
 						.id(dto.getCalcId())
 						.reviewCount(dto.getReviewCount())

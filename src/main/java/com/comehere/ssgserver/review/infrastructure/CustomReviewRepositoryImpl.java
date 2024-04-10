@@ -48,21 +48,4 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
 
 		return new SliceImpl<>(result, page, hasNext);
 	}
-
-	@Override
-	public List<ReviewSummaryDTO> getReviewSummary() {
-		return query
-				.select(Projections.constructor(ReviewSummaryDTO.class,
-						item.id.min().as("itemId"),
-						itemCalc.id.min().as("calcId"),
-						review.star.avg().as("averageStar"),
-						review.count().as("reviewCount")
-				))
-				.from(review)
-				.join(item).on(review.itemCode.eq(item.code))
-				.join(itemCalc).on(item.id.eq(itemCalc.itemId))
-
-				.groupBy(review.itemCode)
-				.fetch();
-	}
 }

@@ -10,6 +10,4 @@ import com.comehere.ssgserver.review.dto.resp.ReviewSummaryDTO;
 
 public interface CustomReviewRepository {
 	Slice<ReviewImageListDTO> getReviewImageList(String itemCode, Pageable page);
-
-	List<ReviewSummaryDTO> getReviewSummary();
 }
