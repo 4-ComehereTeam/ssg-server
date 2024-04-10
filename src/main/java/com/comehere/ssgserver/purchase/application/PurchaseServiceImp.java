@@ -7,19 +7,20 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.common.exception.BaseException;
 import com.comehere.ssgserver.common.response.BaseResponseStatus;
 import com.comehere.ssgserver.item.domain.Item;
-import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 import com.comehere.ssgserver.option.infrastructure.ItemOptionRepository;
 import com.comehere.ssgserver.purchase.domain.Purchase;
 import com.comehere.ssgserver.purchase.domain.PurchaseList;
 import com.comehere.ssgserver.purchase.domain.PurchaseListStatus;
 import com.comehere.ssgserver.purchase.domain.PurchaseStatus;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseCreateReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.PurchaseGetReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListCreateReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseListDeleteReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchaseCreateRespDTO;
@@ -134,14 +135,14 @@ public class PurchaseServiceImp implements PurchaseService {
 	}
 
 	@Override
-	public List<PurchasesGetRespDTO> getPurchases(UUID uuid) {
-		return purchaseRepository.findByUuid(uuid)
+	public List<PurchasesGetRespDTO> getPurchases(UUID uuid, PurchaseGetReqDTO dto, Pageable page) {
+		return purchaseRepository.findPurchaseByUuidAndDate(uuid, dto, page)
 				.stream()
-				.map(purchase -> PurchasesGetRespDTO.builder()
-						.purchaseCode(purchase.getPurchaseCode())
-						.purchaseListIds(getPurchaseListIds(purchase))
+				.map(respDTO -> PurchasesGetRespDTO.builder()
+						.purchaseCode(respDTO.getPurchaseCode())
+						.purchaseListIds(getPurchaseListIds(respDTO.getId()))
 						.build())
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	@Override
@@ -183,11 +184,9 @@ public class PurchaseServiceImp implements PurchaseService {
 		}
 	}
 
-	private List<Long> getPurchaseListIds(Purchase purchase) {
-		return purchaseListRepository.findByPurchaseId(purchase.getId())
-				.stream()
-				.map(PurchaseList::getId)
-				.collect(Collectors.toList());
+	private List<Long> getPurchaseListIds(Long purchaseId) {
+		return purchaseListRepository.findIdsByPurchaseId(purchaseId);
+
 	}
 
 	private String makePurchaseCode() {

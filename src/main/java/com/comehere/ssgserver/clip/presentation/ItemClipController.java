@@ -40,9 +40,7 @@ public class ItemClipController {
 	public BaseResponse<?> createItemClip(
 			@PathVariable("itemId") Long itemId,
 			@RequestHeader("Authorization") String accessToken) {
-
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
-
 		itemClipService.createItemClip(uuid, itemId);
 
 		return new BaseResponse<>();
@@ -53,7 +51,6 @@ public class ItemClipController {
 	public BaseResponse<?> deleteItemClip(
 			@PathVariable("itemId") Long itemId,
 			@RequestHeader("Authorization") String accessToken) {
-
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
 		itemClipService.deleteItemClip(uuid, itemId);
 
@@ -65,9 +62,7 @@ public class ItemClipController {
 	public BaseResponse<?> deleteItemsClip(
 			@RequestBody ItemsClipDeleteReqVO vo,
 			@RequestHeader("Authorization") String accessToken) {
-
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
-
 		itemClipService.deleteItemsClip(uuid, modelMapper.map(vo, ItemsClipDeleteReqDTO.class));
 
 		return new BaseResponse<>();

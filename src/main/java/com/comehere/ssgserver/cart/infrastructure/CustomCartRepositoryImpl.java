@@ -24,6 +24,7 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 	// 장바구니에 담긴 상품 리스트 조회
 	@Override
 	public List<ItemCountDTO> getCartId(UUID uuid) {
+
 		return query
 				.select(Projections.constructor(ItemCountDTO.class,
 						QCart.cart.itemOptionId,

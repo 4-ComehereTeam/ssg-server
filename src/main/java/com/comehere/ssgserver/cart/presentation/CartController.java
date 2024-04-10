@@ -16,7 +16,6 @@ import com.comehere.ssgserver.cart.dto.req.ChangeItemOptionReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
 import com.comehere.ssgserver.cart.dto.req.ItemQuantityModifyReqDTO;
-import com.comehere.ssgserver.cart.dto.resp.GetCartListRespDTO;
 import com.comehere.ssgserver.cart.vo.req.AddItemReqVO;
 import com.comehere.ssgserver.cart.vo.req.ChangeItemOptionReqVO;
 import com.comehere.ssgserver.cart.vo.req.ChangeStateReqVO;
@@ -86,8 +85,9 @@ public class CartController {
 	@Operation(summary = "장바구니 조회")
 	public BaseResponse<GetCartListRespVO> getUserCartList(@RequestHeader("Authorization") String accessToken) {
 
-		GetCartListRespDTO getCartListRespDTO = cartService.getCartList(jwtUtil.getUuidByAuthorization(accessToken));
-		return new BaseResponse<>(modelMapper.map(getCartListRespDTO, GetCartListRespVO.class));
+		return new BaseResponse<>(
+				modelMapper.map(cartService.getCartList(jwtUtil.getUuidByAuthorization(accessToken)),
+						GetCartListRespVO.class));
 	}
 
 	@PutMapping("/check-state/change")

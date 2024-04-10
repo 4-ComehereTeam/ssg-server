@@ -13,11 +13,13 @@ import org.springframework.stereotype.Service;
 import com.comehere.ssgserver.common.exception.BaseException;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.common.security.social.SocialAuthenticationToken;
+import com.comehere.ssgserver.member.domain.Agree;
 import com.comehere.ssgserver.member.domain.Member;
 import com.comehere.ssgserver.member.domain.Role;
 import com.comehere.ssgserver.member.dto.req.OAuthSigninReqDTO;
 import com.comehere.ssgserver.member.dto.req.OAuthSignupReqDTO;
 import com.comehere.ssgserver.member.dto.resp.OAuthSigninRespDTO;
+import com.comehere.ssgserver.member.infrastructure.AgreeRepository;
 import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 
 import lombok.AllArgsConstructor;
@@ -29,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OAuthServiceImpl implements OAuthService {
 
 	private final MemberRepository memberRepository;
+	private final AgreeRepository agreeRepository;
 	private final AuthenticationManager authenticationManager;
 	private final JWTUtil jwtUtil;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -40,9 +43,8 @@ public class OAuthServiceImpl implements OAuthService {
 		if (memberRepository.existsByEmail(oAuthSignupReqDto.getEmail())) {
 			throw new BaseException(DUPLICATED_MEMBERS);
 		}
-
-		// 사용자 생성 로직 (사용자 생성 후 사용하지 않으므로 반환값 불필요)
-		createMember(oAuthSignupReqDto);
+		this.createMember(oAuthSignupReqDto);
+		this.createAgree(oAuthSignupReqDto);
 	}
 
 	// 로그인
@@ -77,6 +79,23 @@ public class OAuthServiceImpl implements OAuthService {
 				.phone(oAuthSignupReqDto.getPhone())
 				.uuid(UUID.randomUUID())
 				.resignCount(0)
+				.build());
+	}
+
+	private void createAgree(OAuthSignupReqDTO oAuthSignupReqDto) {
+
+		agreeRepository.save(Agree
+				.builder()
+				.email(oAuthSignupReqDto.getEmail())
+				.ssgPointMktAgr1(false)
+				.ssgPointMktAgr2(false)
+				.ssgPointEmail(false)
+				.ssgPointSms(false)
+				.ssgPointMail(false)
+				.ssgPointCall(false)
+				.ssgcomMktAgr1(false)
+				.ssgcomEmail(false)
+				.ssgcomSms(false)
 				.build());
 	}
 }

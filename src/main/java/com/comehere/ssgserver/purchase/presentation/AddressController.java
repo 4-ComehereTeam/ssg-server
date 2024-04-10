@@ -16,9 +16,11 @@ import com.comehere.ssgserver.purchase.application.AddressService;
 import com.comehere.ssgserver.purchase.dto.req.AddressAddReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.AddressReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.ModifyAddressReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.ModifyRequestMessageReqDTO;
 import com.comehere.ssgserver.purchase.vo.req.AddressAddReqVO;
 import com.comehere.ssgserver.purchase.vo.req.AddressReqVO;
 import com.comehere.ssgserver.purchase.vo.req.ModifyAddressReqVO;
+import com.comehere.ssgserver.purchase.vo.req.ModifyRequestMessageReqVO;
 import com.comehere.ssgserver.purchase.vo.resp.AddressListRespVO;
 import com.comehere.ssgserver.purchase.vo.resp.DefaultCheckRespVO;
 
@@ -88,5 +90,15 @@ public class AddressController {
 		addressService.updateAddressInfo(jwtUtil.getUuidByAuthorization(accessToken),
 				modelMapper.map(modifyAddressReqVO, ModifyAddressReqDTO.class));
 		return new BaseResponse<>();
+	}
+
+	@PutMapping("/request-message")
+	@Operation(summary = "배송지 요청 메시지 수정")
+	public BaseResponse<Boolean> modifyAddressRequestMessage(@RequestHeader("Authorization") String accessToken,
+			@RequestBody ModifyRequestMessageReqVO modifyRequestMessageReqVO) {
+
+		return new BaseResponse<>(
+				addressService.updateAddressRequestMessage(jwtUtil.getUuidByAuthorization(accessToken),
+						modelMapper.map(modifyRequestMessageReqVO, ModifyRequestMessageReqDTO.class)));
 	}
 }

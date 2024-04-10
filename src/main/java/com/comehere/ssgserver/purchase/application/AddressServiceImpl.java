@@ -13,6 +13,7 @@ import com.comehere.ssgserver.purchase.dto.AddressDetailDTO;
 import com.comehere.ssgserver.purchase.dto.req.AddressAddReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.AddressReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.ModifyAddressReqDTO;
+import com.comehere.ssgserver.purchase.dto.req.ModifyRequestMessageReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.AddressListRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.DefaultCheckRespDTO;
 import com.comehere.ssgserver.purchase.infrastructure.AddressRepository;
@@ -33,8 +34,12 @@ public class AddressServiceImpl implements AddressService {
 	public void addAddress(UUID uuid, AddressAddReqDTO addressAddReqDTO) {
 
 		Member member = findMember(uuid);
-		Address address = createAddress(member, addressAddReqDTO);
-		log.info("address: {}", address);
+
+		if (addressRepository.countAddressByUuid(member.getUuid()) == 0) {
+			createAddress(member, addressAddReqDTO, true);
+		} else {
+			createAddress(member, addressAddReqDTO, false);
+		}
 	}
 
 	// 해당 uuid의 회원이 가지고 있는 기본 배송지의 id를 반환
@@ -76,7 +81,7 @@ public class AddressServiceImpl implements AddressService {
 		Address address = addressRepository.findById(modifyAddressReqDTO.getAddressId())
 				.orElseThrow(() -> new IllegalArgumentException("해당 배송지가 존재하지 않습니다."));
 
-		addressRepository.save(address.builder()
+		addressRepository.save(Address.builder()
 				.id(address.getId())
 				.uuid(address.getUuid())
 				.requestMessage(address.getRequestMessage())
@@ -91,6 +96,14 @@ public class AddressServiceImpl implements AddressService {
 				.build());
 	}
 
+	// 배송지 요청 메시지 수정
+	@Override
+	@Transactional
+	public Boolean updateAddressRequestMessage(UUID uuid, ModifyRequestMessageReqDTO modifyRequestMessageReqDTO) {
+
+		return addressRepository.updateRequestMessage(uuid, modifyRequestMessageReqDTO) > 0;
+	}
+
 	// 배송지 삭제
 	@Override
 	public Boolean deleteAddress(UUID uuid, AddressReqDTO addressReqDTO) {
@@ -99,16 +112,17 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	// 배송지 추가
-	private Address createAddress(Member member, AddressAddReqDTO addressAddReqDTO) {
+	private void createAddress(Member member, AddressAddReqDTO addressAddReqDTO, Boolean defaultAddress) {
 
-		return addressRepository.save(Address.builder()
+		addressRepository.save(Address.builder()
 				.name(addressAddReqDTO.getName())
 				.nickname(addressAddReqDTO.getNickname())
 				.phone(addressAddReqDTO.getPhone())
 				.tel(addressAddReqDTO.getTel())
 				.zipcode(addressAddReqDTO.getZipcode())
 				.address(addressAddReqDTO.getAddress())
-				.defaultAddress(false)
+				.detailAddress(addressAddReqDTO.getDetailAddress())
+				.defaultAddress(defaultAddress)
 				.uuid(member.getUuid())
 				.build());
 	}

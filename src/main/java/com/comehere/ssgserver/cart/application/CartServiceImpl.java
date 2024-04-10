@@ -45,11 +45,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public GetCartListRespDTO getCartList(UUID uuid) {
 
-		// setter를 사용할 떄 메서드 명에 명식적으로 적어서 사용하는 것이 좋다.
-		GetCartListRespDTO getCartListRespDTO = new GetCartListRespDTO();
-		getCartListRespDTO.setItemOptions(cartRepository.getCartId(uuid));
-
-		return getCartListRespDTO;
+		return new GetCartListRespDTO(cartRepository.getCartId(uuid));
 	}
 
 	// 상품 체크 상태 변경
