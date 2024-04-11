@@ -12,6 +12,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
 import com.comehere.ssgserver.item.domain.QItem;
+import com.comehere.ssgserver.item.dto.resp.ItemCalcRespDTO;
 import com.comehere.ssgserver.review.domain.QReview;
 import com.comehere.ssgserver.review.dto.resp.ReviewImageDTO;
 import com.comehere.ssgserver.review.dto.resp.ReviewImageListDTO;
@@ -47,5 +48,19 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
 		}
 
 		return new SliceImpl<>(result, page, hasNext);
+	}
+
+	@Override
+	public ItemCalcRespDTO getItemCalc(Long itemId) {
+		return query
+				.select(Projections.constructor(ItemCalcRespDTO.class,
+						review.count().as("reviewCount"),
+						review.star.avg().as("averageStar")
+				))
+				.from(review)
+				.join(item).on(review.itemCode.eq(item.code))
+				.where(item.id.eq(itemId))
+				.groupBy(review.itemCode)
+				.fetchOne();
 	}
 }

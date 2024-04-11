@@ -50,9 +50,8 @@ public class BaseExceptionHandler {
 	}
 
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<?> handleAllExceptions(BaseException e) {
-		BaseResponse<?> response = new BaseResponse<>(e.getStatus());
-		log.info("e={}", e.getStatus());
+	public ResponseEntity<?> handleAllExceptions(Exception e) {
+		BaseResponse<?> response = new BaseResponse<>(e.getMessage());
 		return new ResponseEntity<>(response, response.httpStatus());
 	}
 }
