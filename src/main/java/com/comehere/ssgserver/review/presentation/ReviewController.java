@@ -55,8 +55,6 @@ public class ReviewController {
 
 	private final JWTUtil jwtUtil;
 
-	private final ReviewRepository reviewRepository;
-
 	@PostMapping
 	@Operation(summary = "리뷰 등록")
 	public BaseResponse<?> createReview(@RequestHeader("Authorization") String authorization,
@@ -178,10 +176,5 @@ public class ReviewController {
 		return new BaseResponse<>(modelMapper.map(
 				reviewImageService.getReviewImageList(itemCode, page),
 				ReviewImageListRespVO.class));
-	}
-
-	@GetMapping("/test")
-	public List<ReviewSummaryDTO> test() {
-		return reviewRepository.getReviewSummary();
 	}
 }

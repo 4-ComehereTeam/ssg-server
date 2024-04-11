@@ -13,18 +13,23 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.comehere.ssgserver.bundle.infrastructure.BundleRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-// @Configuration
+@Configuration
 @RequiredArgsConstructor
 public class JobScheduler {
 	private final JobLauncher jobLauncher;
 	private final Job job;
+	private final BundleRepository bundleRepository;
 
-	@Scheduled(cron = "0 0 22 * * ?")
+	// 매일 정각마다 상품 집계 계산 후 업데이트 (배치 작업) 수행
+	@Scheduled(cron = "0 0 * * * ?")
 	public void jobSchedule() throws
 			JobInstanceAlreadyCompleteException,
 			JobExecutionAlreadyRunningException,
@@ -37,4 +42,13 @@ public class JobScheduler {
 
 		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
 	}
+
+	// 매일 자정마다 판매 종료 기간이 지난 특가 상품의 판매 상태를 false로 변경
+	@Transactional
+	@Scheduled(cron = "0 0 9 * * ?")
+	public void updateBundleStatus() {
+		bundleRepository.updateBundleStatus();
+	}
+
+
 }
