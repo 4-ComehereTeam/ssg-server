@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
+import com.comehere.ssgserver.item.dto.req.ItemCountReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -45,6 +46,18 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
 		}
 
 		return new SliceImpl<>(result, page, hasNext);
+	}
+
+	@Override
+	public Long getCount(ItemCountReqDTO dto) {
+		return query.select(itemWithCategory.item.id.count())
+				.from(itemWithCategory)
+				.where(
+						bigCategoryEq(dto.getBigCategoryId()),
+						middleCategoryEq(dto.getMiddleCategoryId()),
+						smallCategoryEq(dto.getSmallCategoryId())
+				)
+				.fetchOne();
 	}
 
 	private BooleanExpression bigCategoryEq(Integer bigCategoryId) {
