@@ -23,7 +23,7 @@ public class RecentViewItem {
 	@Column(nullable = false, updatable = false)
 	private UUID uuid;
 
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false, updatable = false, unique = true)
 	private Long itemId;
 
 	private LocalDateTime viewDate;

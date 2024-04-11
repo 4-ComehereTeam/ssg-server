@@ -29,6 +29,7 @@ import com.comehere.ssgserver.item.infrastructual.ItemCalcRepository;
 import com.comehere.ssgserver.item.infrastructual.ItemImageRepository;
 import com.comehere.ssgserver.item.infrastructual.ItemRepository;
 import com.comehere.ssgserver.item.infrastructual.RecentViewItemRepository;
+import com.comehere.ssgserver.review.infrastructure.ReviewRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +41,7 @@ public class ItemServiceImpl implements ItemService {
 	private final ItemCalcRepository itemCalcRepository;
 	private final ItemImageRepository itemImageRepository;
 	private final RecentViewItemRepository recentViewItemRepository;
+	private final ReviewRepository reviewRepository;
 
 	@Override
 	public ItemDetailRespDTO getItemDetail(Long id) {
@@ -59,11 +61,14 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	public ItemCalcRespDTO getItemCalc(Long id) {
-		return ItemCalcRespDTO.toBuild(itemCalcRepository.findByItemId(id)
-				.orElseGet(() -> ItemCalc.builder()
-						.averageStar(0.0)
-						.reviewCount(0L)
-						.build()));
+		// return ItemCalcRespDTO.toBuild(itemCalcRepository.findByItemId(id)
+		// 		.orElseGet(() -> ItemCalc.builder()
+		// 				.averageStar(0.0)
+		// 				.reviewCount(0L)
+		// 				.build()));
+
+		ItemCalcRespDTO itemCalc = reviewRepository.getItemCalc(id);
+		return itemCalc != null ? itemCalc : new ItemCalcRespDTO(0L, 0.0);
 	}
 
 	@Override
