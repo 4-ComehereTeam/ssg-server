@@ -15,10 +15,12 @@ import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.item.domain.ItemCalc;
 import com.comehere.ssgserver.item.domain.RecentViewItem;
 import com.comehere.ssgserver.item.dto.req.DeleteRecentViewReqDTO;
+import com.comehere.ssgserver.item.dto.req.ItemCountReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
 import com.comehere.ssgserver.item.dto.resp.ImageDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemCalcRespDTO;
+import com.comehere.ssgserver.item.dto.resp.ItemCountRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemDetailRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemImageListRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemListRespDTO;
@@ -144,5 +146,12 @@ public class ItemServiceImpl implements ItemService {
 	@Transactional
 	public void deleteRecentViewItems(UUID uuid, DeleteRecentViewReqDTO dto) {
 		recentViewItemRepository.deleteByUuidAndIds(uuid, dto.getRecentIds());
+	}
+
+	@Override
+	public ItemCountRespDTO getCount(ItemCountReqDTO dto) {
+		return ItemCountRespDTO.builder()
+				.count(itemRepository.getCount(dto))
+				.build();
 	}
 }
