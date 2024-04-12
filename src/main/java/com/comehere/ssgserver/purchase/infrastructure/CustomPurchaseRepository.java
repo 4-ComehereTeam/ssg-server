@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import com.comehere.ssgserver.purchase.dto.req.NonPurchaseGetReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseGetReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchaseGetRespDTO;
+import com.comehere.ssgserver.purchase.dto.resp.PurchasesGetRespDTO;
 
 public interface CustomPurchaseRepository {
 	void updatePurchaseStatusToCancel(Long purchaseId);
@@ -16,4 +17,6 @@ public interface CustomPurchaseRepository {
 	Optional<Long> findIdPurchaseIdBySenderNameAndSenderPhoneAndPurchaseCode(NonPurchaseGetReqDTO dto);
 
 	List<PurchaseGetRespDTO> findPurchaseByUuidAndDate(UUID uuid, PurchaseGetReqDTO dto, Pageable page);
+
+	List<PurchasesGetRespDTO> findPurchaseByUuidAndDate_v2(UUID uuid, PurchaseGetReqDTO dto, Pageable page);
 }
