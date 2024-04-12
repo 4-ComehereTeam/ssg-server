@@ -143,6 +143,9 @@ public class PurchaseServiceImp implements PurchaseService {
 						.purchaseListIds(getPurchaseListIds(respDTO.getId()))
 						.build())
 				.toList();
+
+	 // return purchaseRepository.findPurchaseByUuidAndDate_v2(uuid, dto, page);
+
 	}
 
 	@Override

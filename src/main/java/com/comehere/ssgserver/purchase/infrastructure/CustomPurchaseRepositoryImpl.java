@@ -1,12 +1,16 @@
 package com.comehere.ssgserver.purchase.infrastructure;
 
 import static com.comehere.ssgserver.purchase.domain.QPurchase.*;
+import static com.comehere.ssgserver.purchase.domain.QPurchaseList.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
 
@@ -14,6 +18,8 @@ import com.comehere.ssgserver.purchase.domain.PurchaseStatus;
 import com.comehere.ssgserver.purchase.dto.req.NonPurchaseGetReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseGetReqDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchaseGetRespDTO;
+import com.comehere.ssgserver.purchase.dto.resp.PurchasesGetRespDTO;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -50,13 +56,42 @@ public class CustomPurchaseRepositoryImpl implements CustomPurchaseRepository {
 						purchase.purchaseCode
 				))
 				.from(purchase)
-				.where(creatAtAfter(dto.getStartDate()),
+				.where(purchase.uuid.eq(uuid),
+						creatAtAfter(dto.getStartDate()),
 						createAtBefore(dto.getEndDate()),
 						checkAcceptedPurchaseStatus(dto.getAcceptedStatus()))
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
 				.orderBy(purchase.createAt.desc())
 				.fetch();
+	}
+
+	@Override
+	public List<PurchasesGetRespDTO> findPurchaseByUuidAndDate_v2(UUID uuid, PurchaseGetReqDTO dto, Pageable page) {
+		List<Tuple> result = queryFactory.select(purchase.purchaseCode, purchaseList.id)
+				.from(purchase)
+				.leftJoin(purchaseList).on(purchase.id.eq(purchaseList.purchaseId))
+				.where(purchase.uuid.eq(uuid),
+						creatAtAfter(dto.getStartDate()),
+						createAtBefore(dto.getEndDate()),
+						checkAcceptedPurchaseStatus(dto.getAcceptedStatus()))
+				.orderBy(purchase.createAt.desc())
+				.fetch();
+
+		List<PurchasesGetRespDTO> test = new ArrayList<>();
+
+		result.stream()
+				.collect(Collectors.groupingBy(tuple -> tuple.get(purchase.purchaseCode),
+						LinkedHashMap::new,
+						Collectors.mapping(tuple -> tuple.get(purchaseList.id), Collectors.toList())))
+				.forEach((purchaseCode, purchaseListIds) -> {
+					test.add(PurchasesGetRespDTO.builder()
+							.purchaseCode(purchaseCode)
+							.purchaseListIds(purchaseListIds)
+							.build());
+				});
+
+		return test;
 	}
 
 	private BooleanExpression creatAtAfter(String startDate) {
