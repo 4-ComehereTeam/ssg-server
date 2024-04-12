@@ -40,6 +40,7 @@ public class ItemClipController {
 	public BaseResponse<?> createItemClip(
 			@PathVariable("itemId") Long itemId,
 			@RequestHeader("Authorization") String accessToken) {
+
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
 		itemClipService.createItemClip(uuid, itemId);
 
@@ -51,6 +52,7 @@ public class ItemClipController {
 	public BaseResponse<?> deleteItemClip(
 			@PathVariable("itemId") Long itemId,
 			@RequestHeader("Authorization") String accessToken) {
+
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
 		itemClipService.deleteItemClip(uuid, itemId);
 
@@ -62,6 +64,7 @@ public class ItemClipController {
 	public BaseResponse<?> deleteItemsClip(
 			@RequestBody ItemsClipDeleteReqVO vo,
 			@RequestHeader("Authorization") String accessToken) {
+
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
 		itemClipService.deleteItemsClip(uuid, modelMapper.map(vo, ItemsClipDeleteReqDTO.class));
 
@@ -73,6 +76,7 @@ public class ItemClipController {
 	public BaseResponse<ItemClipGetRespVO> getItemClip(
 			@RequestHeader("Authorization") String accessToken,
 			@PathVariable("itemId") Long itemId) {
+
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
 
 		return new BaseResponse<>(modelMapper.map(itemClipService.getItemClip(itemId, uuid), ItemClipGetRespVO.class));
@@ -81,6 +85,7 @@ public class ItemClipController {
 	@Operation(summary = "상품 좋아요 목록 조회")
 	@GetMapping("/items")
 	public BaseResponse<ItemsClipGetRespVO> getItemsClip(@RequestHeader("Authorization") String accessToken) {
+
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
 
 		return new BaseResponse<>(modelMapper.map(itemClipService.getItemsClip(uuid), ItemsClipGetRespVO.class));
