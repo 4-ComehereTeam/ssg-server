@@ -1,6 +1,7 @@
 package com.comehere.ssgserver.item.infrastructual;
 
 import static com.comehere.ssgserver.brand.domain.QBrandWithItem.*;
+import static com.comehere.ssgserver.item.domain.QItemCalc.*;
 import static com.comehere.ssgserver.item.domain.QItemWithCategory.*;
 
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
+import com.comehere.ssgserver.item.domain.QItemCalc;
 import com.comehere.ssgserver.item.dto.req.ItemCountReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -58,6 +60,18 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
 						smallCategoryEq(dto.getSmallCategoryId())
 				)
 				.fetchOne();
+	}
+
+	@Override
+	public List<Long> getBestItems(Integer bigCategoryId) {
+		return query
+				.select(itemCalc.itemId)
+				.from(itemCalc)
+				.join(itemWithCategory).on(itemCalc.itemId.eq(itemWithCategory.item.id))
+				.where(bigCategoryEq(bigCategoryId))
+				.orderBy(itemCalc.averageStar.desc(), itemCalc.reviewCount.desc())
+				.limit(20)
+				.fetch();
 	}
 
 	private BooleanExpression bigCategoryEq(Integer bigCategoryId) {

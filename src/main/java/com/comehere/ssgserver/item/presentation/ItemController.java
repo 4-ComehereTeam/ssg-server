@@ -25,6 +25,7 @@ import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemCountRespDTO;
 import com.comehere.ssgserver.item.vo.req.DeleteRecentViewReqVO;
 import com.comehere.ssgserver.item.vo.req.ItemReqVO;
+import com.comehere.ssgserver.item.vo.resp.BestItemRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemCalcRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemCountRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemDetailRespVO;
@@ -163,5 +164,12 @@ public class ItemController {
 		return new BaseResponse<>(modelMapper.map(
 				itemService.getCount(ItemCountReqDTO.toBuild(bigCategoryId, middleCategoryId, smallCategoryId)),
 				ItemCountRespVO.class));
+	}
+
+	@GetMapping("/best")
+	@Operation(summary = "베스트 상품 조회 API", description = "베스트 상품 목록 조회")
+	public BaseResponse<BestItemRespVO> getBestItems(@RequestParam(required = false) Integer bigCategoryId) {
+		return new BaseResponse<>(modelMapper.map(
+				itemService.getBestItems(bigCategoryId), BestItemRespVO.class));
 	}
 }

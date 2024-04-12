@@ -1,5 +1,6 @@
 package com.comehere.ssgserver.item.infrastructual;
 
+import java.util.List;
 import java.util.function.LongFunction;
 
 import org.springframework.data.domain.Pageable;
@@ -12,4 +13,6 @@ public interface CustomItemRepository {
 	Slice<Long> getItemList(ItemListReqDTO dto, Pageable page);
 
 	Long getCount(ItemCountReqDTO dto);
+
+	List<Long> getBestItems(Integer bigCategoryId);
 }
