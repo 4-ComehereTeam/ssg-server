@@ -18,6 +18,7 @@ import com.comehere.ssgserver.item.dto.req.DeleteRecentViewReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemCountReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
+import com.comehere.ssgserver.item.dto.resp.BestItemRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ImageDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemCalcRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemCountRespDTO;
@@ -152,6 +153,13 @@ public class ItemServiceImpl implements ItemService {
 	public ItemCountRespDTO getCount(ItemCountReqDTO dto) {
 		return ItemCountRespDTO.builder()
 				.count(itemRepository.getCount(dto))
+				.build();
+	}
+
+	@Override
+	public BestItemRespDTO getBestItems(Integer bigCategoryId) {
+		return BestItemRespDTO.builder()
+				.items(itemRepository.getBestItems(bigCategoryId))
 				.build();
 	}
 }
