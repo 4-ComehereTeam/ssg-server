@@ -41,8 +41,8 @@ public class ItemClipServiceImp implements ItemClipService {
 
 	@Override
 	@Transactional
-	public void deleteItemsClip(UUID uuid, ItemsClipDeleteReqDTO vo) {
-		itemClipRepository.deleteByUuidAndByIds(uuid, vo.getItemIds());
+	public void deleteItemsClip(UUID uuid, ItemsClipDeleteReqDTO dto) {
+		itemClipRepository.deleteByUuidAndByIds(uuid, dto.getItemIds());
 	}
 
 	@Override

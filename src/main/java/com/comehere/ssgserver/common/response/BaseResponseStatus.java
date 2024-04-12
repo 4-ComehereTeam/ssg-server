@@ -101,8 +101,12 @@ public enum BaseResponseStatus {
 	/**
 	 * 10000 : clip Service Error
 	 */
+
 	CLIP_ITEM_ALREADY_ADDED(HttpStatus.BAD_REQUEST, false, 10001, "이미 좋아요한 상품입니다."),
-	CLIP_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, false, 10002, "좋아요한 상품이 아닙니다.");
+	CLIP_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, false, 10002, "좋아요한 상품이 아닙니다."),
+	CLIP_CATEGORY_ALREADY_ADDED(HttpStatus.BAD_REQUEST, false, 10003, "이미 좋아요한 카테고리입니다."),
+	CLIP_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, false, 10004, "좋아요한 카테고리가 아닙니다.");
+
 	private final HttpStatusCode httpStatusCode;
 	private final boolean isSuccess;
 	private final int code;

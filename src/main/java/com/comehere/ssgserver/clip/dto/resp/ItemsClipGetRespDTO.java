@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ItemsClipGetRespDTO {
-	List<Long> itemIds = new ArrayList<>();
+	private List<Long> itemIds = new ArrayList<>();
 
 	@Builder
 	public ItemsClipGetRespDTO(List<Long> itemIds) {
