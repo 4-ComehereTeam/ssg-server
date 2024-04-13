@@ -136,16 +136,7 @@ public class PurchaseServiceImp implements PurchaseService {
 
 	@Override
 	public List<PurchasesGetRespDTO> getPurchases(UUID uuid, PurchaseGetReqDTO dto, Pageable page) {
-		return purchaseRepository.findPurchaseByUuidAndDate(uuid, dto, page)
-				.stream()
-				.map(respDTO -> PurchasesGetRespDTO.builder()
-						.purchaseCode(respDTO.getPurchaseCode())
-						.purchaseListIds(getPurchaseListIds(respDTO.getId()))
-						.build())
-				.toList();
-
-	 // return purchaseRepository.findPurchaseByUuidAndDate_v2(uuid, dto, page);
-
+		return purchaseRepository.findPurchaseByUuidAndDate(uuid, dto, page);
 	}
 
 	@Override
@@ -185,11 +176,6 @@ public class PurchaseServiceImp implements PurchaseService {
 		if (!itemOptionRepository.updateSubtractStock(itemOptionId, count)) {
 			throw new BaseException(BaseResponseStatus.ITEM_STOCK_NOT_ENOUGH);
 		}
-	}
-
-	private List<Long> getPurchaseListIds(Long purchaseId) {
-		return purchaseListRepository.findIdsByPurchaseId(purchaseId);
-
 	}
 
 	private String makePurchaseCode() {

@@ -17,10 +17,8 @@ import org.springframework.data.domain.Pageable;
 import com.comehere.ssgserver.purchase.domain.PurchaseStatus;
 import com.comehere.ssgserver.purchase.dto.req.NonPurchaseGetReqDTO;
 import com.comehere.ssgserver.purchase.dto.req.PurchaseGetReqDTO;
-import com.comehere.ssgserver.purchase.dto.resp.PurchaseGetRespDTO;
 import com.comehere.ssgserver.purchase.dto.resp.PurchasesGetRespDTO;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -50,24 +48,7 @@ public class CustomPurchaseRepositoryImpl implements CustomPurchaseRepository {
 	}
 
 	@Override
-	public List<PurchaseGetRespDTO> findPurchaseByUuidAndDate(UUID uuid, PurchaseGetReqDTO dto, Pageable page) {
-		return queryFactory.select(Projections.fields(PurchaseGetRespDTO.class,
-						purchase.id,
-						purchase.purchaseCode
-				))
-				.from(purchase)
-				.where(purchase.uuid.eq(uuid),
-						creatAtAfter(dto.getStartDate()),
-						createAtBefore(dto.getEndDate()),
-						checkAcceptedPurchaseStatus(dto.getAcceptedStatus()))
-				.offset(page.getOffset())
-				.limit(page.getPageSize())
-				.orderBy(purchase.createAt.desc())
-				.fetch();
-	}
-
-	@Override
-	public List<PurchasesGetRespDTO> findPurchaseByUuidAndDate_v2(UUID uuid, PurchaseGetReqDTO dto, Pageable page) {
+	public List<PurchasesGetRespDTO> findPurchaseByUuidAndDate(UUID uuid, PurchaseGetReqDTO dto, Pageable page) {
 		List<Tuple> result = queryFactory.select(purchase.purchaseCode, purchaseList.id)
 				.from(purchase)
 				.leftJoin(purchaseList).on(purchase.id.eq(purchaseList.purchaseId))
@@ -78,20 +59,21 @@ public class CustomPurchaseRepositoryImpl implements CustomPurchaseRepository {
 				.orderBy(purchase.createAt.desc())
 				.fetch();
 
-		List<PurchasesGetRespDTO> test = new ArrayList<>();
+		List<PurchasesGetRespDTO> respDTO = new ArrayList<>();
 
+		// purchaseCode를 기준으로 purchaseListId를 그룹화
 		result.stream()
 				.collect(Collectors.groupingBy(tuple -> tuple.get(purchase.purchaseCode),
 						LinkedHashMap::new,
 						Collectors.mapping(tuple -> tuple.get(purchaseList.id), Collectors.toList())))
 				.forEach((purchaseCode, purchaseListIds) -> {
-					test.add(PurchasesGetRespDTO.builder()
+					respDTO.add(PurchasesGetRespDTO.builder()
 							.purchaseCode(purchaseCode)
 							.purchaseListIds(purchaseListIds)
 							.build());
 				});
 
-		return test;
+		return respDTO;
 	}
 
 	private BooleanExpression creatAtAfter(String startDate) {
