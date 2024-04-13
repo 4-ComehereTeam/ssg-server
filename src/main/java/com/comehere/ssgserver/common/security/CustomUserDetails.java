@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.comehere.ssgserver.member.domain.Member;
 
+// @ToString
 public class CustomUserDetails implements UserDetails {
 
 	// 커스텀할 경우 필요한 정보만 가져와서 사용

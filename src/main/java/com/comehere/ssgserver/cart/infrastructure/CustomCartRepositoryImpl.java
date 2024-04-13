@@ -29,8 +29,11 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 
 		return query
 				.select(Projections.constructor(ItemCountDTO.class,
+						QCart.cart.itemId,
 						QCart.cart.itemOptionId,
-						QCart.cart.itemCount))
+						QCart.cart.itemCount,
+						QCart.cart.pinStatus,
+						QCart.cart.itemCheck))
 				.from(QCart.cart)
 				.where(QCart.cart.uuid.eq(uuid))
 				.offset(pageable.getOffset())

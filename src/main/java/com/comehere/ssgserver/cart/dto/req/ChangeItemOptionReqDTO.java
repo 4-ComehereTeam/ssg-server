@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class ChangeItemOptionReqDTO {
 
+	private Long itemId;
+
 	private Long itemOptionId;
 
 	private Long newItemOptionId;

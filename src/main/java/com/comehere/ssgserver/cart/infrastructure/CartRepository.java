@@ -20,4 +20,6 @@ public interface CartRepository extends JpaRepository<Cart, Long>, CustomCartRep
 	@Modifying
 	@Query("DELETE FROM Cart c WHERE c.itemOptionId = :itemOptionId AND c.uuid = :uuid")
 	void deleteByItemOptionIdAndUuid(@Param("itemOptionId") Long itemOptionId, @Param("uuid") UUID uuid);
+
+	Boolean existsByUuidAndItemOptionId(UUID uuid, Long itemOptionId);
 }

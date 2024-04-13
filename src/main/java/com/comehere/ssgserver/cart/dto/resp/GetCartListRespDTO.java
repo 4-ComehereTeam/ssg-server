@@ -4,16 +4,12 @@ import java.util.List;
 
 import com.comehere.ssgserver.cart.dto.ItemCountDTO;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
 public class GetCartListRespDTO {
 
 	private List<ItemCountDTO> itemOptions;
-
-	public GetCartListRespDTO(List<ItemCountDTO> itemOptions) {
-		this.itemOptions = itemOptions;
-	}
 }

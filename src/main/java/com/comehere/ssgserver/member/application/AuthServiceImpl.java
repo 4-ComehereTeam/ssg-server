@@ -72,6 +72,8 @@ public class AuthServiceImpl implements AuthService {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				member.getUuid(), signinReqDto.getPassword()));
 
+		memberRepository.updateUpdateAtByUuid(member.getUuid());
+		
 		// 인증 성공 응답 생성
 		return SigninRespDTO.builder()
 				.uuid(member.getUuid())
@@ -89,7 +91,10 @@ public class AuthServiceImpl implements AuthService {
 		Member member = memberRepository.findByEmailAndName(findSigninIdReqDto.getEmail(), findSigninIdReqDto.getName())
 				.orElseThrow(() -> new BaseException(NO_EXIST_MEMBERS));
 
-		return new FindSigninIdRespDTO(member.getStatus(), member.getSigninId());
+		return FindSigninIdRespDTO.builder()
+				.status(member.getStatus())
+				.signinId(member.getSigninId())
+				.build();
 	}
 
 	// 비밀번호 찾기

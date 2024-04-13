@@ -84,5 +84,4 @@ public class Member extends BaseEntity {
 		this.address = address;
 		this.detailAddress = detailAddress;
 	}
-
 }

@@ -32,17 +32,14 @@ public class JWTFilter extends OncePerRequestFilter {
 		//Authorization 헤더 검증
 		if (authorization == null || !authorization.startsWith("Bearer")) {
 
-			System.out.println("token null");
 			filterChain.doFilter(request, response);
 
 			return;
 		}
-		System.out.println("authorization now");
 
 		String token = authorization.substring(7);
 
 		if (jwtUtil.isExpired(token)) {
-			System.out.println("token expired");
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -51,9 +48,7 @@ public class JWTFilter extends OncePerRequestFilter {
 		UUID userUuid = jwtUtil.getUserUuid(token);
 		String roleString = jwtUtil.getRole(token);
 		Role role = Role.valueOf(roleString.toUpperCase());
-
-		System.out.println("userUuid : " + userUuid + ",  role : " + roleString);
-
+		
 		Member member = Member
 				.builder()
 				.uuid(userUuid)

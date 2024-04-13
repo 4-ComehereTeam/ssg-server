@@ -1,18 +1,18 @@
 package com.comehere.ssgserver.member.dto.resp;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class FindSigninIdRespDTO {
 
 	private Short status;
 
 	private String signinId;
 
-	public FindSigninIdRespDTO(Short status, String signinId) {
-		this.status = status;
-		this.signinId = signinId;
-	}
 }
