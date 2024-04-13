@@ -19,11 +19,15 @@ import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import com.comehere.ssgserver.item.application.ItemService;
 import com.comehere.ssgserver.item.dto.req.DeleteRecentViewReqDTO;
+import com.comehere.ssgserver.item.dto.req.ItemCountReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
+import com.comehere.ssgserver.item.dto.resp.ItemCountRespDTO;
 import com.comehere.ssgserver.item.vo.req.DeleteRecentViewReqVO;
 import com.comehere.ssgserver.item.vo.req.ItemReqVO;
+import com.comehere.ssgserver.item.vo.resp.BestItemRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemCalcRespVO;
+import com.comehere.ssgserver.item.vo.resp.ItemCountRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemDetailRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemImageListRespVO;
 import com.comehere.ssgserver.item.vo.resp.ItemListRespVO;
@@ -75,7 +79,7 @@ public class ItemController {
 			@RequestParam(required = false) Integer detailCategoryId,
 			@RequestParam(required = false) Long brandId,
 			@RequestParam(required = false) String search,
-			@PageableDefault(size = 20) Pageable page) {
+			@PageableDefault(size = 40) Pageable page) {
 
 		log.info("카테고리 별 상품 목록 조회 : big={}, middle={}, small={}, detail={}, brandId={}, search={}",
 				bigCategoryId, middleCategoryId, smallCategoryId, detailCategoryId, brandId, search);
@@ -148,5 +152,24 @@ public class ItemController {
 				modelMapper.map(vo, DeleteRecentViewReqDTO.class));
 
 		return new BaseResponse<>();
+	}
+
+	@GetMapping("/count")
+	@Operation(summary = "최근 본 상품 내역 조회 API", description = "최근 본 상품 내역 등록 및 수정")
+	public BaseResponse<ItemCountRespVO> getCount(
+			@RequestParam(required = false) Integer bigCategoryId,
+			@RequestParam(required = false) Integer middleCategoryId,
+			@RequestParam(required = false) Integer smallCategoryId) {
+
+		return new BaseResponse<>(modelMapper.map(
+				itemService.getCount(ItemCountReqDTO.toBuild(bigCategoryId, middleCategoryId, smallCategoryId)),
+				ItemCountRespVO.class));
+	}
+
+	@GetMapping("/best")
+	@Operation(summary = "베스트 상품 조회 API", description = "베스트 상품 목록 조회")
+	public BaseResponse<BestItemRespVO> getBestItems(@RequestParam(required = false) Integer bigCategoryId) {
+		return new BaseResponse<>(modelMapper.map(
+				itemService.getBestItems(bigCategoryId), BestItemRespVO.class));
 	}
 }

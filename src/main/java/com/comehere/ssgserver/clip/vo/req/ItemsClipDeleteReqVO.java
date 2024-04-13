@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ItemsClipDeleteReqVO {
-	List<Long> itemIds = new ArrayList<>();
+	private List<Long> itemIds = new ArrayList<>();
 }

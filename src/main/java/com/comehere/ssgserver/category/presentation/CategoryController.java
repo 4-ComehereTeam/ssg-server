@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.category.application.CategoryService;
 import com.comehere.ssgserver.category.vo.resp.BigCategoryRespVO;
+import com.comehere.ssgserver.category.vo.resp.CategoryNameRespVO;
 import com.comehere.ssgserver.category.vo.resp.DetailCategoryRespVO;
 import com.comehere.ssgserver.category.vo.resp.MiddleCategoryRespVO;
 import com.comehere.ssgserver.category.vo.resp.SmallCategoryRespVO;
@@ -53,6 +54,27 @@ public class CategoryController {
 	public BaseResponse<DetailCategoryRespVO> getDetailCategory(@PathVariable("smallCategoryId") Integer id) {
 		log.info("상세 카테고리 목록 조회 : detail={}", id);
 		return new BaseResponse<>(modelMapper.map(categoryService.findDetailCategory(id), DetailCategoryRespVO.class));
+	}
+
+	@GetMapping("/big/name/{bigCategoryId}")
+	@Operation(summary = "대 카테고리 이름 조회 API", description = "대 카테고리의 이름 조회")
+	public BaseResponse<CategoryNameRespVO> getBigCategoryName(@PathVariable("bigCategoryId") Integer id) {
+		return new BaseResponse<>(modelMapper.map(
+				categoryService.findBigCategoryName(id), CategoryNameRespVO.class));
+	}
+
+	@GetMapping("/middle/name/{middleCategoryId}")
+	@Operation(summary = "중 카테고리 이름 조회 API", description = "중 카테고리의 이름 조회")
+	public BaseResponse<CategoryNameRespVO> getMiddleCategoryName(@PathVariable("middleCategoryId") Integer id) {
+		return new BaseResponse<>(modelMapper.map(
+				categoryService.findMiddleCategoryName(id), CategoryNameRespVO.class));
+	}
+
+	@GetMapping("/small/name/{smallCategoryId}")
+	@Operation(summary = "소 카테고리 이름 조회 API", description = "소 카테고리의 이름 조회")
+	public BaseResponse<CategoryNameRespVO> getSmallCategoryName(@PathVariable("smallCategoryId") Integer id) {
+		return new BaseResponse<>(modelMapper.map(
+				categoryService.findSmallCategoryName(id), CategoryNameRespVO.class));
 	}
 
 }

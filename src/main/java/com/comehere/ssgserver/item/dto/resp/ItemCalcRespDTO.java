@@ -2,11 +2,13 @@ package com.comehere.ssgserver.item.dto.resp;
 
 import com.comehere.ssgserver.item.domain.ItemCalc;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class ItemCalcRespDTO {
 	private Long reviewCount;
 

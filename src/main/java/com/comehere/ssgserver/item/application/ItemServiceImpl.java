@@ -15,10 +15,13 @@ import com.comehere.ssgserver.item.domain.Item;
 import com.comehere.ssgserver.item.domain.ItemCalc;
 import com.comehere.ssgserver.item.domain.RecentViewItem;
 import com.comehere.ssgserver.item.dto.req.DeleteRecentViewReqDTO;
+import com.comehere.ssgserver.item.dto.req.ItemCountReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemListReqDTO;
 import com.comehere.ssgserver.item.dto.req.ItemReqDTO;
+import com.comehere.ssgserver.item.dto.resp.BestItemRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ImageDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemCalcRespDTO;
+import com.comehere.ssgserver.item.dto.resp.ItemCountRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemDetailRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemImageListRespDTO;
 import com.comehere.ssgserver.item.dto.resp.ItemListRespDTO;
@@ -29,6 +32,7 @@ import com.comehere.ssgserver.item.infrastructual.ItemCalcRepository;
 import com.comehere.ssgserver.item.infrastructual.ItemImageRepository;
 import com.comehere.ssgserver.item.infrastructual.ItemRepository;
 import com.comehere.ssgserver.item.infrastructual.RecentViewItemRepository;
+import com.comehere.ssgserver.review.infrastructure.ReviewRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +44,7 @@ public class ItemServiceImpl implements ItemService {
 	private final ItemCalcRepository itemCalcRepository;
 	private final ItemImageRepository itemImageRepository;
 	private final RecentViewItemRepository recentViewItemRepository;
+	private final ReviewRepository reviewRepository;
 
 	@Override
 	public ItemDetailRespDTO getItemDetail(Long id) {
@@ -59,11 +64,14 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	public ItemCalcRespDTO getItemCalc(Long id) {
-		return ItemCalcRespDTO.toBuild(itemCalcRepository.findByItemId(id)
-				.orElseGet(() -> ItemCalc.builder()
-						.averageStar(0.0)
-						.reviewCount(0L)
-						.build()));
+		// return ItemCalcRespDTO.toBuild(itemCalcRepository.findByItemId(id)
+		// 		.orElseGet(() -> ItemCalc.builder()
+		// 				.averageStar(0.0)
+		// 				.reviewCount(0L)
+		// 				.build()));
+
+		ItemCalcRespDTO itemCalc = reviewRepository.getItemCalc(id);
+		return itemCalc != null ? itemCalc : new ItemCalcRespDTO(0L, 0.0);
 	}
 
 	@Override
@@ -139,5 +147,19 @@ public class ItemServiceImpl implements ItemService {
 	@Transactional
 	public void deleteRecentViewItems(UUID uuid, DeleteRecentViewReqDTO dto) {
 		recentViewItemRepository.deleteByUuidAndIds(uuid, dto.getRecentIds());
+	}
+
+	@Override
+	public ItemCountRespDTO getCount(ItemCountReqDTO dto) {
+		return ItemCountRespDTO.builder()
+				.count(itemRepository.getCount(dto))
+				.build();
+	}
+
+	@Override
+	public BestItemRespDTO getBestItems(Integer bigCategoryId) {
+		return BestItemRespDTO.builder()
+				.items(itemRepository.getBestItems(bigCategoryId))
+				.build();
 	}
 }
