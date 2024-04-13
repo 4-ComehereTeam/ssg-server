@@ -7,6 +7,8 @@ import lombok.Getter;
 @Getter
 public class AddressDetailDTO {
 
+	private Long addressId;
+
 	private String nickname;
 
 	private String address;
@@ -19,6 +21,7 @@ public class AddressDetailDTO {
 
 	public AddressDetailDTO(Address address) {
 
+		this.addressId = address.getId();
 		this.address = address.getAddress();
 		this.dtailAddress = address.getDetailAddress();
 		this.nickname = address.getNickname();

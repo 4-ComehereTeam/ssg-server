@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddressDetailVO {
 
+	private Long addressId;
+	
 	private String nickname;
 
 	private String address;
