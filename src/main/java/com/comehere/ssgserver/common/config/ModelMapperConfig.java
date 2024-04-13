@@ -27,6 +27,7 @@ public class ModelMapperConfig {
 		return modelMapper;
 	}
 
+	// 회원가입 요청 VO -> DTO 변환
 	@Bean
 	public ModelMapper joinModelMapper() {
 

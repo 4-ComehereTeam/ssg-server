@@ -57,6 +57,7 @@ public class OAuthServiceImpl implements OAuthService {
 
 		authenticationManager.authenticate(new SocialAuthenticationToken(member.getUuid(), null));
 
+		memberRepository.updateUpdateAtByUuid(member.getUuid());
 		// 생성된 JWT 토큰을 포함하여 응답 객체 반환
 		return OAuthSigninRespDTO.builder()
 				.accessToken(jwtUtil.createJwt(member.getUuid(), member.getRole().toString()))

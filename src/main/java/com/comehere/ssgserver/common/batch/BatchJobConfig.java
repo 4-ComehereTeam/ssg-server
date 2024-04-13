@@ -1,11 +1,5 @@
 package com.comehere.ssgserver.common.batch;
 
-import static com.comehere.ssgserver.item.domain.QItem.*;
-import static com.comehere.ssgserver.item.domain.QItemCalc.*;
-import static com.comehere.ssgserver.review.domain.QReview.*;
-
-import java.util.List;
-
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
@@ -13,9 +7,7 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
@@ -27,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.item.domain.ItemCalc;
 import com.comehere.ssgserver.review.dto.resp.ReviewSummaryDTO;
-import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
@@ -39,19 +29,19 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional
 public class BatchJobConfig {
-	private final JobRepository jobRepository;
+	// private final JobRepository jobRepository;
 	private final EntityManagerFactory emf;
 
-	@Bean
-	public Job itemSummaryJob(PlatformTransactionManager txm) throws Exception {
+	@Bean(name = "itemSummaryJob")
+	public Job itemSummaryJob(JobRepository jobRepository, PlatformTransactionManager txm) throws Exception {
 		return new JobBuilder("itemSummaryJob", jobRepository)
-				.start(step(txm))
+				.start(step(jobRepository, txm))
 				.build();
 	}
 
-	@Bean
+	@Bean(name = "itemSummaryStep")
 	@JobScope
-	public Step step(PlatformTransactionManager txm) throws Exception {
+	public Step step(JobRepository jobRepository, PlatformTransactionManager txm) throws Exception {
 		return new StepBuilder("itemSummaryStep", jobRepository)
 				.<ReviewSummaryDTO, ItemCalc>chunk(10, txm)
 				.reader(reader())
@@ -82,7 +72,7 @@ public class BatchJobConfig {
 
 	@Bean
 	@StepScope
-	public ItemProcessor<ReviewSummaryDTO,ItemCalc> processor() {
+	public ItemProcessor<ReviewSummaryDTO, ItemCalc> processor() {
 		return new ItemProcessor<ReviewSummaryDTO, ItemCalc>() {
 			@Override
 			public ItemCalc process(ReviewSummaryDTO dto) throws Exception {

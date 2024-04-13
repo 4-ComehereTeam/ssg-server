@@ -5,6 +5,8 @@ import lombok.Getter;
 @Getter
 public class ChangeItemOptionReqVO {
 
+	private Long itemId;
+	
 	private Long itemOptionId;
 
 	private Long newItemOptionId;

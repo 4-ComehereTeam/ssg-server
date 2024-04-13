@@ -7,6 +7,9 @@ import lombok.Setter;
 @Setter
 public class AddItemReqDTO {
 
+	private Long itemId;
+
 	private Long itemOptionId;
+
 	private Integer itemCount;
 }

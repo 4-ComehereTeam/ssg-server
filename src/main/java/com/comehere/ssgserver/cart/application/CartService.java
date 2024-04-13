@@ -15,7 +15,7 @@ import com.comehere.ssgserver.cart.dto.resp.ItemQuantityModifyRespDTO;
 public interface CartService {
 
 	//장바구니 상품 추가
-	Boolean addItemToCart(UUID uuid, AddItemReqDTO addItemReqDTO);
+	void addItemToCart(UUID uuid, AddItemReqDTO addItemReqDTO);
 
 	//상품 체크 상태 변경
 	Boolean changeItemChangeState(UUID uuid, ChangeStateReqDTO changeStateReqDTO);

@@ -9,6 +9,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ItemCountDTO {
 
+	private Long itemId;
+
 	private Long itemOptionId;
+
 	private Integer itemCount;
+
+	private Boolean pinStatus;
+
+	private Boolean itemCheck;
 }

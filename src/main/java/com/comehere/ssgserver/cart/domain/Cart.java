@@ -19,6 +19,8 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	private Long itemId;
+
 	private Long itemOptionId;
 
 	private Integer itemCount;
@@ -34,9 +36,11 @@ public class Cart {
 	private UUID uuid;
 
 	@Builder
-	public Cart(Long id, UUID uuid, Long itemOptionId, Integer itemCount, Boolean itemCheck, Long memberAddressId,
+	public Cart(Long id, UUID uuid, Long itemId, Long itemOptionId, Integer itemCount, Boolean itemCheck,
+			Long memberAddressId,
 			Boolean pinStatus) {
 		this.id = id;
+		this.itemId = itemId;
 		this.uuid = uuid;
 		this.itemOptionId = itemOptionId;
 		this.itemCount = itemCount;

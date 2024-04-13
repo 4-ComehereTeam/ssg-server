@@ -30,10 +30,12 @@ import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/cart")
+@Slf4j
 @Tag(name = "Cart", description = "장바구니 컨트롤러")
 public class CartController {
 
@@ -43,12 +45,11 @@ public class CartController {
 
 	@PostMapping("/")
 	@Operation(summary = "상품 장바구니에 추가")
-	public BaseResponse<Boolean> addItemToCart(@RequestHeader("Authorization") String accessToken,
+	public BaseResponse<Void> addItemToCart(@RequestHeader("Authorization") String accessToken,
 			@RequestBody AddItemReqVO addItemReqVO) {
-
-		return new BaseResponse<>(
-				cartService.addItemToCart(jwtUtil.getUuidByAuthorization(accessToken),
-						modelMapper.map(addItemReqVO, AddItemReqDTO.class)));
+		cartService.addItemToCart(jwtUtil.getUuidByAuthorization(accessToken),
+				modelMapper.map(addItemReqVO, AddItemReqDTO.class));
+		return new BaseResponse<>();
 	}
 
 	@PutMapping("/minus")
