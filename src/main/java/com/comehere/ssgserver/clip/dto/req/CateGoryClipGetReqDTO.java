@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class CateGoryClipStatusGetReqDTO {
+public class CateGoryClipGetReqDTO {
 	private Long bigCategoryId;
 
 	private Long middleCategoryId;
@@ -12,7 +12,7 @@ public class CateGoryClipStatusGetReqDTO {
 	private Long smallCategoryId;
 
 	@Builder
-	public CateGoryClipStatusGetReqDTO(Long bigCategoryId, Long middleCategoryId, Long smallCategoryId) {
+	public CateGoryClipGetReqDTO(Long bigCategoryId, Long middleCategoryId, Long smallCategoryId) {
 		this.bigCategoryId = bigCategoryId;
 		this.middleCategoryId = middleCategoryId;
 		this.smallCategoryId = smallCategoryId;

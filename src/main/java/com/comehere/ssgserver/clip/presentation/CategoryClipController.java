@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.comehere.ssgserver.clip.application.CategoryClipService;
-import com.comehere.ssgserver.clip.dto.req.CateGoryClipStatusGetReqDTO;
+import com.comehere.ssgserver.clip.dto.req.CateGoryClipGetReqDTO;
 import com.comehere.ssgserver.clip.dto.req.CategoriesClipDeleteReqDTO;
 import com.comehere.ssgserver.clip.dto.req.CategoryClipCreateReqDTO;
-import com.comehere.ssgserver.clip.dto.req.CategoryClipDeleteReqDTO;
 import com.comehere.ssgserver.clip.vo.req.CategoriesClipDeleteReqVO;
 import com.comehere.ssgserver.clip.vo.req.CategoryClipCreateReqVO;
-import com.comehere.ssgserver.clip.vo.req.CategoryClipDeleteReqVO;
 import com.comehere.ssgserver.clip.vo.resp.CategoriesClipGetRespVO;
+import com.comehere.ssgserver.clip.vo.resp.CategoryClipGetInfoRespVO;
+import com.comehere.ssgserver.clip.vo.resp.CategoryClipGetRespVO;
 import com.comehere.ssgserver.common.response.BaseResponse;
 import com.comehere.ssgserver.common.security.jwt.JWTUtil;
 
@@ -76,7 +76,7 @@ public class CategoryClipController {
 
 	@Operation(summary = "카테고리 좋아요 조회")
 	@GetMapping("/category")
-	public BaseResponse<Boolean> getCategoryClip(
+	public BaseResponse<CategoryClipGetInfoRespVO> getCategoryClip(
 			@RequestParam(value = "bigCategoryId", required = false) Long bigCategoryId,
 			@RequestParam(value = "middleCategoryId", required = false) Long middleCategoryId,
 			@RequestParam(value = "smallCategoryId", required = false) Long smallCategoryId,
@@ -84,12 +84,15 @@ public class CategoryClipController {
 
 		UUID uuid = jwtUtil.getUuidByAuthorization(accessToken);
 
-		CateGoryClipStatusGetReqDTO dto = CateGoryClipStatusGetReqDTO.builder()
+		CateGoryClipGetReqDTO dto = CateGoryClipGetReqDTO.builder()
 				.bigCategoryId(bigCategoryId)
 				.middleCategoryId(middleCategoryId)
 				.smallCategoryId(smallCategoryId)
 				.build();
 
-		return new BaseResponse<>(categoryClipService.getCategoryClipStatus(uuid, dto));
+		return new BaseResponse<>(
+				modelMapper.map(categoryClipService.getCategoryClip(uuid, dto), CategoryClipGetInfoRespVO.class));
 	}
+
+
 }
