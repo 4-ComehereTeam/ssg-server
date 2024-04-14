@@ -23,7 +23,8 @@ public class CustomBundleRepositoryImpl implements CustomBundleRepository {
 	public Slice<Long> getBundleList(Integer categoryId, Pageable page) {
 		List<Long> result = query.select(bundle.id)
 				.from(bundle)
-				.where(categoryIdEq(categoryId))
+				.where(categoryIdEq(categoryId),
+						bundle.status.eq(true))
 				.limit(page.getPageSize() + 1)
 				.offset(page.getOffset())
 				.fetch();

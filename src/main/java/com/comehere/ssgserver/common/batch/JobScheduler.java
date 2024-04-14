@@ -51,7 +51,7 @@ public class JobScheduler {
 
 	// 매일 자정마다 판매 종료 기간이 지난 특가 상품의 판매 상태를 false로 변경
 	@Transactional
-	@Scheduled(cron = "0 0 21 * * ?")
+	@Scheduled(cron = "0 20 21 * * ?")
 	public void updateBundleStatus() {
 		bundleRepository.updateBundleStatus();
 	}
