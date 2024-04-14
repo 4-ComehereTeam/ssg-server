@@ -26,4 +26,7 @@ public interface CustomMemberRepository {
 
 	//약관 동의 삭제
 	Long deleteAgree(String email);
+
+	//휴면 회원 전환
+	void updateDormantMember();
 }

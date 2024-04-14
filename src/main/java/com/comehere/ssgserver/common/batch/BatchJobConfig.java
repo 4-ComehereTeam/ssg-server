@@ -29,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional
 public class BatchJobConfig {
-	// private final JobRepository jobRepository;
 	private final EntityManagerFactory emf;
 
 	@Bean(name = "itemSummaryJob")
