@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.comehere.ssgserver.bundle.infrastructure.BundleRepository;
+import com.comehere.ssgserver.member.infrastructure.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +29,10 @@ public class JobScheduler {
 
 	private final JobLauncher jobLauncher;
 	private final BundleRepository bundleRepository;
+	private final MemberRepository memberRepository;
 
 	@Qualifier("itemSummaryJob")
 	private final Job itemSummaryJob;
-
-	// @Qualifier("dormantMemberJob")
-	// private final Job dormantMemberJob;
 
 	//매일 정각마다 상품 집계 계산 후 업데이트 (배치 작업) 수행
 	@Scheduled(cron = "0 0 * * * ?")
@@ -57,18 +56,10 @@ public class JobScheduler {
 		bundleRepository.updateBundleStatus();
 	}
 
-	// 매일 자정마다 회원들의 마지막 활동 시간을 조회한 후 1년 이상 활동이 없는 회원의 상태를 비활성화로 변경
-	// @Scheduled(cron = "0 46 1 * * ?")
-	// public void updateDormantMemberStatus() throws
-	// 		JobInstanceAlreadyCompleteException,
-	// 		JobExecutionAlreadyRunningException,
-	// 		JobParametersInvalidException,
-	// 		JobRestartException {
-	//
-	// 	JobParameters jobParameters = new JobParametersBuilder()
-	// 			.addLocalDateTime("time", LocalDateTime.now())
-	// 			.toJobParameters();
-	//
-	// 	//JobExecution jobExecution = jobLauncher.run(dormantMemberJob, jobParameters);
-	// }
+	// 메일 자정마다 마지막 활동시간이 1년이 지난 회원을 휴면회원으로 전환
+	@Transactional
+	@Scheduled(cron = "0 50 13 * * ?")
+	public void updateDormantMember() {
+		memberRepository.updateDormantMember();
+	}
 }

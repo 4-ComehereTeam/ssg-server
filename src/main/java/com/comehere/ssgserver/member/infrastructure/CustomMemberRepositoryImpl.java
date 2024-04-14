@@ -60,7 +60,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 	@Override
 	public Long ResignMember(String signinId) {
 
-		Long result = query.update(QMember.member)
+		return query.update(QMember.member)
 				.set(QMember.member.resignCount, QMember.member.resignCount.add(1))
 				.set(QMember.member.status, (short)-1)
 				.set(QMember.member.resignTime, LocalDateTime.now())
@@ -68,8 +68,6 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 				.where(QMember.member.signinId.eq(signinId),
 						QMember.member.status.eq((short)1))
 				.execute();
-
-		return result;
 	}
 
 	//주소 삭제
@@ -87,6 +85,16 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 
 		return query.delete(QAgree.agree)
 				.where(QAgree.agree.email.eq(email))
+				.execute();
+	}
+
+	@Override
+	public void updateDormantMember() {
+
+		query.update(QMember.member)
+				.set(QMember.member.status, (short)0)
+				.where(QMember.member.updateAt.lt(LocalDateTime.now().minusYears(1)),
+						QMember.member.status.eq((short)1))
 				.execute();
 	}
 }
