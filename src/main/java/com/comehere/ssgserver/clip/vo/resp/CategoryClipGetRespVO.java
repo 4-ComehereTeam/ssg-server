@@ -5,6 +5,8 @@ import lombok.Getter;
 @Getter
 
 public class CategoryClipGetRespVO {
+	private Long id;
+
 	private Long bigCategoryId;
 
 	private Long middleCategoryId;
