@@ -24,7 +24,7 @@ public interface AuthService {
 	Boolean findPassword(FindPasswordReqDTO findPasswordReqDto);
 
 	//이메일 중복 체크
-	boolean checkUserEmailDuplication(String email);
+	boolean checkUserEmailDuplication(CheckStateReqDTO checkStateReqDTO);
 
 	//아이디 중복 체크
 	boolean checkUserSignInIdDuplication(String signInId);

@@ -21,6 +21,7 @@ import com.comehere.ssgserver.member.vo.req.ModifyPwdReqVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,32 +45,31 @@ public class MemberController {
 	@PutMapping("/modify/password")
 	@Operation(summary = "비밀번호 변경")
 	public BaseResponse<Boolean> userModifyPassword(@RequestHeader("Authorization") String accessToken,
-			@RequestBody ModifyPwdReqVO modifyPwdReqVo) {
+			@RequestBody @Valid ModifyPwdReqVO modifyPwdReqVo) {
 
-		ModifyPwdReqDTO modifyPwdReqDTO = modelMapper.map(modifyPwdReqVo, ModifyPwdReqDTO.class);
 		return new BaseResponse<>(
-				memberService.modifyPassword(jwtUtil.getUuidByAuthorization(accessToken), modifyPwdReqDTO));
+				memberService.modifyPassword(jwtUtil.getUuidByAuthorization(accessToken),
+						modelMapper.map(modifyPwdReqVo, ModifyPwdReqDTO.class)));
 	}
 
 	@PutMapping("/modify/email")
 	@Operation(summary = "이메일 변경")
 	public BaseResponse<Boolean> userModifyEmail(@RequestHeader("Authorization") String accessToken,
-			@RequestBody ModifyEmailReqVO modifyEmailReqVo) {
+			@RequestBody @Valid ModifyEmailReqVO modifyEmailReqVo) {
 
-		ModifyEmailReqDTO modifyEmailReqDTO = modelMapper.map(modifyEmailReqVo, ModifyEmailReqDTO.class);
 		return new BaseResponse<>(
-				memberService.modifyEmail(jwtUtil.getUuidByAuthorization(accessToken), modifyEmailReqDTO));
+				memberService.modifyEmail(jwtUtil.getUuidByAuthorization(accessToken),
+						modelMapper.map(modifyEmailReqVo, ModifyEmailReqDTO.class)));
 	}
 
 	@PutMapping("/modify/phone")
 	@Operation(summary = "전화번호 변경")
 	public BaseResponse<Boolean> userModifyPhone(@RequestHeader("Authorization") String accessToken,
-			@RequestBody ModifyPhoneReqVO modifyPhoneReqVo) {
-
-		ModifyPhoneReqDTO modifyPhoneReqDTO = modelMapper.map(modifyPhoneReqVo, ModifyPhoneReqDTO.class);
+			@RequestBody @Valid ModifyPhoneReqVO modifyPhoneReqVo) {
 
 		return new BaseResponse<>(
-				memberService.modifyPhone(jwtUtil.getUuidByAuthorization(accessToken), modifyPhoneReqDTO));
+				memberService.modifyPhone(jwtUtil.getUuidByAuthorization(accessToken),
+						modelMapper.map(modifyPhoneReqVo, ModifyPhoneReqDTO.class)));
 	}
 
 	@PutMapping("resign")

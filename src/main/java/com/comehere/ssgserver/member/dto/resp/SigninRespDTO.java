@@ -2,13 +2,15 @@ package com.comehere.ssgserver.member.dto.resp;
 
 import java.util.UUID;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@Setter
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SigninRespDTO {
 
 	private String accessToken;

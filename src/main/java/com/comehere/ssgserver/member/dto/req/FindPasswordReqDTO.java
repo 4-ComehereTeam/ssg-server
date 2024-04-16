@@ -1,10 +1,14 @@
 package com.comehere.ssgserver.member.dto.req;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class FindPasswordReqDTO {
 
 	private String email;
@@ -12,4 +16,8 @@ public class FindPasswordReqDTO {
 	private String name;
 
 	private String newPassword;
+
+	public void updatePasswordEncoder(String newPassword) {
+		this.newPassword = newPassword;
+	}
 }
