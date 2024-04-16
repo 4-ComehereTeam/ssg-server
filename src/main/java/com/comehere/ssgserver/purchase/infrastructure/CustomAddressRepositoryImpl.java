@@ -1,8 +1,9 @@
 package com.comehere.ssgserver.purchase.infrastructure;
 
+import static com.comehere.ssgserver.purchase.domain.QAddress.*;
+
 import java.util.UUID;
 
-import com.comehere.ssgserver.purchase.domain.QAddress;
 import com.comehere.ssgserver.purchase.dto.req.ModifyRequestMessageReqDTO;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,9 +19,9 @@ public class CustomAddressRepositoryImpl implements CustomAddressRepository {
 	@Override
 	public Long getDefaultAddress(UUID uuid) {
 
-		return query.select(QAddress.address1.id)
-				.from(QAddress.address1)
-				.where(QAddress.address1.uuid.eq(uuid), QAddress.address1.defaultAddress.eq(true))
+		return query.select(address1.id)
+				.from(address1)
+				.where(address1.uuid.eq(uuid), address1.defaultAddress.eq(true))
 				.fetchOne();
 	}
 
@@ -28,9 +29,9 @@ public class CustomAddressRepositoryImpl implements CustomAddressRepository {
 	@Override
 	public Long cancelDefaultAddress(UUID uuid) {
 
-		return query.update(QAddress.address1)
-				.set(QAddress.address1.defaultAddress, false)
-				.where(QAddress.address1.uuid.eq(uuid), QAddress.address1.defaultAddress.eq(true))
+		return query.update(address1)
+				.set(address1.defaultAddress, false)
+				.where(address1.uuid.eq(uuid), address1.defaultAddress.eq(true))
 				.execute();
 	}
 
@@ -38,24 +39,24 @@ public class CustomAddressRepositoryImpl implements CustomAddressRepository {
 	@Override
 	public Long updateDefaultAddress(UUID uuid, Long addressId) {
 
-		return query.update(QAddress.address1)
-				.set(QAddress.address1.defaultAddress,
+		return query.update(address1)
+				.set(address1.defaultAddress,
 						new CaseBuilder()
-								.when(QAddress.address1.defaultAddress.eq(true))
+								.when(address1.defaultAddress.eq(true))
 								.then(false)
 								.otherwise(true))
-				.where(QAddress.address1.uuid.eq(uuid),
-						QAddress.address1.id.eq(addressId))
+				.where(address1.uuid.eq(uuid),
+						address1.id.eq(addressId))
 				.execute();
 	}
 
 	@Override
 	public Long updateRequestMessage(UUID uuid, ModifyRequestMessageReqDTO modifyRequestMessageReqDTO) {
 
-		return query.update(QAddress.address1)
-				.set(QAddress.address1.requestMessage, modifyRequestMessageReqDTO.getNewMessage())
-				.where(QAddress.address1.uuid.eq(uuid),
-						QAddress.address1.id.eq(modifyRequestMessageReqDTO.getAddressId()))
+		return query.update(address1)
+				.set(address1.requestMessage, modifyRequestMessageReqDTO.getNewMessage())
+				.where(address1.uuid.eq(uuid),
+						address1.id.eq(modifyRequestMessageReqDTO.getAddressId()))
 				.execute();
 	}
 }

@@ -1,11 +1,12 @@
 package com.comehere.ssgserver.cart.infrastructure;
 
+import static com.comehere.ssgserver.cart.domain.QCart.*;
+
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 
-import com.comehere.ssgserver.cart.domain.QCart;
 import com.comehere.ssgserver.cart.dto.ItemCountDTO;
 import com.comehere.ssgserver.cart.dto.req.ChangeStateReqDTO;
 import com.comehere.ssgserver.cart.dto.req.DeleteItemReqDTO;
@@ -29,13 +30,13 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 
 		return query
 				.select(Projections.constructor(ItemCountDTO.class,
-						QCart.cart.itemId,
-						QCart.cart.itemOptionId,
-						QCart.cart.itemCount,
-						QCart.cart.pinStatus,
-						QCart.cart.itemCheck))
-				.from(QCart.cart)
-				.where(QCart.cart.uuid.eq(uuid))
+						cart.itemId,
+						cart.itemOptionId,
+						cart.itemCount,
+						cart.pinStatus,
+						cart.itemCheck))
+				.from(cart)
+				.where(cart.uuid.eq(uuid))
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
 				.fetch();
@@ -45,10 +46,10 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 	@Override
 	public Long updateItemQuantity(UUID uuid, Long ItemOptionId, int count) {
 		return query
-				.update(QCart.cart)
-				.set(QCart.cart.itemCount, QCart.cart.itemCount.add(count))
-				.where(QCart.cart.uuid.eq(uuid),
-						QCart.cart.itemOptionId.eq(ItemOptionId))
+				.update(cart)
+				.set(cart.itemCount, cart.itemCount.add(count))
+				.where(cart.uuid.eq(uuid),
+						cart.itemOptionId.eq(ItemOptionId))
 				.execute();
 	}
 
@@ -57,10 +58,10 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 	public Long minusItemQuantity(UUID uuid, ItemQuantityModifyReqDTO itemQuantityModifyReqDTO) {
 
 		return query
-				.update(QCart.cart)
-				.set(QCart.cart.itemCount, QCart.cart.itemCount.subtract(1))
-				.where(QCart.cart.uuid.eq(uuid),
-						QCart.cart.itemOptionId.eq(itemQuantityModifyReqDTO.getItemOptionId()))
+				.update(cart)
+				.set(cart.itemCount, cart.itemCount.subtract(1))
+				.where(cart.uuid.eq(uuid),
+						cart.itemOptionId.eq(itemQuantityModifyReqDTO.getItemOptionId()))
 				.execute();
 	}
 
@@ -69,15 +70,15 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 	public Long updateCheckState(UUID uuid, ChangeStateReqDTO changeStateReqDTO) {
 
 		return query
-				.update(QCart.cart)
-				.set(QCart.cart.itemCheck,
+				.update(cart)
+				.set(cart.itemCheck,
 						new CaseBuilder()
-								.when(QCart.cart.itemCheck.eq(true))
+								.when(cart.itemCheck.eq(true))
 								.then(false)
 								.otherwise(true))
-				.where(QCart.cart.uuid.eq(uuid),
-						QCart.cart.itemOptionId.eq(changeStateReqDTO.getItemOptionId()),
-						QCart.cart.id.eq(changeStateReqDTO.getCartId()))
+				.where(cart.uuid.eq(uuid),
+						cart.itemOptionId.eq(changeStateReqDTO.getItemOptionId()),
+						cart.id.eq(changeStateReqDTO.getCartId()))
 				.execute();
 	}
 
@@ -86,15 +87,15 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 	public Long updatePinState(UUID uuid, ChangeStateReqDTO changeStateReqDTO) {
 
 		return query
-				.update(QCart.cart)
-				.set(QCart.cart.pinStatus,
+				.update(cart)
+				.set(cart.pinStatus,
 						new CaseBuilder()
-								.when(QCart.cart.pinStatus.eq(true))
+								.when(cart.pinStatus.eq(true))
 								.then(false)
 								.otherwise(true))
-				.where(QCart.cart.uuid.eq(uuid),
-						QCart.cart.itemOptionId.eq(changeStateReqDTO.getItemOptionId()),
-						QCart.cart.id.eq(changeStateReqDTO.getCartId()))
+				.where(cart.uuid.eq(uuid),
+						cart.itemOptionId.eq(changeStateReqDTO.getItemOptionId()),
+						cart.id.eq(changeStateReqDTO.getCartId()))
 				.execute();
 	}
 
@@ -102,9 +103,9 @@ public class CustomCartRepositoryImpl implements CustomCartRepository {
 	public Long deleteItem(UUID uuid, DeleteItemReqDTO deleteItemReqDTO) {
 
 		return query
-				.delete(QCart.cart)
-				.where(QCart.cart.uuid.eq(uuid),
-						QCart.cart.itemOptionId.in(deleteItemReqDTO.getItemOptionIds()))
+				.delete(cart)
+				.where(cart.uuid.eq(uuid),
+						cart.itemOptionId.in(deleteItemReqDTO.getItemOptionIds()))
 				.execute();
 	}
 }

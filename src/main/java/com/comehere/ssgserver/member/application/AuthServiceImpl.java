@@ -73,7 +73,7 @@ public class AuthServiceImpl implements AuthService {
 				member.getUuid(), signinReqDto.getPassword()));
 
 		memberRepository.updateUpdateAtByUuid(member.getUuid());
-		
+
 		// 인증 성공 응답 생성
 		return SigninRespDTO.builder()
 				.uuid(member.getUuid())
@@ -102,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
 	@Transactional
 	public Boolean findPassword(FindPasswordReqDTO findPasswordReqDto) {
 		// 비밀번호 암호화
-		findPasswordReqDto.setNewPassword(bCryptPasswordEncoder.encode(findPasswordReqDto.getNewPassword()));
+		findPasswordReqDto.updatePasswordEncoder(bCryptPasswordEncoder.encode(findPasswordReqDto.getNewPassword()));
 		return memberRepository.updatePassword(findPasswordReqDto) > 0;
 	}
 
@@ -116,9 +116,9 @@ public class AuthServiceImpl implements AuthService {
 	// 회원가입 전 중복 이메일 검증
 	@Transactional(readOnly = true)
 	@Override
-	public boolean checkUserEmailDuplication(String email) {
+	public boolean checkUserEmailDuplication(CheckStateReqDTO checkStateReqDTO) {
 
-		return memberRepository.existsByEmail(email);
+		return memberRepository.existsByEmail(checkStateReqDTO.getEmail());
 	}
 
 	// 회원의 탈퇴횟수 조회
@@ -182,7 +182,7 @@ public class AuthServiceImpl implements AuthService {
 				.resignCount(member.getResignCount())
 				.resignTime(member.getResignTime())
 				.uuid(UUID.randomUUID())
-				.role(Role.valueOf("USER"))
+				.role(Role.USER)
 				.zipcode(joinReqDTO.getAddressInfoReqDTO().getZipcode())
 				.address(joinReqDTO.getAddressInfoReqDTO().getAddress())
 				.detailAddress(joinReqDTO.getAddressInfoReqDTO().getDetailAddress())
@@ -203,7 +203,7 @@ public class AuthServiceImpl implements AuthService {
 				.status((short)1)
 				.resignCount(0)
 				.uuid(UUID.randomUUID())
-				.role(Role.valueOf("USER"))
+				.role(Role.USER)
 				.zipcode(joinReqDTO.getAddressInfoReqDTO().getZipcode())
 				.address(joinReqDTO.getAddressInfoReqDTO().getAddress())
 				.detailAddress(joinReqDTO.getAddressInfoReqDTO().getDetailAddress())

@@ -1,15 +1,16 @@
 package com.comehere.ssgserver.member.dto.resp;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CheckResignCountRespDTO {
 
 	private Integer resignCount;
 
-	public CheckResignCountRespDTO(Integer resignCount) {
-		this.resignCount = resignCount;
-	}
 }

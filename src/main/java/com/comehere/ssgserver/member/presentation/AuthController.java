@@ -1,7 +1,5 @@
 package com.comehere.ssgserver.member.presentation;
 
-import java.util.Map;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,12 +79,10 @@ public class AuthController {
 
 	@PostMapping("/email/check")
 	@Operation(summary = "이메일 중복확인", description = "이메일 중복확인을 통해서 가입된 회원인지 조회")
-	public BaseResponse<Boolean> checkUserEmailDuplication(@RequestBody Map<String, String> email) {
+	public BaseResponse<Boolean> checkUserEmailDuplication(@RequestBody CheckStateReqVO checkStateReqVO) {
 
-		String emailStr = email.get("email");
-		boolean isDuplicated = authService.checkUserEmailDuplication(emailStr);
-
-		if (isDuplicated) {
+		if (authService.checkUserEmailDuplication(
+				modelMapper.map(checkStateReqVO, CheckStateReqDTO.class))) {
 			//이메일이 이미 사용 중인 경우
 			return new BaseResponse<>(BaseResponseStatus.DUPLICATE_EMAIL);
 		} else {

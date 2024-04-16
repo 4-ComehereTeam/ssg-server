@@ -1,10 +1,11 @@
 package com.comehere.ssgserver.member.infrastructure;
 
+import static com.comehere.ssgserver.member.domain.QMember.*;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.comehere.ssgserver.member.domain.QAgree;
-import com.comehere.ssgserver.member.domain.QMember;
 import com.comehere.ssgserver.member.dto.req.FindPasswordReqDTO;
 import com.comehere.ssgserver.purchase.domain.QAddress;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -20,19 +21,19 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 	@Override
 	public Long memberUpdatePassword(UUID uuid, String newPassword) {
 
-		return query.update(QMember.member)
-				.set(QMember.member.password, newPassword)
-				.where(QMember.member.uuid.eq(uuid))
+		return query.update(member)
+				.set(member.password, newPassword)
+				.where(member.uuid.eq(uuid))
 				.execute();
 	}
 
 	@Override
 	public Long updatePassword(FindPasswordReqDTO findPasswordReqDto) {
 
-		return query.update(QMember.member)
-				.set(QMember.member.password, findPasswordReqDto.getNewPassword())
-				.where(QMember.member.email.eq(findPasswordReqDto.getEmail()),
-						QMember.member.name.eq(findPasswordReqDto.getName()))
+		return query.update(member)
+				.set(member.password, findPasswordReqDto.getNewPassword())
+				.where(member.email.eq(findPasswordReqDto.getEmail()),
+						member.name.eq(findPasswordReqDto.getName()))
 				.execute();
 	}
 
@@ -40,9 +41,9 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 	@Override
 	public Long updateEmail(UUID uuid, String newEmail) {
 
-		return query.update(QMember.member)
-				.set(QMember.member.email, newEmail)
-				.where(QMember.member.uuid.eq(uuid))
+		return query.update(member)
+				.set(member.email, newEmail)
+				.where(member.uuid.eq(uuid))
 				.execute();
 	}
 
@@ -50,9 +51,9 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 	@Override
 	public Long updatePhone(UUID uuid, String newPhone) {
 
-		return query.update(QMember.member)
-				.set(QMember.member.phone, newPhone)
-				.where(QMember.member.uuid.eq(uuid))
+		return query.update(member)
+				.set(member.phone, newPhone)
+				.where(member.uuid.eq(uuid))
 				.execute();
 	}
 
@@ -60,13 +61,13 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 	@Override
 	public Long ResignMember(String signinId) {
 
-		return query.update(QMember.member)
-				.set(QMember.member.resignCount, QMember.member.resignCount.add(1))
-				.set(QMember.member.status, (short)-1)
-				.set(QMember.member.resignTime, LocalDateTime.now())
-				.set(QMember.member.signinId, " ")
-				.where(QMember.member.signinId.eq(signinId),
-						QMember.member.status.eq((short)1))
+		return query.update(member)
+				.set(member.resignCount, member.resignCount.add(1))
+				.set(member.status, (short)-1)
+				.set(member.resignTime, LocalDateTime.now())
+				.set(member.signinId, " ")
+				.where(member.signinId.eq(signinId),
+						member.status.eq((short)1))
 				.execute();
 	}
 
@@ -91,10 +92,10 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 	@Override
 	public void updateDormantMember() {
 
-		query.update(QMember.member)
-				.set(QMember.member.status, (short)0)
-				.where(QMember.member.updateAt.lt(LocalDateTime.now().minusYears(1)),
-						QMember.member.status.eq((short)1))
+		query.update(member)
+				.set(member.status, (short)0)
+				.where(member.updateAt.lt(LocalDateTime.now().minusYears(1)),
+						member.status.eq((short)1))
 				.execute();
 	}
 }
