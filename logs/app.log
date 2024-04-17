@@ -1,0 +1,129 @@
+2024-04-10 16:54:02 -  INFO [main] --- c.c.s.SsgserverApplication: Starting SsgserverApplication using Java 17.0.9 with PID 9560 (C:\Users\01278\Spring\spharos\ssg-server\build\classes\java\main started by 01278 in C:\Users\01278\Spring\spharos\ssg-server)
+2024-04-10 16:54:02 - DEBUG [main] --- c.c.s.SsgserverApplication: Running with Spring Boot v3.1.9, Spring v6.0.17
+2024-04-10 16:54:02 -  INFO [main] --- c.c.s.SsgserverApplication: No active profile set, falling back to 1 default profile: "default"
+2024-04-10 16:54:03 -  INFO [main] --- o.s.d.r.c.RepositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-04-10 16:54:03 -  INFO [main] --- o.s.d.r.c.RepositoryConfigurationDelegate: Finished Spring Data repository scanning in 175 ms. Found 22 JPA repository interfaces.
+2024-04-10 16:54:03 -  INFO [main] --- o.s.b.w.e.t.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2024-04-10 16:54:03 -  INFO [main] --- o.a.c.c.StandardService: Starting service [Tomcat]
+2024-04-10 16:54:03 -  INFO [main] --- o.a.c.c.StandardEngine: Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-04-10 16:54:03 -  INFO [main] --- o.a.c.c.C.[.[.[/]: Initializing Spring embedded WebApplicationContext
+2024-04-10 16:54:03 -  INFO [main] --- o.s.b.w.s.c.ServletWebServerApplicationContext: Root WebApplicationContext: initialization completed in 1584 ms
+2024-04-10 16:54:03 -  INFO [main] --- c.z.h.HikariDataSource: HikariPool-1 - Starting...
+2024-04-10 16:54:04 -  INFO [main] --- c.z.h.p.HikariPool: HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7bec8cb0
+2024-04-10 16:54:04 -  INFO [main] --- c.z.h.HikariDataSource: HikariPool-1 - Start completed.
+2024-04-10 16:54:05 -  INFO [main] --- o.h.j.i.u.LogHelper: HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-04-10 16:54:05 -  INFO [main] --- o.h.Version: HHH000412: Hibernate ORM core version 6.2.22.Final
+2024-04-10 16:54:05 -  INFO [main] --- o.h.c.Environment: HHH000406: Using bytecode reflection optimizer
+2024-04-10 16:54:05 -  INFO [main] --- o.s.o.j.p.SpringPersistenceUnitInfo: No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-04-10 16:54:06 -  INFO [main] --- o.h.e.t.j.p.i.JtaPlatformInitiator: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-04-10 16:54:07 -  INFO [main] --- o.s.o.j.LocalContainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-04-10 16:54:08 -  INFO [main] --- o.s.d.j.r.q.QueryEnhancerFactory: Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-04-10 16:54:08 -  WARN [main] --- o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-04-10 16:54:09 -  INFO [main] --- o.s.s.w.DefaultSecurityFilterChain: Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5de25642, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@479885d, org.springframework.security.web.context.SecurityContextHolderFilter@43e869ea, org.springframework.security.web.header.HeaderWriterFilter@27192b0c, org.springframework.security.web.authentication.logout.LogoutFilter@5aaab2b0, com.comehere.ssgserver.common.security.jwt.JWTFilter@47609e3d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@10b9956a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6559f04e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7555782c, org.springframework.security.web.session.SessionManagementFilter@45e1d6a5, org.springframework.security.web.access.ExceptionTranslationFilter@3f92977a, org.springframework.security.web.access.intercept.AuthorizationFilter@20ff27a4]
+2024-04-10 16:54:09 -  INFO [main] --- o.q.i.StdSchedulerFactory: Using default implementation for ThreadExecutor
+2024-04-10 16:54:09 -  INFO [main] --- o.q.c.SchedulerSignalerImpl: Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2024-04-10 16:54:09 -  INFO [main] --- o.q.c.QuartzScheduler: Quartz Scheduler v.2.3.2 created.
+2024-04-10 16:54:09 -  INFO [main] --- o.q.s.RAMJobStore: RAMJobStore initialized.
+2024-04-10 16:54:09 -  INFO [main] --- o.q.c.QuartzScheduler: Scheduler meta-data: Quartz Scheduler (v2.3.2) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2024-04-10 16:54:09 -  INFO [main] --- o.q.i.StdSchedulerFactory: Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+2024-04-10 16:54:09 -  INFO [main] --- o.q.i.StdSchedulerFactory: Quartz scheduler version: 2.3.2
+2024-04-10 16:54:09 -  INFO [main] --- o.q.c.QuartzScheduler: JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@74d2525f
+2024-04-10 16:54:09 -  INFO [main] --- o.s.b.w.e.t.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2024-04-10 16:54:09 -  INFO [main] --- o.s.s.q.SchedulerFactoryBean: Starting Quartz Scheduler now
+2024-04-10 16:54:09 -  INFO [main] --- o.q.c.QuartzScheduler: Scheduler quartzScheduler_$_NON_CLUSTERED started.
+2024-04-10 16:54:09 -  INFO [main] --- c.c.s.SsgserverApplication: Started SsgserverApplication in 8.005 seconds (process running for 8.445)
+2024-04-10 16:54:09 -  INFO [main] --- o.s.b.a.b.JobLauncherApplicationRunner: Running default command line with: []
+2024-04-10 16:54:10 -  INFO [main] --- o.s.b.c.l.s.SimpleJobLauncher: Job: [SimpleJob: [name=itemSummaryJob]] launched with the following parameters: [{}]
+2024-04-10 16:54:10 - DEBUG [main] --- o.s.b.c.j.AbstractJob: Job execution starting: JobExecution: id=8, version=0, startTime=null, endTime=null, lastUpdated=2024-04-10T16:54:10.606710100, status=STARTING, exitStatus=exitCode=UNKNOWN;exitDescription=, job=[JobInstance: id=1, version=0, Job=[itemSummaryJob]], jobParameters=[{}]
+2024-04-10 16:54:10 - DEBUG [main] --- o.s.b.c.s.JobScope: Creating object in scope=job, name=scopedTarget.step
+2024-04-10 16:54:11 -  WARN [main] --- o.s.b.c.l.AbstractListenerFactoryBean: org.springframework.batch.item.ItemProcessor is an interface. The implementing class will not be queried for annotation based listener configurations. If using @StepScope on a @Bean method, be sure to return the implementing class so listener annotations can be used.
+2024-04-10 16:54:11 -  INFO [main] --- o.s.b.c.j.SimpleStepHandler: Executing step: [itemSummaryStep]
+2024-04-10 16:54:11 - DEBUG [main] --- o.s.b.c.s.AbstractStep: Executing: id=7
+2024-04-10 16:54:11 - DEBUG [main] --- o.s.b.r.s.RepeatTemplate: Starting repeat context.
+2024-04-10 16:54:11 - DEBUG [main] --- o.s.b.r.s.RepeatTemplate: Repeat operation about to start at count=1
+2024-04-10 16:54:11 - DEBUG [main] --- o.s.b.c.s.c.StepContextRepeatCallback: Preparing chunk execution for StepContext: org.springframework.batch.core.scope.context.StepContext@20821620
+2024-04-10 16:54:11 - DEBUG [main] --- o.s.b.c.s.c.StepContextRepeatCallback: Chunk execution starting: queue size=0
+2024-04-10 16:54:11 - DEBUG [main] --- o.s.b.r.s.RepeatTemplate: Starting repeat context.
+2024-04-10 16:54:11 - DEBUG [main] --- o.s.b.r.s.RepeatTemplate: Repeat operation about to start at count=1
+2024-04-10 16:54:11 - DEBUG [main] --- o.s.b.c.s.StepScope: Creating object in scope=step, name=scopedTarget.reader
+2024-04-10 16:54:11 -  INFO [main] --- c.c.s.c.b.BatchJobConfig: reader
+2024-04-10 16:54:11 - DEBUG [main] --- o.h.SQL: 
+    select
+        min(i1_0.id),
+        min(i2_0.id),
+        avg(r1_0.star),
+        count(r1_0.id) 
+    from
+        review r1_0 
+    join
+        item i1_0 
+            on r1_0.item_code=i1_0.code 
+    join
+        item_calc i2_0 
+            on i1_0.id=i2_0.item_id 
+    group by
+        r1_0.item_code 
+    limit
+        ?,?
+2024-04-10 16:54:11 - DEBUG [main] --- o.s.b.r.s.RepeatTemplate: Repeat operation about to start at count=2
+2024-04-10 16:54:11 - DEBUG [main] --- o.h.SQL: 
+    select
+        min(i1_0.id),
+        min(i2_0.id),
+        avg(r1_0.star),
+        count(r1_0.id) 
+    from
+        review r1_0 
+    join
+        item i1_0 
+            on r1_0.item_code=i1_0.code 
+    join
+        item_calc i2_0 
+            on i1_0.id=i2_0.item_id 
+    group by
+        r1_0.item_code 
+    limit
+        ?,?
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.r.s.RepeatTemplate: Repeat is complete according to policy and result value.
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.c.s.StepScope: Creating object in scope=step, name=scopedTarget.processor
+2024-04-10 16:54:12 -  INFO [main] --- c.c.s.c.b.BatchJobConfig: processor
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.c.s.StepScope: Creating object in scope=step, name=scopedTarget.writer
+2024-04-10 16:54:12 -  INFO [main] --- c.c.s.c.b.BatchJobConfig: writer
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.i.d.JpaItemWriter: Writing to JPA with 1 items.
+2024-04-10 16:54:12 - DEBUG [main] --- o.h.SQL: 
+    select
+        i1_0.id,
+        i1_0.average_star,
+        i1_0.item_id,
+        i1_0.review_count 
+    from
+        item_calc i1_0 
+    where
+        i1_0.id=?
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.i.d.JpaItemWriter: 1 entities merged.
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.i.d.JpaItemWriter: 0 entities found in persistence context.
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.c.s.i.ChunkOrientedTasklet: Inputs not busy, ended: true
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.c.s.t.TaskletStep: Applying contribution: [StepContribution: read=1, written=1, filtered=0, readSkips=0, writeSkips=0, processSkips=0, exitStatus=EXECUTING]
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.c.s.t.TaskletStep: Saving step execution before commit: StepExecution: id=7, version=1, name=itemSummaryStep, status=STARTED, exitStatus=EXECUTING, readCount=1, filterCount=0, writeCount=1 readSkipCount=0, writeSkipCount=0, processSkipCount=0, commitCount=1, rollbackCount=0, exitDescription=
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.r.s.RepeatTemplate: Repeat is complete according to policy and result value.
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.c.s.AbstractStep: Step execution success: id=7
+2024-04-10 16:54:12 -  INFO [main] --- o.s.b.c.s.AbstractStep: Step: [itemSummaryStep] executed in 1s22ms
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.c.s.AbstractStep: Step execution complete: StepExecution: id=7, version=3, name=itemSummaryStep, status=COMPLETED, exitStatus=COMPLETED, readCount=1, filterCount=0, writeCount=1 readSkipCount=0, writeSkipCount=0, processSkipCount=0, commitCount=1, rollbackCount=0
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.c.j.AbstractJob: Upgrading JobExecution status: StepExecution: id=7, version=3, name=itemSummaryStep, status=COMPLETED, exitStatus=COMPLETED, readCount=1, filterCount=0, writeCount=1 readSkipCount=0, writeSkipCount=0, processSkipCount=0, commitCount=1, rollbackCount=0, exitDescription=
+2024-04-10 16:54:12 - DEBUG [main] --- o.s.b.c.j.AbstractJob: Job execution complete: JobExecution: id=8, version=1, startTime=2024-04-10T16:54:10.855217700, endTime=null, lastUpdated=2024-04-10T16:54:10.874274300, status=COMPLETED, exitStatus=exitCode=COMPLETED;exitDescription=, job=[JobInstance: id=1, version=0, Job=[itemSummaryJob]], jobParameters=[{}]
+2024-04-10 16:54:13 -  INFO [main] --- o.s.b.c.l.s.SimpleJobLauncher: Job: [SimpleJob: [name=itemSummaryJob]] completed with the following parameters: [{}] and the following status: [COMPLETED] in 2s39ms
+2024-04-10 16:57:51 -  INFO [SpringApplicationShutdownHook] --- o.q.c.QuartzScheduler: Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+2024-04-10 16:57:51 -  INFO [SpringApplicationShutdownHook] --- o.s.s.q.SchedulerFactoryBean: Shutting down Quartz Scheduler
+2024-04-10 16:57:51 -  INFO [SpringApplicationShutdownHook] --- o.q.c.QuartzScheduler: Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+2024-04-10 16:57:51 -  INFO [SpringApplicationShutdownHook] --- o.q.c.QuartzScheduler: Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+2024-04-10 16:57:51 -  INFO [SpringApplicationShutdownHook] --- o.q.c.QuartzScheduler: Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.
+2024-04-10 16:57:51 -  INFO [SpringApplicationShutdownHook] --- o.s.o.j.LocalContainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-04-10 16:57:51 -  INFO [SpringApplicationShutdownHook] --- c.z.h.HikariDataSource: HikariPool-1 - Shutdown initiated...
+2024-04-10 16:57:51 -  INFO [SpringApplicationShutdownHook] --- c.z.h.HikariDataSource: HikariPool-1 - Shutdown completed.
